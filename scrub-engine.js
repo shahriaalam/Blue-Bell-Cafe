@@ -74,7 +74,19 @@ function mountLetsScroll(container, config) {
       const img = el('img', 'sw-brand__logo');
       img.src = config.brand.logo;
       img.alt = config.brand.name || 'Logo';
-      img.onerror = () => { wrap.style.display = 'none'; };
+      img.onerror = () => {
+        if (!img.dataset.triedFallback) {
+          img.dataset.triedFallback = '1';
+          if (img.src.includes('logo.png')) {
+            img.src = img.src.replace('logo.png', 'Logo.png');
+            return;
+          } else if (img.src.includes('Logo.png')) {
+            img.src = img.src.replace('Logo.png', 'logo.png');
+            return;
+          }
+        }
+        wrap.style.setProperty('display', 'none', 'important');
+      };
       wrap.appendChild(img);
       brand.appendChild(wrap);
     } else {

@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/assets/Logo.png",
+      "destination": "/assets/logo.png"
+    }
+  ]
+}
