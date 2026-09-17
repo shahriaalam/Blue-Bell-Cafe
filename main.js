@@ -158,129 +158,227 @@ mountLetsScroll(document.getElementById('world'), {
       body: 'Gracefully placed upon an intimate candlelit marble table beside a rain-swept window, accompanied by warm flaky croissants and a fresh blush rose.',
       tags: ['Candlelight Table', 'Rainy Window', 'Pure Romance'],
       cta: {
-        primary: { label: 'Reserve a Table', href: '#book' },
-        secondary: { label: 'Explore the Menu', href: '#menu' }
+        primary: { label: 'Reserve a Table', href: '#service' },
+        secondary: { label: 'Explore the Menu', href: '#cafe-menu' }
       }
     }
   ],
   connectors: []
 });
 
-/* --------------------------------------------------------------------------
-   2. GENERATIVE AMBIENT AUDIO ENGINE (Web Audio API)
-   Generates a cozy, warm Parisian cafe soundscape with gentle vinyl rumble
-   and soft cafe crackle entirely in real-time without external audio files.
-   -------------------------------------------------------------------------- */
-let audioCtx = null;
-let isPlaying = false;
-let noiseNode = null;
-let gainNode = null;
-
-const audioBtn = document.getElementById('audio-toggle');
-const audioLabel = document.getElementById('audio-label');
-
-// Click listener to toggle audio on and off
-audioBtn.addEventListener('click', () => {
-  // Initialize the Web Audio context on the first user interaction
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  // If currently silent, start synthesizing warm audio
-  if (!isPlaying) {
-    audioCtx.resume();
-
-    // 1. Create a 2-second looped noise buffer
-    const bufferSize = audioCtx.sampleRate * 2;
-    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    let lastOut = 0.0;
-
-    // 2. Generate pink/brown noise for warm cafe vinyl texture
-    for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      output[i] = (lastOut + (0.02 * white)) / 1.02;
-      lastOut = output[i];
-      output[i] *= 3.5;
-    }
-
-    noiseNode = audioCtx.createBufferSource();
-    noiseNode.buffer = noiseBuffer;
-    noiseNode.loop = true;
-
-    // 3. Lowpass filter to cut harsh high frequencies and produce a cozy room rumble
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 450;
-
-    // 4. Smooth volume control
-    gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
-
-    // 5. Connect audio graph: Noise -> Filter -> Gain -> Audio Output
-    noiseNode.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    noiseNode.start();
-
-    // Update button UI to 'On' state
-    isPlaying = true;
-    audioLabel.textContent = 'Ambience: On ♫';
-    audioBtn.classList.add('is-active');
-  } else {
-    // If currently playing, smoothly fade out volume and stop
-    if (gainNode) {
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-      setTimeout(() => {
-        if (noiseNode) noiseNode.stop();
-        isPlaying = false;
-        audioLabel.textContent = 'Ambience: Off';
-        audioBtn.classList.remove('is-active');
-      }, 500);
+// Smooth scroll listener for menu links
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('a[href="#cafe-menu"]');
+  if (target) {
+    e.preventDefault();
+    const menuEl = document.getElementById('cafe-menu');
+    if (menuEl) {
+      menuEl.scrollIntoView({ behavior: 'smooth' });
     }
   }
 });
 
-// --- Dynamic Audio Button Positioning: Dock Always Above Footer ---
+/* --------------------------------------------------------------------------
+   2. DYNAMIC FLOATING CONTROLS DOCKING
+   Ensures bottom floating elements (Tasting Tray) dock gracefully above the footer.
+   -------------------------------------------------------------------------- */
 const footerElement = document.querySelector('.site-footer');
-let audioDockTicking = false;
+const tastingTrayEl = document.getElementById('tasting-tray');
+let dockTicking = false;
 
-function updateAudioButtonDocking() {
-  if (!audioBtn) return;
-  const baseMargin = 24; // 24px from bottom of viewport normally
+function updateFloatingControlsDocking() {
+  const windowHeight = window.innerHeight;
+  const baseTrayMargin = 24;
+
   if (footerElement) {
     const footerRect = footerElement.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    // When the top of the footer enters the viewport:
     if (footerRect.top < windowHeight) {
       const footerOverlap = windowHeight - footerRect.top;
-      // Keep button strictly 24px above the footer top border
-      audioBtn.style.bottom = `${footerOverlap + 24}px`;
+      if (tastingTrayEl) {
+        tastingTrayEl.style.bottom = `${footerOverlap + baseTrayMargin}px`;
+      }
       return;
     }
   }
-  audioBtn.style.bottom = `${baseMargin}px`;
+
+  if (tastingTrayEl) {
+    tastingTrayEl.style.bottom = `${baseTrayMargin}px`;
+  }
 }
 
-function handleAudioDockScroll() {
-  if (!audioDockTicking) {
-    audioDockTicking = true;
+function handleFloatingControlsScroll() {
+  if (!dockTicking) {
+    dockTicking = true;
     requestAnimationFrame(() => {
-      updateAudioButtonDocking();
-      audioDockTicking = false;
+      updateFloatingControlsDocking();
+      dockTicking = false;
     });
   }
 }
 
-window.addEventListener('scroll', handleAudioDockScroll, { passive: true });
-window.addEventListener('resize', updateAudioButtonDocking);
+window.addEventListener('scroll', handleFloatingControlsScroll, { passive: true });
+window.addEventListener('resize', updateFloatingControlsDocking);
 // Initialize on page load
-updateAudioButtonDocking();
+updateFloatingControlsDocking();
 
 /* --------------------------------------------------------------------------
-   3. ARTISANAL FOOTER LOGIC
+   3. ARTISANAL CAFÉ MENU INTERACTION
+   - Category Filter Navigation
+   - Tasting Tray Selection & Real-Time Total
+   - 1-Click Reservation Jump with Intent
+   -------------------------------------------------------------------------- */
+
+// --- A. Category Filter Tabs ---
+const filterButtons = document.querySelectorAll('.menu-filter-btn');
+const menuCards = document.querySelectorAll('.menu-card');
+
+if (filterButtons.length > 0) {
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+
+      // Update active tab button
+      filterButtons.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      // Filter cards with smooth entrance
+      menuCards.forEach((card) => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.classList.remove('is-filtered-out');
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
+          requestAnimationFrame(() => {
+            card.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        } else {
+          card.classList.add('is-filtered-out');
+        }
+      });
+    });
+  });
+}
+
+// --- B. Tasting Tray State Management ---
+const tastingTray = {
+  items: new Map(),
+
+  add(id, name, price) {
+    this.items.set(id, { id, name, price: Number(price) });
+    this.render();
+  },
+
+  remove(id) {
+    this.items.delete(id);
+    this.render();
+  },
+
+  toggle(id, name, price) {
+    if (this.items.has(id)) {
+      this.remove(id);
+      return false;
+    } else {
+      this.add(id, name, price);
+      return true;
+    }
+  },
+
+  clear() {
+    this.items.clear();
+    this.render();
+    // Reset all add buttons
+    document.querySelectorAll('.add-to-tray-btn').forEach((btn) => {
+      btn.classList.remove('is-added');
+      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+    });
+  },
+
+  getTotal() {
+    let sum = 0;
+    this.items.forEach((item) => {
+      sum += item.price;
+    });
+    return sum;
+  },
+
+  render() {
+    const count = this.items.size;
+    const total = this.getTotal();
+    const countLabel = document.getElementById('tray-count-label');
+    const totalVal = document.getElementById('tray-total-val');
+
+    if (countLabel) {
+      countLabel.textContent = `${count} ${count === 1 ? 'item' : 'items'} selected ♡`;
+    }
+    if (totalVal) {
+      totalVal.textContent = `৳ ${total.toLocaleString()}`;
+    }
+
+    if (tastingTrayEl) {
+      if (count > 0) {
+        tastingTrayEl.classList.remove('is-hidden');
+      } else {
+        tastingTrayEl.classList.add('is-hidden');
+      }
+    }
+    updateFloatingControlsDocking();
+  }
+};
+
+// Wire Add to Tray Buttons
+document.querySelectorAll('.add-to-tray-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const id = btn.getAttribute('data-id');
+    const name = btn.getAttribute('data-name');
+    const price = btn.getAttribute('data-price');
+
+    const isAdded = tastingTray.toggle(id, name, price);
+
+    if (isAdded) {
+      btn.classList.add('is-added');
+      btn.innerHTML = '<span>♥ In Tasting Tray</span>';
+    } else {
+      btn.classList.remove('is-added');
+      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+    }
+  });
+});
+
+// Wire Clear Tray Button
+const clearTrayBtn = document.getElementById('tray-clear-btn');
+if (clearTrayBtn) {
+  clearTrayBtn.addEventListener('click', () => {
+    tastingTray.clear();
+  });
+}
+
+// Function to smoothly jump to Act VIII: Table Service / Reservation
+function jumpToServiceChapter() {
+  if (window.scrollEngine && typeof window.scrollEngine.jumpTo === 'function') {
+    window.scrollEngine.jumpTo(7); // Jump to Act VIII: Served for Two
+  } else {
+    const worldSection = document.getElementById('world');
+    if (worldSection) {
+      worldSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+}
+
+// Wire Tasting Tray Order / Reserve Button
+const trayOrderBtn = document.getElementById('tray-order-btn');
+if (trayOrderBtn) {
+  trayOrderBtn.addEventListener('click', () => {
+    jumpToServiceChapter();
+  });
+}
+
+
+/* --------------------------------------------------------------------------
+   4. ARTISANAL FOOTER LOGIC
    Controls:
-   - Reserve Table button (interactive camera jump to Act VIII: Served for Two)
+   - Reserve Table button in footer
    -------------------------------------------------------------------------- */
 
 // --- A. Reserve a Table Link in Footer ---
@@ -288,9 +386,7 @@ const footerBookBtn = document.getElementById('footer-book-btn');
 if (footerBookBtn) {
   footerBookBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (window.scrollEngine && typeof window.scrollEngine.jumpTo === 'function') {
-      window.scrollEngine.jumpTo(7); // Jump to Act VIII: Served for Two
-    }
+    jumpToServiceChapter();
   });
 }
 
