@@ -1,0 +1,1172 @@
+/* ==========================================================================
+   BLUE BELL CAFÉ — STYLESHEET (style.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. COLOR PALETTE & DESIGN TOKENS
+   Defines the core variables used across the page:
+   - Deep roasted espresso noir background
+   - Warm ivory and toasted almond text
+   - Golden caramel / amber highlights and Parisian antique brass
+   - Modern serif (Playfair Display) and clean sans-serif (Plus Jakarta Sans)
+   -------------------------------------------------------------------------- */
+:root,
+.sw-root {
+  /* Page background: Deep roasted espresso velvet noir */
+  --sw-bg: #120D0A;
+
+  /* Primary text: Warm ivory cream */
+  --sw-ink: #F9F5F0;
+
+  /* Secondary text: Muted toasted almond */
+  --sw-ink-soft: #C4B5AA;
+
+  /* Warm golden amber / caramel glow */
+  --sw-accent: #E2A76F;
+
+  /* Parisian antique brass */
+  --sw-gold: #D4AF37;
+
+  /* Typography */
+  --sw-font-display: "Playfair Display", Georgia, serif;
+  --sw-font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. AMBIENT CAFE AUDIO TOGGLE BUTTON (Bottom-Right Pill)
+   A glassmorphic floating pill in the bottom-right corner allowing visitors
+   to toggle the cozy cafe background audio (synthesized vinyl warmth).
+   -------------------------------------------------------------------------- */
+.audio-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(45, 28, 18, 0.94) 0%, rgba(18, 11, 7, 0.96) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(226, 167, 111, 0.55);
+  border-radius: 999px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sw-font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #F8F2EB;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.65), 0 0 18px rgba(226, 167, 111, 0.22);
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.audio-toggle-btn:hover {
+  transform: translateY(-2px);
+  background: radial-gradient(120% 120% at 50% 0%, rgba(58, 36, 23, 0.96) 0%, rgba(26, 16, 10, 0.98) 100%);
+  border-color: #E2A76F;
+  color: #FFFFFF;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), 0 0 24px rgba(226, 167, 111, 0.4);
+}
+
+.audio-toggle-btn.is-active {
+  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 50%, #C47D3B 100%);
+  color: #170E09;
+  border-color: #FFFFFF;
+  box-shadow: 0 8px 26px rgba(226, 167, 111, 0.55), 0 0 24px rgba(226, 167, 111, 0.45);
+}
+
+.audio-icon {
+  width: 15px;
+  height: 15px;
+  fill: #E2A76F;
+  transition: fill 0.25s ease;
+}
+
+.audio-toggle-btn.is-active .audio-icon {
+  fill: #170E09;
+}
+
+/* --------------------------------------------------------------------------
+   2.5. FIXED TOPBAR CONTAINER (.sw-topbar)
+   Unified header housing the brand logo capsule, navigation tabs, and CTA.
+   Uses pointer-events: none on the outer bar and auto on pills so empty space
+   remains transparent to gestures while buttons remain interactive.
+   -------------------------------------------------------------------------- */
+.sw-topbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 50 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: clamp(8px, 1.5vw, 18px) !important;
+  padding: clamp(10px, 1.8vw, 22px) clamp(12px, 3.5vw, 48px) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  pointer-events: none !important;
+  transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), gap 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-topbar > * {
+  pointer-events: auto !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOPBAR CALL-TO-ACTION BUTTON ("Reserve a Table")
+   A luminous golden amber gradient pill on the top right that invites
+   guests to book a table, smoothly jumping to the final table service chapter.
+   -------------------------------------------------------------------------- */
+.sw-topcta {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(8px, 1vw, 10px) clamp(14px, 1.6vw, 22px);
+  font-family: var(--sw-font-body);
+  font-size: clamp(0.78rem, 0.88vw, 0.86rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  color: #1A100B !important;
+  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 52%, #C47D3B 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(226, 167, 111, 0.42), 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0 !important;
+}
+
+/* Arrow indicator inside the CTA button */
+.sw-topcta::after {
+  content: '→';
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Hover elevation and expanded golden glow */
+.sw-topcta:hover {
+  transform: translateY(-2px) scale(1.03);
+  color: #120D0A !important;
+  background: linear-gradient(135deg, #FFF1DF 0%, #EDB784 50%, #D18945 100%);
+  box-shadow: 0 8px 30px rgba(226, 167, 111, 0.65), 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.sw-topcta:hover::after {
+  transform: translateX(4px);
+}
+
+.sw-topcta:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(226, 167, 111, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   4. BRAND LOGO CAPSULE (Top-Left)
+   Encapsulates the transparent Blue Bell Café logo within a crisp white
+   pill capsule with a golden rim and subtle drop shadow.
+   -------------------------------------------------------------------------- */
+.sw-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-brand:hover {
+  transform: translateY(-2px);
+}
+
+/* White protective capsule for the logo */
+.sw-brand__logo-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(5px, 0.8vw, 7px) clamp(12px, 1.4vw, 18px) !important;
+  background: #FFFFFF !important; /* Pure white background ensures navy blue & brown logo pop */
+  border-radius: 999px !important;
+  border: 1.5px solid rgba(226, 167, 111, 0.45) !important;
+  box-shadow: 
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    0 0 0 3px rgba(255, 255, 255, 0.25),
+    0 0 16px rgba(226, 167, 111, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-brand:hover .sw-brand__logo-wrap {
+  border-color: var(--sw-accent, #E2A76F) !important;
+  box-shadow: 
+    0 8px 28px rgba(0, 0, 0, 0.45),
+    0 0 0 4px rgba(255, 255, 255, 0.4),
+    0 0 24px rgba(226, 167, 111, 0.45) !important;
+  transform: scale(1.02);
+}
+
+/* Logo image itself */
+.sw-brand__logo {
+  height: clamp(26px, 3.2vw, 38px) !important;
+  width: auto !important;
+  max-width: clamp(100px, 13vw, 150px) !important;
+  object-fit: contain !important;
+  display: block !important;
+  transform: none !important;
+  border-radius: 0 !important;
+}
+
+/* Hidden text name because the logo image already has "Blue Bell Café" */
+.sw-brand__name {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. TOP NAVIGATION BAR (.sw-nav)
+   A dark roasted espresso frosted glass pill containing the chapter titles
+   (Selection, Dosing, Grinding, etc.) with high-contrast ivory text.
+   Engineered with smooth horizontal scrolling & fluid flex compression
+   so it effortlessly scales across screen widths without breaking.
+   -------------------------------------------------------------------------- */
+.sw-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  padding: 5px 7px !important;
+  background: rgba(18, 13, 10, 0.88) !important; /* Deep roasted espresso glass */
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(226, 167, 111, 0.35) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  flex-shrink: 1 !important;
+  min-width: 0 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-nav::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Individual navigation link items */
+.sw-nav__item {
+  font: inherit !important;
+  font-family: var(--sw-font-body) !important;
+  font-size: clamp(0.72rem, 0.82vw, 0.82rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: #EDE4DC !important; /* Bright warm ivory */
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  padding: clamp(6px, 0.7vw, 8px) clamp(8px, 1.1vw, 15px) !important;
+  border-radius: 999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  flex-shrink: 0 !important;
+  user-select: none !important;
+}
+
+.sw-nav__num {
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+}
+
+.sw-nav__sep {
+  opacity: 0.75 !important;
+}
+
+.sw-nav__name {
+  transition: opacity 0.2s ease, max-width 0.3s ease !important;
+}
+
+.sw-nav__item:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  transform: translateY(-1px);
+}
+
+/* Active chapter item (matches the scene's dynamic accent color) */
+.sw-nav__item.is-active {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  background: var(--sw-accent, #E2A76F) !important;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--sw-accent, #E2A76F) 55%, transparent) !important;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   5.5. STORY SECTION CALL-TO-ACTION BUTTONS (.sw-copy__cta, .sw-btn)
+   Action buttons appearing in the story chapter copy (e.g. Act VIII: Service).
+   - Primary ("Reserve a Table"): Luminous golden amber gradient pill with
+     deep roasted espresso text (#1A100B) for crystal-clear readability,
+     warm golden box-shadow, and animated arrow indicator.
+   - Ghost ("Explore the Menu"): Frosted espresso/glass pill with crisp ivory text.
+   -------------------------------------------------------------------------- */
+.sw-copy__cta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin-top: 28px !important;
+  pointer-events: auto !important;
+}
+
+.sw-btn {
+  text-decoration: none !important;
+  font-family: var(--sw-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.02em !important;
+  padding: 12px 26px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+/* Primary Button ("Reserve a Table") */
+.sw-btn--primary {
+  color: #1A100B !important; /* Deep roasted espresso noir - sharp, crystal-clear contrast */
+  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 52%, #C47D3B 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 
+    0 4px 20px rgba(226, 167, 111, 0.45), 
+    0 2px 6px rgba(0, 0, 0, 0.2), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.sw-btn--primary::after {
+  content: '→';
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+.sw-btn--primary:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  color: #120D0A !important;
+  background: linear-gradient(135deg, #FFF1DF 0%, #EDB784 50%, #D18945 100%) !important;
+  box-shadow: 
+    0 8px 30px rgba(226, 167, 111, 0.65), 
+    0 4px 12px rgba(0, 0, 0, 0.25), 
+    inset 0 1px 2px rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.sw-btn--primary:hover::after {
+  transform: translateX(4px);
+}
+
+.sw-btn--primary:active {
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 10px rgba(226, 167, 111, 0.35) !important;
+}
+
+/* Secondary Button ("Explore the Menu") */
+.sw-btn--ghost {
+  color: #FAF5EE !important; /* Crisp, brilliant warm ivory */
+  background: rgba(20, 14, 10, 0.85) !important; /* Deep roasted espresso velvet glass */
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1.5px solid rgba(226, 167, 111, 0.55) !important; /* Elegant golden champagne rim */
+  border-radius: 999px !important;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(226, 167, 111, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18) !important;
+}
+
+.sw-btn--ghost:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  color: #FFFFFF !important;
+  background: rgba(36, 24, 18, 0.95) !important;
+  border-color: var(--sw-accent, #E2A76F) !important; /* Luminous warm gold */
+  box-shadow: 
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(226, 167, 111, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25) !important;
+}
+
+.sw-btn--ghost:active {
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. SIDE ROUTE DOT RAIL & LABELS (.sw-route)
+   The vertical journey rail on the right side of the screen with active
+   dots and pop-out chapter tooltips.
+   -------------------------------------------------------------------------- */
+/* Vertical connecting rail line */
+.sw-route::before {
+  background: var(--sw-accent, #E2A76F) !important;
+  opacity: 0.45 !important;
+}
+
+/* Individual dot */
+.sw-route__dot i {
+  background: color-mix(in srgb, var(--sw-accent, #E2A76F) 60%, transparent) !important;
+}
+
+.sw-route__dot:hover i {
+  background: #FFFFFF !important;
+  box-shadow: 0 0 10px var(--sw-accent, #E2A76F) !important;
+}
+
+/* Currently active chapter dot */
+.sw-route__dot.is-active i {
+  background: var(--sw-accent, #E2A76F) !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--sw-accent, #E2A76F) 30%, transparent), 0 0 12px var(--sw-accent, #E2A76F) !important;
+}
+
+/* Hover/active tooltip label */
+.sw-route__label {
+  font-family: var(--sw-font-body) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  color: #F9F5F0 !important; /* Crisp, brilliant ivory text */
+  background: rgba(18, 13, 10, 0.92) !important; /* Deep roasted espresso glass */
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(226, 167, 111, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. ATMOSPHERIC VIGNETTE
+   Subtle radial edge darkening for a cinematic Parisian cafe aesthetic.
+   -------------------------------------------------------------------------- */
+.ambient-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(35, 22, 16, 0.05) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE DESIGN (Adaptive Scaling for All Screen Sizes & Tabs)
+   Adapts navigation, brand capsule, and CTA button seamlessly whether the
+   window/tab is expanded full-screen or made small/medium/tablet.
+   -------------------------------------------------------------------------- */
+
+/* Standard Laptops & Landscape Tablets (<= 1240px) */
+@media (max-width: 1240px) {
+  .sw-topbar {
+    padding: 12px 20px !important;
+    gap: 10px !important;
+  }
+  .sw-nav {
+    padding: 4px 6px !important;
+    gap: 2px !important;
+  }
+  .sw-nav__item {
+    padding: 6px 10px !important;
+    font-size: 0.77rem !important;
+  }
+}
+
+/* Tablets (Portrait & Medium Displays <= 1040px) */
+/* Collapses inactive tabs to clean, distinct Roman numerals (I, III, IV...)
+   while keeping the active tab prominently expanded (II. Dosing). */
+@media (max-width: 1040px) {
+  .sw-topbar {
+    padding: 10px 16px !important;
+    gap: 8px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 6px 13px !important;
+  }
+
+  .sw-brand__logo {
+    height: 28px !important;
+    max-width: 110px !important;
+  }
+
+  .sw-topcta {
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+    gap: 6px !important;
+  }
+
+  .sw-nav {
+    padding: 4px 6px !important;
+    gap: 3px !important;
+  }
+
+  /* Inactive items: sleek, compact Roman numeral pills */
+  .sw-nav__item:not(.is-active) .sw-nav__name,
+  .sw-nav__item:not(.is-active) .sw-nav__sep {
+    display: none !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 6px 9px !important;
+    min-width: 30px !important;
+    font-size: 0.76rem !important;
+  }
+
+  /* Active item: proudly expands with full title */
+  .sw-nav__item.is-active {
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .sw-nav__item.is-active .sw-nav__name,
+  .sw-nav__item.is-active .sw-nav__sep {
+    display: inline !important;
+  }
+}
+
+/* Interactive hover reveal on non-touch screens under 1040px */
+@media (hover: hover) and (max-width: 1040px) {
+  .sw-nav__item:hover .sw-nav__name,
+  .sw-nav__item:hover .sw-nav__sep {
+    display: inline !important;
+  }
+  .sw-nav__item:hover {
+    padding: 6px 12px !important;
+  }
+}
+
+/* Mobile & Narrow Viewports (<= 680px) */
+@media (max-width: 680px) {
+  .sw-topbar {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 4px 10px !important;
+  }
+
+  .sw-brand__logo {
+    height: 23px !important;
+    max-width: 82px !important;
+  }
+
+  /* Shorten "Reserve a Table" to "Reserve" with arrow on mobile */
+  .sw-topcta {
+    padding: 7px 12px !important;
+    font-size: 0.76rem !important;
+    gap: 4px !important;
+  }
+
+  .sw-topcta .sw-topcta__sub {
+    display: none !important;
+  }
+
+  .sw-nav {
+    padding: 3px 5px !important;
+    gap: 2px !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 5px 8px !important;
+    min-width: 25px !important;
+    font-size: 0.71rem !important;
+  }
+
+  .sw-nav__item.is-active {
+    padding: 5px 10px !important;
+    font-size: 0.73rem !important;
+  }
+
+  .sw-copy__cta {
+    gap: 10px !important;
+    margin-top: 20px !important;
+  }
+
+  .sw-btn {
+    padding: 10px 20px !important;
+    font-size: 0.84rem !important;
+  }
+}
+
+/* Ultra-compact screens (<= 400px) */
+@media (max-width: 400px) {
+  .sw-topbar {
+    padding: 6px 6px !important;
+    gap: 4px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 4px 7px !important;
+  }
+
+  .sw-brand__logo {
+    height: 20px !important;
+    max-width: 70px !important;
+  }
+
+  .sw-topcta {
+    padding: 6px 9px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 4px 6px !important;
+    min-width: 20px !important;
+    font-size: 0.67rem !important;
+  }
+
+  .sw-btn {
+    padding: 8px 16px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* ==========================================================================
+   4. ARTISANAL CAFÉ FOOTER STYLING (4 BALANCED FULL-WIDTH COLUMNS)
+   ========================================================================== */
+.site-footer {
+  position: relative;
+  z-index: 45;
+  background: radial-gradient(130% 90% at 50% 0%, #20150F 0%, #150E0A 40%, #0D0806 100%);
+  border-top: 1.5px solid rgba(226, 167, 111, 0.35);
+  box-shadow: 0 -25px 80px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--sw-ink);
+  padding: 22px clamp(20px, 3.5vw, 56px) 16px;
+  box-sizing: border-box;
+  font-family: var(--sw-font-body);
+}
+
+.footer-inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ---- Footer 4-Column Grid: Balanced & Spanning Across Full Width ---- */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 2.4vw, 36px);
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.footer-col-title {
+  font-family: var(--sw-font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(226, 167, 111, 0.2);
+}
+
+.title-icon {
+  font-size: 0.92rem;
+}
+
+.col-desc {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--sw-ink-soft);
+  margin: 0;
+}
+
+/* Column 1: Address & Location */
+.footer-address {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: #EDE4DC;
+}
+
+.footer-address p {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.shop-name {
+  font-family: var(--sw-font-display);
+  font-size: 0.94rem;
+  color: var(--sw-accent);
+  margin-bottom: 2px;
+}
+
+.address-line,
+.address-sub {
+  color: #EDE4DC;
+}
+
+.address-landmark {
+  font-size: 0.76rem;
+  color: var(--sw-ink-soft);
+  margin-top: 1px;
+}
+
+.directions-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--sw-accent);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  width: fit-content;
+  margin-top: 2px;
+}
+
+.directions-link:hover {
+  color: #FFFFFF;
+  transform: translateX(3px);
+  text-decoration: underline;
+}
+
+.atelier-note {
+  font-size: 0.75rem;
+  color: var(--sw-ink-soft);
+  margin: 2px 0 0;
+  line-height: 1.35;
+}
+
+.footer-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  background: #FFFFFF !important;
+  border-radius: 999px;
+  border: 1.5px solid rgba(226, 167, 111, 0.45);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 0 14px rgba(226, 167, 111, 0.25);
+  width: fit-content;
+  margin-top: 6px;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-logo-badge:hover {
+  border-color: var(--sw-accent);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.45),
+    0 0 0 3px rgba(255, 255, 255, 0.35),
+    0 0 22px rgba(226, 167, 111, 0.45);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.footer-logo-img {
+  height: 28px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Column 2: Hours & Schedule */
+.roast-note {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--sw-accent);
+  margin-top: 2px;
+  display: inline-block;
+}
+
+
+.footer-hours {
+  margin-top: 2px;
+  padding: 6px 10px;
+  background: rgba(22, 15, 11, 0.8);
+  border: 1px solid rgba(226, 167, 111, 0.2);
+  border-radius: 8px;
+}
+
+.hours-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sw-accent);
+  margin: 0 0 3px;
+}
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.76rem;
+  color: var(--sw-ink-soft);
+}
+
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hours-list strong {
+  color: #FFFFFF;
+}
+
+.hours-highlight {
+  color: var(--sw-accent) !important;
+  border-top: 1px dashed rgba(226, 167, 111, 0.25);
+  padding-top: 3px;
+  margin-top: 1px;
+}
+
+/* Column 2: Phone & Contact */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 10px;
+  background: rgba(24, 16, 12, 0.85);
+  border: 1.2px solid rgba(226, 167, 111, 0.25);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--sw-accent);
+  background: rgba(35, 23, 17, 0.95);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 12px rgba(226, 167, 111, 0.2);
+}
+
+.contact-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(226, 167, 111, 0.25), rgba(196, 125, 59, 0.15));
+  border: 1px solid rgba(226, 167, 111, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sw-accent);
+  flex-shrink: 0;
+}
+
+.contact-item-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.contact-item:hover .contact-item-icon {
+  background: linear-gradient(135deg, #FBE0C3, #E2A76F);
+  color: #170E09;
+}
+
+.contact-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.contact-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sw-ink-soft);
+}
+
+.contact-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.01em;
+}
+
+.quick-reserve-box {
+  margin-top: 1px;
+  padding: 6px 10px;
+  background: linear-gradient(145deg, rgba(32, 21, 15, 0.8), rgba(20, 13, 9, 0.8));
+  border: 1px solid rgba(226, 167, 111, 0.3);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.reserve-note {
+  font-size: 0.74rem;
+  color: var(--sw-ink-soft);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.footer-reserve-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #150E0A;
+  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 52%, #C47D3B 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 3px 12px rgba(226, 167, 111, 0.3);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.footer-reserve-btn:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #FFF1DF 0%, #EDB784 50%, #D18542 100%);
+  box-shadow: 0 5px 16px rgba(226, 167, 111, 0.5);
+}
+
+/* Column 3: Social Cards & Vinyl Showcase */
+.social-links-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 10px;
+  background: rgba(22, 14, 10, 0.85);
+  border: 1.2px solid rgba(226, 167, 111, 0.25);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.social-card.social-instagram:hover {
+  border-color: #E1306C;
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.15), rgba(22, 14, 10, 0.95));
+  box-shadow: 0 4px 18px rgba(225, 48, 108, 0.3);
+}
+
+.social-card.social-instagram:hover .social-icon {
+  color: #E1306C;
+}
+
+.social-card.social-facebook:hover {
+  border-color: #1877F2;
+  background: linear-gradient(135deg, rgba(24, 119, 242, 0.15), rgba(22, 14, 10, 0.95));
+  box-shadow: 0 4px 18px rgba(24, 119, 242, 0.3);
+}
+
+.social-card.social-facebook:hover .social-icon {
+  color: #1877F2;
+}
+
+.social-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sw-accent);
+  transition: color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.social-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.social-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.social-handle {
+  font-size: 0.68rem;
+  color: var(--sw-ink-soft);
+}
+
+/* Vinyl Showcase */
+.cafe-vinyl-showcase {
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(18, 12, 8, 0.85);
+  border: 1px dashed rgba(226, 167, 111, 0.3);
+  border-radius: 8px;
+}
+
+.vinyl-disc {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #E2A76F 18%, #111 20%, #111 38%, #222 40%, #111 58%, #222 60%, #050505 100%);
+  border: 1px solid rgba(226, 167, 111, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  animation: vinyl-spin 8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.vinyl-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sw-accent);
+}
+
+.vinyl-track {
+  font-size: 0.76rem;
+  color: #FFFFFF;
+}
+
+.vinyl-sub {
+  font-size: 0.67rem;
+  color: var(--sw-ink-soft);
+}
+
+/* ---- Bottom Bar: Centered Copyright ---- */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 167, 111, 0.18);
+  font-size: 0.76rem;
+  color: var(--sw-ink-soft);
+}
+
+.footer-copyright {
+  text-align: center;
+  width: 100%;
+}
+
+.footer-copyright p {
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.footer-copyright strong {
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE BREAKPOINTS FOR FOOTER
+   ========================================================================== */
+@media (max-width: 1040px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .site-footer {
+    padding: 28px 18px 85px; /* extra bottom padding for floating audio pill on touch */
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding-right: 0;
+  }
+
+  .footer-legal-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
