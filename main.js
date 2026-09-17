@@ -261,63 +261,106 @@ if (filterButtons.length > 0) {
   });
 }
 
-// --- B. Tasting Tray State Management ---
+// --- B. Tasting Tray State Management with Dynamic Quantity Controls ---
 const tastingTray = {
   items: new Map(),
 
-  add(id, name, price) {
-    this.items.set(id, { id, name, price: Number(price) });
+  add(id, name, price, quantity = 1) {
+    if (this.items.has(id)) {
+      const existing = this.items.get(id);
+      existing.quantity += quantity;
+    } else {
+      this.items.set(id, { id, name, price: Number(price), quantity });
+    }
     this.render();
+  },
+
+  setQuantity(id, quantity) {
+    if (quantity <= 0) {
+      this.remove(id);
+      return;
+    }
+    if (this.items.has(id)) {
+      this.items.get(id).quantity = quantity;
+      this.render();
+    }
+  },
+
+  getQuantity(id) {
+    return this.items.has(id) ? this.items.get(id).quantity : 0;
   },
 
   remove(id) {
     this.items.delete(id);
+    this.updateCardUI(id, 0);
     this.render();
   },
 
-  toggle(id, name, price) {
-    if (this.items.has(id)) {
-      this.remove(id);
-      return false;
+  updateCardUI(id, qty) {
+    const btn = document.querySelector(`.add-to-tray-btn[data-id="${id}"]`);
+    if (!btn) return;
+    const parentControl = btn.closest('.card-tray-control');
+    const stepperValue = parentControl ? parentControl.querySelector('.qty-step-value') : null;
+
+    if (qty > 0) {
+      btn.classList.add('is-added');
+      btn.innerHTML = '<span>♥ In Tasting Tray</span>';
+      if (parentControl) parentControl.classList.add('is-active');
+      if (stepperValue) stepperValue.textContent = qty;
     } else {
-      this.add(id, name, price);
-      return true;
+      btn.classList.remove('is-added');
+      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+      if (parentControl) parentControl.classList.remove('is-active');
+      if (stepperValue) stepperValue.textContent = '1';
     }
   },
 
   clear() {
     this.items.clear();
-    this.render();
-    // Reset all add buttons
-    document.querySelectorAll('.add-to-tray-btn').forEach((btn) => {
-      btn.classList.remove('is-added');
-      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+    document.querySelectorAll('.card-tray-control').forEach((ctrl) => {
+      ctrl.classList.remove('is-active');
+      const btn = ctrl.querySelector('.add-to-tray-btn');
+      if (btn) {
+        btn.classList.remove('is-added');
+        btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+      }
+      const val = ctrl.querySelector('.qty-step-value');
+      if (val) val.textContent = '1';
     });
+    this.render();
   },
 
-  getTotal() {
+  getTotalCount() {
+    let count = 0;
+    this.items.forEach((item) => {
+      count += item.quantity;
+    });
+    return count;
+  },
+
+  getTotalPrice() {
     let sum = 0;
     this.items.forEach((item) => {
-      sum += item.price;
+      sum += (item.price * item.quantity);
     });
     return sum;
   },
 
   render() {
-    const count = this.items.size;
-    const total = this.getTotal();
+    const totalCount = this.getTotalCount();
+    const totalPrice = this.getTotalPrice();
     const countLabel = document.getElementById('tray-count-label');
     const totalVal = document.getElementById('tray-total-val');
 
     if (countLabel) {
-      countLabel.textContent = `${count} ${count === 1 ? 'item' : 'items'} selected ♡`;
+      countLabel.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'} selected ♡`;
     }
     if (totalVal) {
-      totalVal.textContent = `৳ ${total.toLocaleString()}`;
+      totalVal.textContent = `৳ ${totalPrice.toLocaleString()}`;
     }
 
     if (tastingTrayEl) {
-      if (count > 0) {
+      if (totalCount > 0) {
         tastingTrayEl.classList.remove('is-hidden');
       } else {
         tastingTrayEl.classList.add('is-hidden');
@@ -327,23 +370,57 @@ const tastingTray = {
   }
 };
 
-// Wire Add to Tray Buttons
-document.querySelectorAll('.add-to-tray-btn').forEach((btn) => {
+// Wire Add to Tray Buttons & Quantity Steppers
+document.querySelectorAll('.card-tray-control').forEach((control) => {
+  const btn = control.querySelector('.add-to-tray-btn');
+  const minusBtn = control.querySelector('.qty-minus');
+  const plusBtn = control.querySelector('.qty-plus');
+  const valEl = control.querySelector('.qty-step-value');
+
+  if (!btn) return;
+
+  const id = btn.getAttribute('data-id');
+  const name = btn.getAttribute('data-name');
+  const price = Number(btn.getAttribute('data-price'));
+
+  // Main Add Button click: toggles In Tasting Tray
   btn.addEventListener('click', () => {
-    const id = btn.getAttribute('data-id');
-    const name = btn.getAttribute('data-name');
-    const price = btn.getAttribute('data-price');
-
-    const isAdded = tastingTray.toggle(id, name, price);
-
-    if (isAdded) {
-      btn.classList.add('is-added');
-      btn.innerHTML = '<span>♥ In Tasting Tray</span>';
+    const currentQty = tastingTray.getQuantity(id);
+    if (currentQty === 0) {
+      tastingTray.add(id, name, price, 1);
+      tastingTray.updateCardUI(id, 1);
     } else {
-      btn.classList.remove('is-added');
-      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+      // Clicking button again removes from tray
+      tastingTray.remove(id);
     }
   });
+
+  // Plus button click: increases quantity
+  if (plusBtn) {
+    plusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const currentQty = tastingTray.getQuantity(id);
+      const newQty = (currentQty > 0 ? currentQty : 1) + 1;
+      tastingTray.setQuantity(id, newQty);
+      if (valEl) valEl.textContent = newQty;
+    });
+  }
+
+  // Minus button click: decreases quantity (or removes if reaching 0)
+  if (minusBtn) {
+    minusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const currentQty = tastingTray.getQuantity(id);
+      if (currentQty > 1) {
+        const newQty = currentQty - 1;
+        tastingTray.setQuantity(id, newQty);
+        if (valEl) valEl.textContent = newQty;
+      } else {
+        // Drop to 0 -> remove from tray & close popup
+        tastingTray.remove(id);
+      }
+    });
+  }
 });
 
 // Wire Clear Tray Button

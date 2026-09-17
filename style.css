@@ -1155,9 +1155,30 @@
   color: #231610;
 }
 
-/* Add to Tray Button */
-.add-to-tray-btn {
+/* ---- Card Tray Control & Add to Tray Button ---- */
+.card-tray-control {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.card-tray-control .add-to-tray-btn {
+  width: 100%;
+}
+
+.spotlight-tray-control {
+  width: auto;
+}
+
+.spotlight-tray-control .add-to-tray-btn {
+  width: auto;
+}
+
+.add-to-tray-btn {
+  margin-top: 0;
   padding: 10px 18px;
   border-radius: 999px;
   background: #FAF3ED;
@@ -1172,6 +1193,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  user-select: none;
 }
 
 .add-to-tray-btn:hover {
@@ -1187,6 +1209,95 @@
   border-color: #E88B9C;
   color: #FFFFFF;
   box-shadow: 0 4px 16px rgba(232, 139, 156, 0.35);
+}
+
+/* ---- Quantity Stepper Popup (Appears below button when added) ---- */
+.tray-qty-stepper {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 5px 14px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(232, 139, 156, 0.48);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(212, 128, 106, 0.12), 0 2px 6px rgba(232, 139, 156, 0.12);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.card-tray-control.is-active .tray-qty-stepper {
+  display: inline-flex;
+  animation: qtyStepperPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes qtyStepperPop {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.qty-step-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.2px solid rgba(212, 137, 114, 0.38);
+  background: #FAF3ED;
+  color: #543327;
+  font-family: var(--sw-font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.qty-step-btn:hover {
+  background: #E88B9C;
+  border-color: #E88B9C;
+  color: #FFFFFF;
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(232, 139, 156, 0.45);
+}
+
+.qty-step-btn:active {
+  transform: scale(0.92);
+}
+
+.qty-step-display {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 38px;
+  justify-content: center;
+}
+
+.qty-step-value {
+  font-family: var(--sw-font-heading);
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #2D1C12;
+  min-width: 16px;
+  text-align: center;
+}
+
+.qty-step-label {
+  font-family: var(--sw-font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8C6A5A;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* ==========================================================================
