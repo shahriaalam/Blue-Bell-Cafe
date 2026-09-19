@@ -130,9 +130,12 @@ function mountLetsScroll(container, config) {
   [sky, scrollbar, topbar, stage, copylayer, route, hint, track].forEach(n => container.appendChild(n));
 
   // segment scenes
-  SEGMENTS.forEach(s => {
+  SEGMENTS.forEach((s, i) => {
     const scene = el('div', 'sw-scene'); scene.style.setProperty('--sw-accent', s.accent || '');
-    const img = el('img', 'sw-scene__still'); img.alt = ''; img.decoding = 'async'; img.loading = 'lazy';
+    const img = el('img', 'sw-scene__still'); img.alt = ''; img.decoding = 'async';
+    // Hero still image must load eagerly with high fetch priority for instant first paint
+    img.loading = (i === 0) ? 'eager' : 'lazy';
+    if (i === 0) img.fetchPriority = 'high';
     const poster = (isMobile() && s.stillM) ? s.stillM : s.still;
     if (poster) img.src = poster;
     scene.appendChild(img); stage.appendChild(scene);
@@ -234,14 +237,8 @@ function mountLetsScroll(container, config) {
       s.hasClip = true;
     }
 
-    if (window.location.protocol === 'file:') {
-      attachVideo(url);
-    } else {
-      fetch(url)
-        .then(r => r.ok ? r.blob() : Promise.reject(new Error('Fetch status ' + r.status)))
-        .then(blob => attachVideo(URL.createObjectURL(blob)))
-        .catch(() => attachVideo(url));
-    }
+    // Attach video directly for instant HTTP range streaming without waiting for entire file download
+    attachVideo(url);
   }
 
   let lastY = 0;
@@ -259,6 +256,11 @@ function mountLetsScroll(container, config) {
     const halfFade = (CROSSFADE * vh) * 0.5;
     let ci = 0;
     for (let i = 0; i < NSEG; i++) if (y >= SEGMENTS[i].start) ci = i;
+
+    // Ahead-of-time proximity preloading for upcoming scenes during scrolling
+    for (let k = ci; k <= Math.min(ci + 2, NSEG - 1); k++) {
+      if (!SEGMENTS[k].loading) loadClip(SEGMENTS[k]);
+    }
 
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
@@ -408,8 +410,28 @@ function mountLetsScroll(container, config) {
   window.addEventListener('orientationchange', layout);
   window.addEventListener('load', layout);
   layout();
-  // Preload all clips in parallel so every scene is buffered and ready on demand
-  SEGMENTS.forEach(s => loadClip(s));
+  // Prioritized progressive loading:
+  // Immediately load Scene 0 so the initial hero video footages render instantly on landing
+  if (SEGMENTS[0]) loadClip(SEGMENTS[0]);
+  if (SEGMENTS[1]) setTimeout(() => loadClip(SEGMENTS[1]), 80);
+
+  // Background-load remaining clips with staggered pacing to avoid saturating network bandwidth
+  const loadRemainingClips = () => {
+    let delay = 300;
+    for (let k = 2; k < NSEG; k++) {
+      const seg = SEGMENTS[k];
+      setTimeout(() => {
+        if (!seg.loading) loadClip(seg);
+      }, delay);
+      delay += 300;
+    }
+  };
+
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(loadRemainingClips, { timeout: 1500 });
+  } else {
+    setTimeout(loadRemainingClips, 600);
+  }
   requestAnimationFrame(raf);
 
   // ---- helpers ----
