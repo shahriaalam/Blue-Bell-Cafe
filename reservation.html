@@ -1,14 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Table Reservation Parlour — Blue Bell Café</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦅%3C/text%3E%3C/svg%3E">
-  <link rel="alternate icon" type="image/svg+xml" href="assets/falcon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
   <meta name="description"
-    content="Reserve your candlelit table with Monsieur Barnaby, our feline maître d'. Choose your table atmosphere and pre-order your tasting tray." />
+    content="Reserve your candlelit table with Monsieur Barnaby, our feline maître d'. Choose your table atmosphere and pre-order your tasting tray.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -34,12 +35,12 @@
   <main>
 <!-- ======================================================================
        INTERACTIVE TABLE RESERVATION STAGE (MONSIEUR BARNABY'S PARLOUR)
-       Full-screen theatrical dining portal featuring Monsieur Barnaby, 
+       Full-screen theatrical dining portal featuring Monsieur Barnaby,
        the chubby cartoon cat waiter in bistro tuxedo.
        ====================================================================== -->
   <div id="reservation-portal" class="reservation-portal theme-default" role="dialog" aria-modal="true" aria-labelledby="portal-title">
     <div class="portal-backdrop" id="portal-backdrop"></div>
-    
+
     <!-- Floating Candlelit Fairy Lights -->
     <div class="portal-fairy-lights" aria-hidden="true">
       <span class="fairy-bulb b1"></span>
@@ -53,7 +54,7 @@
 
     <div class="portal-container">
       <!-- Shared SVG Gradients Defs for Theme Decorations -->
-      <svg class="portal-shared-defs" width="0" height="0" style="position: absolute; pointer-events: none;" aria-hidden="true">
+      <svg class="portal-shared-defs" width="0" height="0" aria-hidden="true">
         <defs>
           <!-- Maple Leaf Gradients: Crimson Red, Vibrant Orange, Golden Yellow -->
           <linearGradient id="mapleGradRed" x1="0" y1="0" x2="1" y2="1">
@@ -92,7 +93,7 @@
       </svg>
 
       <!-- Atmospheric Ambience Layers (Dynamic for Dream Settings) -->
-      
+
       <!-- 1. Botanical Greenery Layer (Appears on Lush / Botanical Glasshouse - Rich Abundant Leaves) -->
       <div class="portal-botanical-decor" aria-hidden="true">
         <!-- Top Canopy Garland of Monstera & Eucalyptus across the entire top -->
@@ -179,7 +180,7 @@
         <!-- Mist Clouds -->
         <div class="cloud-mist mist-1"></div>
         <div class="cloud-mist mist-2"></div>
-        
+
         <!-- Continuous Cascading Rain Shower -->
         <div class="rain-shower-pane">
           <span class="rain-streak r1"></span>
@@ -210,7 +211,7 @@
       <!-- 3. Cozy Velvet Booth: Falling Orange, Red & Yellow Maple Leaves & Candle Hearth -->
       <div class="portal-cozy-decor" aria-hidden="true">
         <div class="hearth-radial-glow"></div>
-        
+
         <!-- Falling Autumn Maple Leaves (Orange, Red, Golden Yellow) -->
         <div class="maple-leaves-shower">
           <!-- Crimson Red Maple Leaves -->
@@ -254,7 +255,7 @@
         <!-- Rising Aroma Steam Ribbons -->
         <svg class="sensory-steam-wave ss-1" viewBox="0 0 60 140" fill="none"><path d="M30 140 C15 110, 45 80, 25 50 C10 25, 35 10, 20 0" stroke="rgba(191, 90, 50, 0.45)" stroke-width="2.5" stroke-linecap="round"/></svg>
         <svg class="sensory-steam-wave ss-2" viewBox="0 0 60 140" fill="none"><path d="M25 140 C40 110, 15 80, 35 50 C45 25, 20 10, 30 0" stroke="rgba(214, 110, 67, 0.4)" stroke-width="2.5" stroke-linecap="round"/></svg>
-        
+
         <!-- Floating Roasted Coffee Beans -->
         <div class="sensory-bean sb-1"><svg viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="13" ry="8" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         <div class="sensory-bean sb-2"><svg viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6" stroke-linecap="round"/></svg></div>
@@ -732,12 +733,12 @@
 
                   <label class="table-option" data-table-id="candlelit">
                     <input type="radio" name="table_setting" value="Intimate Velvet Booth">
-                    <div class="btn-ambient-maple" aria-hidden="true">
+                    <span class="btn-ambient-maple" aria-hidden="true">
                       <!-- Orange, Red, and Yellow Maple Leaves in Cozy button -->
                       <svg class="btn-maple bm-red" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradRed)"/></svg>
                       <svg class="btn-maple bm-orange" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradOrange)"/></svg>
                       <svg class="btn-maple bm-yellow" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradYellow)"/></svg>
-                    </div>
+                    </span>
                     <span class="table-badge">Cozy &amp; Quiet</span>
                     <span class="table-icon">🕯️</span>
                     <strong class="table-title">Intimate Velvet Booth</strong>
@@ -746,11 +747,11 @@
 
                   <label class="table-option" data-table-id="barista">
                     <input type="radio" name="table_setting" value="Front-Row Barista Bar">
-                    <div class="btn-ambient-sensory" aria-hidden="true">
+                    <span class="btn-ambient-sensory" aria-hidden="true">
                       <span class="btn-steam bs1"></span>
                       <span class="btn-steam bs2"></span>
                       <svg class="btn-bean" viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6" stroke-linecap="round"/></svg>
-                    </div>
+                    </span>
                     <span class="table-badge">Sensory Brew</span>
                     <span class="table-icon">☕</span>
                     <strong class="table-title">Barista Pour-Over Bar</strong>
@@ -759,12 +760,12 @@
 
                   <label class="table-option" data-table-id="glasshouse">
                     <input type="radio" name="table_setting" value="Botanical Glasshouse">
-                    <div class="btn-ambient-lush" aria-hidden="true">
+                    <span class="btn-ambient-lush" aria-hidden="true">
                       <!-- Sprouting Botanical Leaves in Lush button -->
                       <svg class="btn-leaf bl1" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="13" ry="6" transform="rotate(35 15 15)" fill="url(#leafGradSage)"/></svg>
                       <svg class="btn-leaf bl2" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="12" ry="5" transform="rotate(-40 15 15)" fill="url(#leafGradDeep)"/></svg>
                       <svg class="btn-leaf bl3" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="11" ry="5" transform="rotate(20 15 15)" fill="url(#leafGradSage)"/></svg>
-                    </div>
+                    </span>
                     <span class="table-badge">Lush &amp; Serene</span>
                     <span class="table-icon">🌿</span>
                     <strong class="table-title">Botanical Glasshouse</strong>

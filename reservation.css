@@ -432,6 +432,12 @@ html, body {
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+/* Shared SVG Gradient Definitions container */
+.portal-shared-defs {
+  position: absolute;
+  pointer-events: none;
+}
+
 /* ---- DYNAMIC ATMOSPHERIC LAYERS ---- */
 
 /* 1. Botanical Greenery (Appears on Lush / Botanical Glasshouse - Rich Abundant Leaves) */
