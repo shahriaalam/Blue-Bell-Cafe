@@ -43,7 +43,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'selection',
       label: 'I. Selection',
-      still: 'assets/01_selection.png',
+      still: 'assets/stills/01_selection.png',
       clip: 'assets/vid/01_selection.mp4',
       scroll: 2.2,
       linger: 0.22,
@@ -58,7 +58,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'dosing',
       label: 'II. Dosing',
-      still: 'assets/02_dosing.png',
+      still: 'assets/stills/02_dosing.png',
       clip: 'assets/vid/02_dosing.mp4',
       scroll: 1.8,
       linger: 0.22,
@@ -73,7 +73,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'grinding',
       label: 'III. Grinding',
-      still: 'assets/03_grinding.png',
+      still: 'assets/stills/03_grinding.png',
       clip: 'assets/vid/03_grinding.mp4',
       scroll: 1.9,
       linger: 0.22,
@@ -88,7 +88,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'tamping',
       label: 'IV. Tamping',
-      still: 'assets/04_tamping.png',
+      still: 'assets/stills/04_tamping.png',
       clip: 'assets/vid/04_tamping.mp4',
       scroll: 2.2,
       linger: 0.22,
@@ -103,7 +103,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'extraction',
       label: 'V. Extraction',
-      still: 'assets/05_extraction.png',
+      still: 'assets/stills/05_extraction.png',
       clip: 'assets/vid/05_extraction.mp4',
       scroll: 1.5,
       linger: 0.22,
@@ -118,7 +118,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'steaming',
       label: 'VI. Steaming',
-      still: 'assets/06_steaming.png',
+      still: 'assets/stills/06_steaming.png',
       clip: 'assets/vid/06_steaming.mp4',
       scroll: 1.6,
       linger: 0.22,
@@ -133,7 +133,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'swan',
       label: 'VII. The Swan',
-      still: 'assets/07_swan.png',
+      still: 'assets/stills/07_swan.png',
       clip: 'assets/vid/07_swan.mp4',
       scroll: 1.8,
       linger: 0.22,
@@ -148,7 +148,7 @@ mountLetsScroll(document.getElementById('world'), {
     {
       id: 'service',
       label: 'VIII. Service',
-      still: 'assets/08_service.png',
+      still: 'assets/stills/08_service.png',
       clip: 'assets/vid/08_service.mp4',
       scroll: 1.4,
       linger: 0.22,

@@ -8,7 +8,7 @@
   <link rel="icon" type="image/jpeg" href="assets/Logo and falcon/Falcon.jpg">
   <link rel="apple-touch-icon" href="assets/Logo and falcon/Falcon.jpg">
   <meta name="description"
-    content="Reserve your candlelit table with Mr. Barnaby, our feline head host. Choose your table atmosphere and pre-order your tasting tray.">
+    content="Reserve your candlelit table with Mr. Pudding, our feline head host. Choose your table atmosphere and pre-order your tasting tray.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -19,6 +19,11 @@
   <link rel="prefetch" href="index.html">
   <link rel="prefetch" href="style.css">
   <link rel="prefetch" href="main.js">
+  <!-- Instant Preload for 4 Seating Setting Backdrops -->
+  <link rel="preload" as="image" href="assets/settings/rainy_window.jpg">
+  <link rel="preload" as="image" href="assets/settings/velvet_booth.jpg">
+  <link rel="preload" as="image" href="assets/settings/barista_bar.jpg">
+  <link rel="preload" as="image" href="assets/settings/botanical_glasshouse.jpg">
 </head>
 
 <body>
@@ -27,26 +32,33 @@
   <div class="page-transition-veil" id="page-transition-veil" aria-hidden="true">
     <div class="coffee-loader">
       <div class="coffee-cup-box">
-        <svg class="coffee-cup-art" viewBox="0 0 100 100" width="84" height="84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="coffee-cup-art" viewBox="0 0 100 100" width="84" height="84" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
           <!-- Rising Steam Tendrils -->
           <g class="steam-group">
-            <path class="steam-trail s1" d="M36 34 C33 24, 40 16, 36 6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" fill="none" />
-            <path class="steam-trail s2" d="M50 30 C53 20, 47 12, 51 3" stroke="#E2A76F" stroke-width="2.8" stroke-linecap="round" fill="none" />
-            <path class="steam-trail s3" d="M64 34 C67 24, 60 16, 64 6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path class="steam-trail s1" d="M36 34 C33 24, 40 16, 36 6" stroke="#D4AF37" stroke-width="2.5"
+              stroke-linecap="round" fill="none" />
+            <path class="steam-trail s2" d="M50 30 C53 20, 47 12, 51 3" stroke="#E2A76F" stroke-width="2.8"
+              stroke-linecap="round" fill="none" />
+            <path class="steam-trail s3" d="M64 34 C67 24, 60 16, 64 6" stroke="#D4AF37" stroke-width="2.5"
+              stroke-linecap="round" fill="none" />
           </g>
           <!-- Elegant Saucer Plate -->
           <ellipse cx="50" cy="85" rx="36" ry="6" fill="#EDE4D8" stroke="#C49A6C" stroke-width="2" />
           <ellipse cx="50" cy="84" rx="28" ry="4" fill="#FAF6F0" />
           <!-- Ceramic Cup Outer Silhouette -->
-          <path d="M22 42 C22 72, 32 82, 50 82 C68 82, 78 72, 78 42 Z" fill="#FFFDF9" stroke="#C49A6C" stroke-width="2.2" />
+          <path d="M22 42 C22 72, 32 82, 50 82 C68 82, 78 72, 78 42 Z" fill="#FFFDF9" stroke="#C49A6C"
+            stroke-width="2.2" />
           <!-- Inner Coffee Surface & Rim -->
           <ellipse cx="50" cy="42" rx="28" ry="6.5" fill="#FAF6F0" stroke="#C49A6C" stroke-width="2.2" />
           <ellipse cx="50" cy="43" rx="24" ry="5" fill="#5A2E17" />
           <!-- Latte Art Rosette / Heart -->
           <path class="coffee-heart" d="M46 42 Q50 45 54 42 Q50 40 46 42 Z" fill="#FFF2E5" opacity="0.9" />
           <!-- Ergonomic Ceramic Handle -->
-          <path d="M75 48 C90 48, 90 70, 72 72" stroke="#C49A6C" stroke-width="3.5" stroke-linecap="round" fill="none" />
-          <path d="M75 51 C85 51, 85 67, 72 69" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round" fill="none" />
+          <path d="M75 48 C90 48, 90 70, 72 72" stroke="#C49A6C" stroke-width="3.5" stroke-linecap="round"
+            fill="none" />
+          <path d="M75 51 C85 51, 85 67, 72 69" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round"
+            fill="none" />
         </svg>
         <div class="cup-ambient-glow"></div>
       </div>
@@ -70,912 +82,625 @@
 
   <!-- Main Theatrical Reservation Parlour -->
   <main>
-<!-- ======================================================================
-       INTERACTIVE TABLE RESERVATION STAGE (MR. BARNABY'S PARLOUR)
-       Full-screen theatrical dining portal featuring Mr. Barnaby,
+    <!-- ======================================================================
+       INTERACTIVE TABLE RESERVATION STAGE (MR. PUDDING'S PARLOUR)
+       Full-screen theatrical dining portal featuring Mr. Pudding,
        the chubby cartoon cat waiter in bistro tuxedo.
        ====================================================================== -->
-  <div id="reservation-portal" class="reservation-portal theme-default" role="dialog" aria-modal="true" aria-labelledby="portal-title">
-    <div class="portal-backdrop" id="portal-backdrop"></div>
+    <div id="reservation-portal" class="reservation-portal theme-default" role="dialog" aria-modal="true"
+      aria-labelledby="portal-title">
+      <div class="portal-backdrop" id="portal-backdrop"></div>
+      <!-- Dream Seating Setting Background Layer (50% Opacity) -->
+      <div class="portal-setting-bg" id="portal-setting-bg" aria-hidden="true"></div>
 
-    <!-- Floating Candlelit Fairy Lights -->
-    <div class="portal-fairy-lights" aria-hidden="true">
-      <span class="fairy-bulb b1"></span>
-      <span class="fairy-bulb b2"></span>
-      <span class="fairy-bulb b3"></span>
-      <span class="fairy-bulb b4"></span>
-      <span class="fairy-bulb b5"></span>
-      <span class="fairy-bulb b6"></span>
-      <span class="fairy-bulb b7"></span>
-    </div>
-
-    <div class="portal-container">
-      <!-- Shared SVG Gradients Defs for Theme Decorations -->
-      <svg class="portal-shared-defs" width="0" height="0" aria-hidden="true">
-        <defs>
-          <!-- Maple Leaf Gradients: Crimson Red, Vibrant Orange, Golden Yellow -->
-          <linearGradient id="mapleGradRed" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FF5252"/>
-            <stop offset="55%" stop-color="#D32F2F"/>
-            <stop offset="100%" stop-color="#8B0000"/>
-          </linearGradient>
-          <linearGradient id="mapleGradOrange" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FFA726"/>
-            <stop offset="55%" stop-color="#FB8C00"/>
-            <stop offset="100%" stop-color="#D84315"/>
-          </linearGradient>
-          <linearGradient id="mapleGradYellow" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FFF176"/>
-            <stop offset="50%" stop-color="#FBC02D"/>
-            <stop offset="100%" stop-color="#F57F17"/>
-          </linearGradient>
-          <!-- Lush Foliage Gradients -->
-          <linearGradient id="leafGradDeep" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#4CAF50"/>
-            <stop offset="60%" stop-color="#2E7D32"/>
-            <stop offset="100%" stop-color="#1B5E20"/>
-          </linearGradient>
-          <linearGradient id="leafGradSage" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#81C784"/>
-            <stop offset="65%" stop-color="#4CAF50"/>
-            <stop offset="100%" stop-color="#2E7D32"/>
-          </linearGradient>
-          <!-- Coffee Bean Gradient -->
-          <radialGradient id="beanGrad" cx="35%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#8D5B3A"/>
-            <stop offset="60%" stop-color="#5C3317"/>
-            <stop offset="100%" stop-color="#2C160B"/>
-          </radialGradient>
-        </defs>
-      </svg>
-
-      <!-- Atmospheric Ambience Layers (Dynamic for Dream Settings) -->
-
-      <!-- 1. Botanical Greenery Layer (Appears on Lush / Botanical Glasshouse - Rich Abundant Leaves) -->
-      <div class="portal-botanical-decor" aria-hidden="true">
-        <!-- Top Canopy Garland of Monstera & Eucalyptus across the entire top -->
-        <svg class="botanical-canopy" viewBox="0 0 1000 130" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0 C150 45, 300 20, 500 50 C700 20, 850 45, 1000 0 L1000 0 L0 0 Z" fill="#2E7D32" opacity="0.25"/>
-          <!-- Monstera Left Cluster -->
-          <path d="M20 0 C40 30, 80 50, 110 35 C125 15, 95 0, 70 0 Z" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <path d="M90 0 C110 40, 160 55, 190 30 C180 10, 140 0, 110 0 Z" fill="url(#leafGradSage)" opacity="0.8"/>
-          <!-- Middle Vines -->
-          <path d="M260 0 C280 35, 330 45, 350 20 C340 5, 300 0, 280 0 Z" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <path d="M420 0 C450 50, 520 60, 550 25 C530 5, 480 0, 450 0 Z" fill="url(#leafGradSage)" opacity="0.85"/>
-          <path d="M620 0 C650 45, 710 50, 730 20 C710 5, 660 0, 640 0 Z" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <!-- Monstera Right Cluster -->
-          <path d="M800 0 C830 45, 890 55, 920 25 C900 5, 850 0, 820 0 Z" fill="url(#leafGradSage)" opacity="0.85"/>
-          <path d="M880 0 C910 35, 960 45, 980 15 C960 0, 920 0, 900 0 Z" fill="url(#leafGradDeep)" opacity="0.8"/>
-        </svg>
-
-        <!-- Top-Left Large Hanging Monstera & Fern -->
-        <svg class="botanical-leaf leaf-top-left" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 160 C30 120, 60 85, 105 60 C145 38, 165 14, 170 5 C158 32, 135 70, 105 95 C70 122, 38 148, 10 160 Z" fill="url(#leafGradDeep)" opacity="0.9"/>
-          <path d="M55 95 C45 80, 44 60, 50 48 C60 52, 68 68, 72 80 Z" fill="url(#leafGradSage)" opacity="0.85"/>
-          <path d="M90 70 C88 50, 94 32, 105 24 C110 32, 108 52, 102 66 Z" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <path d="M120 54 C130 38, 142 26, 154 22 C154 34, 145 48, 134 56 Z" fill="url(#leafGradSage)" opacity="0.8"/>
-          <path d="M35 130 C24 122, 18 108, 20 100 C30 102, 36 114, 40 124 Z" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <!-- Extra trailing frond -->
-          <path d="M25 50 C40 70, 60 85, 75 70 C70 55, 50 40, 25 50 Z" fill="url(#leafGradSage)" opacity="0.75"/>
-        </svg>
-
-        <!-- Top-Right Eucalyptus & Palm Frond -->
-        <svg class="botanical-leaf leaf-top-right" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M160 5 C135 25, 105 62, 88 100 C72 132, 45 150, 26 158 C44 142, 74 118, 94 88 C116 54, 144 24, 160 5 Z" fill="url(#leafGradDeep)" opacity="0.88"/>
-          <ellipse cx="120" cy="45" rx="18" ry="11" transform="rotate(35 120 45)" fill="url(#leafGradSage)" opacity="0.85"/>
-          <ellipse cx="98" cy="76" rx="16" ry="10" transform="rotate(25 98 76)" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <ellipse cx="76" cy="110" rx="15" ry="9" transform="rotate(20 76 110)" fill="url(#leafGradSage)" opacity="0.8"/>
-          <ellipse cx="50" cy="138" rx="13" ry="8" transform="rotate(15 50 138)" fill="url(#leafGradDeep)" opacity="0.75"/>
-        </svg>
-
-        <!-- Left Side Hanging Ivy Cascade -->
-        <svg class="botanical-leaf leaf-left-cascade" viewBox="0 0 70 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 0 C12 60, 25 120, 18 180 C10 240, 24 300, 12 340" stroke="#2E7D32" stroke-width="2.5" fill="none" opacity="0.7"/>
-          <ellipse cx="20" cy="40" rx="13" ry="8" transform="rotate(-35 20 40)" fill="url(#leafGradSage)" opacity="0.85"/>
-          <ellipse cx="14" cy="85" rx="12" ry="7" transform="rotate(25 14 85)" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <ellipse cx="22" cy="135" rx="14" ry="9" transform="rotate(-40 22 135)" fill="url(#leafGradSage)" opacity="0.8"/>
-          <ellipse cx="15" cy="190" rx="13" ry="8" transform="rotate(30 15 190)" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <ellipse cx="23" cy="245" rx="12" ry="7" transform="rotate(-25 23 245)" fill="url(#leafGradSage)" opacity="0.75"/>
-          <ellipse cx="14" cy="300" rx="10" ry="6" transform="rotate(20 14 300)" fill="url(#leafGradDeep)" opacity="0.7"/>
-        </svg>
-
-        <!-- Right Side Hanging Palm Fronds -->
-        <svg class="botanical-leaf leaf-right-cascade" viewBox="0 0 70 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M55 0 C50 60, 38 120, 48 180 C55 240, 42 290, 52 320" stroke="#2E7D32" stroke-width="2.5" fill="none" opacity="0.7"/>
-          <ellipse cx="44" cy="50" rx="14" ry="8" transform="rotate(35 44 50)" fill="url(#leafGradSage)" opacity="0.85"/>
-          <ellipse cx="50" cy="105" rx="13" ry="7" transform="rotate(-25 50 105)" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <ellipse cx="40" cy="165" rx="13" ry="8" transform="rotate(35 40 165)" fill="url(#leafGradSage)" opacity="0.8"/>
-          <ellipse cx="48" cy="225" rx="12" ry="7" transform="rotate(-30 48 225)" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <ellipse cx="42" cy="285" rx="11" ry="6" transform="rotate(25 42 285)" fill="url(#leafGradSage)" opacity="0.75"/>
-        </svg>
-
-        <!-- Bottom-Left Monstera Fan -->
-        <svg class="botanical-leaf leaf-bottom-left" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 155 C30 130, 65 118, 100 110 C130 102, 148 82, 154 68 C144 90, 120 108, 95 116 C65 126, 30 140, 5 155 Z" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <ellipse cx="50" cy="120" rx="16" ry="10" transform="rotate(-30 50 120)" fill="url(#leafGradSage)" opacity="0.85"/>
-          <ellipse cx="90" cy="105" rx="14" ry="9" transform="rotate(-15 90 105)" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <ellipse cx="125" cy="84" rx="12" ry="7" transform="rotate(-35 125 84)" fill="url(#leafGradSage)" opacity="0.75"/>
-        </svg>
-
-        <!-- Bottom-Right Garden Sprig -->
-        <svg class="botanical-leaf leaf-bottom-right" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M145 145 C120 125, 96 100, 78 68 C62 38, 48 22, 35 12 C45 30, 60 58, 76 90 C94 122, 120 138, 145 145 Z" fill="url(#leafGradDeep)" opacity="0.85"/>
-          <ellipse cx="102" cy="105" rx="14" ry="8" transform="rotate(35 102 105)" fill="url(#leafGradSage)" opacity="0.85"/>
-          <ellipse cx="75" cy="72" rx="12" ry="7" transform="rotate(45 75 72)" fill="url(#leafGradDeep)" opacity="0.8"/>
-          <ellipse cx="50" cy="40" rx="10" ry="6" transform="rotate(40 50 40)" fill="url(#leafGradSage)" opacity="0.75"/>
-        </svg>
-
-        <!-- Floating Green Leaves in the Air -->
-        <div class="botanical-floating-leaf bfl-1"><svg viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="12" ry="6" transform="rotate(25 15 15)" fill="url(#leafGradSage)"/></svg></div>
-        <div class="botanical-floating-leaf bfl-2"><svg viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="11" ry="5" transform="rotate(-40 15 15)" fill="url(#leafGradDeep)"/></svg></div>
-        <div class="botanical-floating-leaf bfl-3"><svg viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="13" ry="6" transform="rotate(60 15 15)" fill="url(#leafGradSage)"/></svg></div>
-        <div class="botanical-floating-leaf bfl-4"><svg viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="10" ry="5" transform="rotate(-15 15 15)" fill="url(#leafGradDeep)"/></svg></div>
+      <!-- Floating Candlelit Fairy Lights -->
+      <div class="portal-fairy-lights" aria-hidden="true">
+        <span class="fairy-bulb b1"></span>
+        <span class="fairy-bulb b2"></span>
+        <span class="fairy-bulb b3"></span>
+        <span class="fairy-bulb b4"></span>
+        <span class="fairy-bulb b5"></span>
+        <span class="fairy-bulb b6"></span>
+        <span class="fairy-bulb b7"></span>
       </div>
 
-      <!-- 2. Rainy Window Alcove: Real Falling Rain, Condensation Drops & Overcast Mist -->
-      <div class="portal-cloudy-decor" aria-hidden="true">
-        <!-- Mist Clouds -->
-        <div class="cloud-mist mist-1"></div>
-        <div class="cloud-mist mist-2"></div>
+      <div class="portal-container">
+        <!-- Shared SVG Gradients Defs for Theme Decorations -->
+        <svg class="portal-shared-defs" width="0" height="0" aria-hidden="true">
+          <defs>
+            <!-- Maple Leaf Gradients: Crimson Red, Vibrant Orange, Golden Yellow -->
+            <linearGradient id="mapleGradRed" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FF5252" />
+              <stop offset="55%" stop-color="#D32F2F" />
+              <stop offset="100%" stop-color="#8B0000" />
+            </linearGradient>
+            <linearGradient id="mapleGradOrange" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFA726" />
+              <stop offset="55%" stop-color="#FB8C00" />
+              <stop offset="100%" stop-color="#D84315" />
+            </linearGradient>
+            <linearGradient id="mapleGradYellow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFF176" />
+              <stop offset="50%" stop-color="#FBC02D" />
+              <stop offset="100%" stop-color="#F57F17" />
+            </linearGradient>
+            <!-- Lush Foliage Gradients -->
+            <linearGradient id="leafGradDeep" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4CAF50" />
+              <stop offset="60%" stop-color="#2E7D32" />
+              <stop offset="100%" stop-color="#1B5E20" />
+            </linearGradient>
+            <linearGradient id="leafGradSage" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#81C784" />
+              <stop offset="65%" stop-color="#4CAF50" />
+              <stop offset="100%" stop-color="#2E7D32" />
+            </linearGradient>
+            <!-- Coffee Bean Gradient -->
+            <radialGradient id="beanGrad" cx="35%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#8D5B3A" />
+              <stop offset="60%" stop-color="#5C3317" />
+              <stop offset="100%" stop-color="#2C160B" />
+            </radialGradient>
+          </defs>
+        </svg>
 
-        <!-- Continuous Cascading Rain Shower -->
-        <div class="rain-shower-pane">
-          <span class="rain-streak r1"></span>
-          <span class="rain-streak r2"></span>
-          <span class="rain-streak r3"></span>
-          <span class="rain-streak r4"></span>
-          <span class="rain-streak r5"></span>
-          <span class="rain-streak r6"></span>
-          <span class="rain-streak r7"></span>
-          <span class="rain-streak r8"></span>
-          <span class="rain-streak r9"></span>
-          <span class="rain-streak r10"></span>
-          <span class="rain-streak r11"></span>
-          <span class="rain-streak r12"></span>
+        <!-- Atmospheric Ambience Layers (Dynamic for Dream Settings) -->
+
+        <!-- 1. Botanical Greenery Layer (Appears on Lush / Botanical Glasshouse - Rich Abundant Leaves) -->
+        <div class="portal-botanical-decor" aria-hidden="true">
+          <!-- Top Canopy Garland of Monstera & Eucalyptus across the entire top -->
+          <svg class="botanical-canopy" viewBox="0 0 1000 130" fill="none" preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0 C150 45, 300 20, 500 50 C700 20, 850 45, 1000 0 L1000 0 L0 0 Z" fill="#2E7D32"
+              opacity="0.25" />
+            <!-- Monstera Left Cluster -->
+            <path d="M20 0 C40 30, 80 50, 110 35 C125 15, 95 0, 70 0 Z" fill="url(#leafGradDeep)" opacity="0.85" />
+            <path d="M90 0 C110 40, 160 55, 190 30 C180 10, 140 0, 110 0 Z" fill="url(#leafGradSage)" opacity="0.8" />
+            <!-- Middle Vines -->
+            <path d="M260 0 C280 35, 330 45, 350 20 C340 5, 300 0, 280 0 Z" fill="url(#leafGradDeep)" opacity="0.8" />
+            <path d="M420 0 C450 50, 520 60, 550 25 C530 5, 480 0, 450 0 Z" fill="url(#leafGradSage)" opacity="0.85" />
+            <path d="M620 0 C650 45, 710 50, 730 20 C710 5, 660 0, 640 0 Z" fill="url(#leafGradDeep)" opacity="0.8" />
+            <!-- Monstera Right Cluster -->
+            <path d="M800 0 C830 45, 890 55, 920 25 C900 5, 850 0, 820 0 Z" fill="url(#leafGradSage)" opacity="0.85" />
+            <path d="M880 0 C910 35, 960 45, 980 15 C960 0, 920 0, 900 0 Z" fill="url(#leafGradDeep)" opacity="0.8" />
+          </svg>
+
+          <!-- Top-Left Large Hanging Monstera & Fern -->
+          <svg class="botanical-leaf leaf-top-left" viewBox="0 0 180 180" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M10 160 C30 120, 60 85, 105 60 C145 38, 165 14, 170 5 C158 32, 135 70, 105 95 C70 122, 38 148, 10 160 Z"
+              fill="url(#leafGradDeep)" opacity="0.9" />
+            <path d="M55 95 C45 80, 44 60, 50 48 C60 52, 68 68, 72 80 Z" fill="url(#leafGradSage)" opacity="0.85" />
+            <path d="M90 70 C88 50, 94 32, 105 24 C110 32, 108 52, 102 66 Z" fill="url(#leafGradDeep)" opacity="0.85" />
+            <path d="M120 54 C130 38, 142 26, 154 22 C154 34, 145 48, 134 56 Z" fill="url(#leafGradSage)"
+              opacity="0.8" />
+            <path d="M35 130 C24 122, 18 108, 20 100 C30 102, 36 114, 40 124 Z" fill="url(#leafGradDeep)"
+              opacity="0.8" />
+            <!-- Extra trailing frond -->
+            <path d="M25 50 C40 70, 60 85, 75 70 C70 55, 50 40, 25 50 Z" fill="url(#leafGradSage)" opacity="0.75" />
+          </svg>
+
+          <!-- Top-Right Eucalyptus & Palm Frond -->
+          <svg class="botanical-leaf leaf-top-right" viewBox="0 0 170 170" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M160 5 C135 25, 105 62, 88 100 C72 132, 45 150, 26 158 C44 142, 74 118, 94 88 C116 54, 144 24, 160 5 Z"
+              fill="url(#leafGradDeep)" opacity="0.88" />
+            <ellipse cx="120" cy="45" rx="18" ry="11" transform="rotate(35 120 45)" fill="url(#leafGradSage)"
+              opacity="0.85" />
+            <ellipse cx="98" cy="76" rx="16" ry="10" transform="rotate(25 98 76)" fill="url(#leafGradDeep)"
+              opacity="0.85" />
+            <ellipse cx="76" cy="110" rx="15" ry="9" transform="rotate(20 76 110)" fill="url(#leafGradSage)"
+              opacity="0.8" />
+            <ellipse cx="50" cy="138" rx="13" ry="8" transform="rotate(15 50 138)" fill="url(#leafGradDeep)"
+              opacity="0.75" />
+          </svg>
+
+          <!-- Left Side Hanging Ivy Cascade -->
+          <svg class="botanical-leaf leaf-left-cascade" viewBox="0 0 70 340" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 0 C12 60, 25 120, 18 180 C10 240, 24 300, 12 340" stroke="#2E7D32" stroke-width="2.5"
+              fill="none" opacity="0.7" />
+            <ellipse cx="20" cy="40" rx="13" ry="8" transform="rotate(-35 20 40)" fill="url(#leafGradSage)"
+              opacity="0.85" />
+            <ellipse cx="14" cy="85" rx="12" ry="7" transform="rotate(25 14 85)" fill="url(#leafGradDeep)"
+              opacity="0.85" />
+            <ellipse cx="22" cy="135" rx="14" ry="9" transform="rotate(-40 22 135)" fill="url(#leafGradSage)"
+              opacity="0.8" />
+            <ellipse cx="15" cy="190" rx="13" ry="8" transform="rotate(30 15 190)" fill="url(#leafGradDeep)"
+              opacity="0.8" />
+            <ellipse cx="23" cy="245" rx="12" ry="7" transform="rotate(-25 23 245)" fill="url(#leafGradSage)"
+              opacity="0.75" />
+            <ellipse cx="14" cy="300" rx="10" ry="6" transform="rotate(20 14 300)" fill="url(#leafGradDeep)"
+              opacity="0.7" />
+          </svg>
+
+          <!-- Right Side Hanging Palm Fronds -->
+          <svg class="botanical-leaf leaf-right-cascade" viewBox="0 0 70 320" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M55 0 C50 60, 38 120, 48 180 C55 240, 42 290, 52 320" stroke="#2E7D32" stroke-width="2.5"
+              fill="none" opacity="0.7" />
+            <ellipse cx="44" cy="50" rx="14" ry="8" transform="rotate(35 44 50)" fill="url(#leafGradSage)"
+              opacity="0.85" />
+            <ellipse cx="50" cy="105" rx="13" ry="7" transform="rotate(-25 50 105)" fill="url(#leafGradDeep)"
+              opacity="0.85" />
+            <ellipse cx="40" cy="165" rx="13" ry="8" transform="rotate(35 40 165)" fill="url(#leafGradSage)"
+              opacity="0.8" />
+            <ellipse cx="48" cy="225" rx="12" ry="7" transform="rotate(-30 48 225)" fill="url(#leafGradDeep)"
+              opacity="0.8" />
+            <ellipse cx="42" cy="285" rx="11" ry="6" transform="rotate(25 42 285)" fill="url(#leafGradSage)"
+              opacity="0.75" />
+          </svg>
+
+          <!-- Bottom-Left Monstera Fan -->
+          <svg class="botanical-leaf leaf-bottom-left" viewBox="0 0 160 160" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5 155 C30 130, 65 118, 100 110 C130 102, 148 82, 154 68 C144 90, 120 108, 95 116 C65 126, 30 140, 5 155 Z"
+              fill="url(#leafGradDeep)" opacity="0.85" />
+            <ellipse cx="50" cy="120" rx="16" ry="10" transform="rotate(-30 50 120)" fill="url(#leafGradSage)"
+              opacity="0.85" />
+            <ellipse cx="90" cy="105" rx="14" ry="9" transform="rotate(-15 90 105)" fill="url(#leafGradDeep)"
+              opacity="0.8" />
+            <ellipse cx="125" cy="84" rx="12" ry="7" transform="rotate(-35 125 84)" fill="url(#leafGradSage)"
+              opacity="0.75" />
+          </svg>
+
+          <!-- Bottom-Right Garden Sprig -->
+          <svg class="botanical-leaf leaf-bottom-right" viewBox="0 0 150 150" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M145 145 C120 125, 96 100, 78 68 C62 38, 48 22, 35 12 C45 30, 60 58, 76 90 C94 122, 120 138, 145 145 Z"
+              fill="url(#leafGradDeep)" opacity="0.85" />
+            <ellipse cx="102" cy="105" rx="14" ry="8" transform="rotate(35 102 105)" fill="url(#leafGradSage)"
+              opacity="0.85" />
+            <ellipse cx="75" cy="72" rx="12" ry="7" transform="rotate(45 75 72)" fill="url(#leafGradDeep)"
+              opacity="0.8" />
+            <ellipse cx="50" cy="40" rx="10" ry="6" transform="rotate(40 50 40)" fill="url(#leafGradSage)"
+              opacity="0.75" />
+          </svg>
+
+          <!-- Floating Green Leaves in the Air -->
+          <div class="botanical-floating-leaf bfl-1"><svg viewBox="0 0 30 30">
+              <ellipse cx="15" cy="15" rx="12" ry="6" transform="rotate(25 15 15)" fill="url(#leafGradSage)" />
+            </svg></div>
+          <div class="botanical-floating-leaf bfl-2"><svg viewBox="0 0 30 30">
+              <ellipse cx="15" cy="15" rx="11" ry="5" transform="rotate(-40 15 15)" fill="url(#leafGradDeep)" />
+            </svg></div>
+          <div class="botanical-floating-leaf bfl-3"><svg viewBox="0 0 30 30">
+              <ellipse cx="15" cy="15" rx="13" ry="6" transform="rotate(60 15 15)" fill="url(#leafGradSage)" />
+            </svg></div>
+          <div class="botanical-floating-leaf bfl-4"><svg viewBox="0 0 30 30">
+              <ellipse cx="15" cy="15" rx="10" ry="5" transform="rotate(-15 15 15)" fill="url(#leafGradDeep)" />
+            </svg></div>
         </div>
 
-        <!-- Window Glass Condensation Water Droplets -->
-        <div class="window-water-drops">
-          <span class="glass-droplet gd1"></span>
-          <span class="glass-droplet gd2"></span>
-          <span class="glass-droplet gd3"></span>
-          <span class="glass-droplet gd4"></span>
-          <span class="glass-droplet gd5"></span>
-          <span class="glass-droplet gd6"></span>
-        </div>
-      </div>
+        <!-- 2. Rainy Window Alcove: Real Falling Rain, Condensation Drops & Overcast Mist -->
+        <div class="portal-cloudy-decor" aria-hidden="true">
+          <!-- Mist Clouds -->
+          <div class="cloud-mist mist-1"></div>
+          <div class="cloud-mist mist-2"></div>
 
-      <!-- 3. Cozy Velvet Booth: Falling Orange, Red & Yellow Maple Leaves & Candle Hearth -->
-      <div class="portal-cozy-decor" aria-hidden="true">
-        <div class="hearth-radial-glow"></div>
-
-        <!-- Falling Autumn Maple Leaves (Orange, Red, Golden Yellow) -->
-        <div class="maple-leaves-shower">
-          <!-- Crimson Red Maple Leaves -->
-          <div class="maple-leaf-item ml-red ml-1">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradRed)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-red ml-2">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradRed)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-red ml-3">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradRed)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2"/></svg>
+          <!-- Continuous Cascading Rain Shower -->
+          <div class="rain-shower-pane">
+            <span class="rain-streak r1"></span>
+            <span class="rain-streak r2"></span>
+            <span class="rain-streak r3"></span>
+            <span class="rain-streak r4"></span>
+            <span class="rain-streak r5"></span>
+            <span class="rain-streak r6"></span>
+            <span class="rain-streak r7"></span>
+            <span class="rain-streak r8"></span>
+            <span class="rain-streak r9"></span>
+            <span class="rain-streak r10"></span>
+            <span class="rain-streak r11"></span>
+            <span class="rain-streak r12"></span>
           </div>
 
-          <!-- Vibrant Orange Maple Leaves -->
-          <div class="maple-leaf-item ml-orange ml-4">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradOrange)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-orange ml-5">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradOrange)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-orange ml-6">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradOrange)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2"/></svg>
-          </div>
-
-          <!-- Golden Yellow Maple Leaves -->
-          <div class="maple-leaf-item ml-yellow ml-7">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradYellow)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-yellow ml-8">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradYellow)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2"/></svg>
-          </div>
-          <div class="maple-leaf-item ml-yellow ml-9">
-            <svg viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradYellow)"/><line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2"/></svg>
+          <!-- Window Glass Condensation Water Droplets -->
+          <div class="window-water-drops">
+            <span class="glass-droplet gd1"></span>
+            <span class="glass-droplet gd2"></span>
+            <span class="glass-droplet gd3"></span>
+            <span class="glass-droplet gd4"></span>
+            <span class="glass-droplet gd5"></span>
+            <span class="glass-droplet gd6"></span>
           </div>
         </div>
-      </div>
 
-      <!-- 4. Sensory Aroma Layer: Floating Whole Roasted Coffee Beans & Steam Spirals -->
-      <div class="portal-sensory-decor" aria-hidden="true">
-        <div class="sensory-aroma-glow"></div>
-        <!-- Rising Aroma Steam Ribbons -->
-        <svg class="sensory-steam-wave ss-1" viewBox="0 0 60 140" fill="none"><path d="M30 140 C15 110, 45 80, 25 50 C10 25, 35 10, 20 0" stroke="rgba(191, 90, 50, 0.45)" stroke-width="2.5" stroke-linecap="round"/></svg>
-        <svg class="sensory-steam-wave ss-2" viewBox="0 0 60 140" fill="none"><path d="M25 140 C40 110, 15 80, 35 50 C45 25, 20 10, 30 0" stroke="rgba(214, 110, 67, 0.4)" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <!-- 3. Cozy Velvet Booth: Falling Orange, Red & Yellow Maple Leaves & Candle Hearth -->
+        <div class="portal-cozy-decor" aria-hidden="true">
+          <div class="hearth-radial-glow"></div>
 
-        <!-- Floating Roasted Coffee Beans -->
-        <div class="sensory-bean sb-1"><svg viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="13" ry="8" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="sensory-bean sb-2"><svg viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <div class="sensory-bean sb-3"><svg viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="11" ry="6" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      </div>
-
-      <!-- 5. Default Sanctuary Sparkles (Warm Cafe Embers) -->
-      <div class="portal-default-decor" aria-hidden="true">
-        <span class="default-sparkle ds-1">✦</span>
-        <span class="default-sparkle ds-2">✦</span>
-        <span class="default-sparkle ds-3">✦</span>
-        <span class="default-sparkle ds-4">✦</span>
-      </div>
-
-      <button type="button" class="portal-close-btn" id="portal-close-btn" title="Close &amp; return to cafe" aria-label="Close reservation portal">
-        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-
-      <div class="portal-inner">
-        <!-- LEFT: Character Stage (Mr. Barnaby) -->
-        <div class="portal-character-pane">
-          <!-- Speech Bubble -->
-          <div class="barnaby-speech-bubble" id="barnaby-bubble">
-            <span class="bubble-sparkle">✦</span>
-            <p id="barnaby-speech-text">Welcome! I am <strong>Mr. Barnaby</strong>, your feline head host. Allow me to prepare our coziest candlelit nook for your visit.</p>
-          </div>
-
-          <!-- The Chubby Cat Waiter Interactive Character -->
-          <div class="barnaby-character-wrap" id="barnaby-character" title="Click Mr. Barnaby to hear him purr!">
-            <svg class="barnaby-svg" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- ==================== 3D CREAM & TOASTED VANILLA SHADING ==================== -->
-    <!-- Volumetric Spherical 3D Cream Fur (Top-Left Light Source) -->
-    <radialGradient id="creamFur3D" cx="36%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="26%" stop-color="#FFF5EC"/>
-      <stop offset="62%" stop-color="#F7E6D5"/>
-      <stop offset="85%" stop-color="#E8CCA8"/>
-      <stop offset="100%" stop-color="#CA9F75"/>
-    </radialGradient>
-
-    <!-- Warm Light Bounce / Specular Sheen on Cream Coat -->
-    <radialGradient id="creamHighlight" cx="35%" cy="25%" r="55%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-      <stop offset="45%" stop-color="#FFF8F2" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="#F7E6D5" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Chubby 3D Cream Cheeks Spherical Shader -->
-    <radialGradient id="creamCheek3D" cx="38%" cy="32%" r="68%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="35%" stop-color="#FFF6ED"/>
-      <stop offset="72%" stop-color="#F5E3D0"/>
-      <stop offset="100%" stop-color="#DEBE9C"/>
-    </radialGradient>
-
-    <!-- Soft Cream / Milk-Froth Belly (Volumetric) -->
-    <radialGradient id="creamBelly3D" cx="45%" cy="35%" r="65%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="55%" stop-color="#FFF8F2"/>
-      <stop offset="88%" stop-color="#F9ECE0"/>
-      <stop offset="100%" stop-color="#ECD6C0"/>
-    </radialGradient>
-
-    <!-- 3D Puffy Milky Muzzle / Snout -->
-    <radialGradient id="creamMuzzle3D" cx="40%" cy="32%" r="65%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="50%" stop-color="#FFFDF9"/>
-      <stop offset="80%" stop-color="#F7EEE4"/>
-      <stop offset="100%" stop-color="#E8DACB"/>
-    </radialGradient>
-
-    <!-- 3D Cylindrical Lighting for Soft Cream Tail -->
-    <linearGradient id="creamTailGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="28%" stop-color="#FFF5EC"/>
-      <stop offset="68%" stop-color="#F2DEC9"/>
-      <stop offset="100%" stop-color="#CFA881"/>
-    </linearGradient>
-
-    <!-- 3D Outer Ear Shell (Cream with Warm Biscuit Rim) -->
-    <linearGradient id="earOuter3D" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="45%" stop-color="#F7E6D5"/>
-      <stop offset="100%" stop-color="#CCA57D"/>
-    </linearGradient>
-
-    <!-- 3D Delicate Rose-Petal Pink Inner Ear -->
-    <radialGradient id="earInner3D" cx="48%" cy="60%" r="65%">
-      <stop offset="0%" stop-color="#FFF0F3"/>
-      <stop offset="45%" stop-color="#FFD6DB"/>
-      <stop offset="80%" stop-color="#F5A8B2"/>
-      <stop offset="100%" stop-color="#DB798A"/>
-    </radialGradient>
-
-    <!-- Soft Rosy Cheek Warm Glow -->
-    <radialGradient id="blushGlow3D" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FF9EAA" stop-opacity="0.6"/>
-      <stop offset="60%" stop-color="#FFB3BD" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#FFB3BD" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- 3D Deep Espresso Cat Eyes (Glossy Chocolate Glass Dome) -->
-    <radialGradient id="espressoEye3D" cx="38%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#542B1A"/>
-      <stop offset="35%" stop-color="#381B0E"/>
-      <stop offset="75%" stop-color="#221008"/>
-      <stop offset="100%" stop-color="#120703"/>
-    </radialGradient>
-
-    <!-- 3D Soft Rose Jelly Bean Paw Pads -->
-    <radialGradient id="pawPad3D" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#FFF0F3"/>
-      <stop offset="45%" stop-color="#FFAEB8"/>
-      <stop offset="85%" stop-color="#E88292"/>
-      <stop offset="100%" stop-color="#B85262"/>
-    </radialGradient>
-
-    <!-- 3D Glossy Kitten Button Nose -->
-    <radialGradient id="catNose3D" cx="35%" cy="25%" r="70%">
-      <stop offset="0%" stop-color="#FFE8EC"/>
-      <stop offset="45%" stop-color="#FF8D9B"/>
-      <stop offset="85%" stop-color="#E66B7C"/>
-      <stop offset="100%" stop-color="#AF3849"/>
-    </radialGradient>
-
-    <!-- 3D Dark Chocolate Waiter Tuxedo Vest -->
-    <linearGradient id="tuxVest3D" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3D251A"/>
-      <stop offset="35%" stop-color="#27160E"/>
-      <stop offset="75%" stop-color="#180C06"/>
-      <stop offset="100%" stop-color="#0A0402"/>
-    </linearGradient>
-
-    <!-- 3D Volumetric Ruby Satin Bow Tie -->
-    <radialGradient id="bowTie3D" cx="38%" cy="35%" r="68%">
-      <stop offset="0%" stop-color="#FF637B"/>
-      <stop offset="40%" stop-color="#DE1D3E"/>
-      <stop offset="80%" stop-color="#9E0B25"/>
-      <stop offset="100%" stop-color="#54000F"/>
-    </radialGradient>
-
-    <!-- 3D Polished Brass & Gold Trim -->
-    <linearGradient id="goldAcc3D" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FFFDE8"/>
-      <stop offset="25%" stop-color="#FFD75E"/>
-      <stop offset="65%" stop-color="#F59E1B"/>
-      <stop offset="100%" stop-color="#A85700"/>
-    </linearGradient>
-
-    <!-- 3D Draped White Cotton Waiter Apron -->
-    <linearGradient id="apron3D" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="20%" stop-color="#FAF7F2"/>
-      <stop offset="75%" stop-color="#EFE6DA"/>
-      <stop offset="100%" stop-color="#D7C9B8"/>
-    </linearGradient>
-
-    <!-- 3D Leather Reservation Ledger -->
-    <linearGradient id="ledgerCover3D" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4E2B19"/>
-      <stop offset="50%" stop-color="#341A0E"/>
-      <stop offset="100%" stop-color="#1B0C05"/>
-    </linearGradient>
-
-    <!-- 3D Soft Ambient Shadow -->
-    <filter id="cat3DShadow" x="-15%" y="-15%" width="130%" height="135%">
-      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#4A2814" flood-opacity="0.18"/>
-    </filter>
-
-    <filter id="contactShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
-    </filter>
-  </defs>
-
-  <!-- Ground Contact Shadow Underneath 3D Cat -->
-  <ellipse cx="160" cy="356" rx="92" ry="15" fill="#3D2012" opacity="0.2" filter="url(#contactShadow)" />
-  <ellipse cx="160" cy="356" rx="60" ry="8" fill="#241208" opacity="0.25" filter="url(#contactShadow)" />
-
-  <!-- Animated 3D Soft Cream Tail -->
-  <g class="barnaby-tail">
-    <!-- Tail Ambient Shadow -->
-    <path d="M 226 282 C 272 292, 300 242, 276 210 C 265 195, 243 205, 253 222 C 263 238, 238 272, 212 267" fill="none" stroke="#664326" stroke-width="16" stroke-linecap="round" opacity="0.2" transform="translate(2, 4)" />
-    <!-- Tail Main 3D Cylinder -->
-    <path d="M 226 280 C 270 290, 296 244, 274 212 C 264 198, 244 207, 254 223 C 264 238, 238 270, 212 265" fill="none" stroke="url(#creamTailGrad)" stroke-width="15" stroke-linecap="round" />
-    <path d="M 228 278 C 268 288, 292 244, 272 214" fill="none" stroke="#D8B58D" stroke-width="1.8" stroke-linecap="round" opacity="0.5" />
-    <!-- Tail Tip Soft White Fluff Highlight -->
-    <circle cx="266" cy="204" r="7.5" fill="#FFFFFF" opacity="0.95" />
-  </g>
-
-  <!-- Chubby Volumetric 3D Cream Cat Body -->
-  <ellipse cx="160" cy="245" rx="88" ry="96" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="1.5" filter="url(#cat3DShadow)" />
-  <!-- 3D Soft Milk-Froth Belly Patch -->
-  <ellipse cx="160" cy="254" rx="66" ry="76" fill="url(#creamBelly3D)" />
-  <!-- Ambient Light Reflection on Top Left Shoulder -->
-  <path d="M 94 195 C 105 178, 140 170, 160 170 C 125 180, 98 215, 94 235 Z" fill="url(#creamHighlight)" />
-
-  <!-- Crisp White Waiter Apron (Volumetric 3D Drape) -->
-  <!-- Apron Drop Shadow onto Belly -->
-  <path d="M 98 242 C 98 222, 222 222, 222 242 C 222 314, 206 333, 160 333 C 114 333, 98 314, 98 242 Z" fill="#66452B" opacity="0.18" filter="url(#contactShadow)" />
-  <!-- Apron Fabric Body -->
-  <path d="M 100 240 C 100 220, 220 220, 220 240 C 220 310, 205 330, 160 330 C 115 330, 100 310, 100 240 Z" fill="url(#apron3D)" stroke="#D8C8B5" stroke-width="1.8" />
-  <!-- Apron Top Fold Highlight -->
-  <path d="M 104 238 C 130 228, 190 228, 216 238" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85" />
-  <!-- Apron Pocket (3D Dimensional) -->
-  <path d="M 130 274 C 130 267, 190 267, 190 274 C 190 300, 185 308, 160 308 C 135 308, 130 300, 130 274 Z" fill="#FAF5EE" stroke="#D1C3B2" stroke-width="1.5" />
-  <path d="M 134 274 L 186 274" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
-  <!-- Golden Waiter Pencil in Pocket (3D Metallic Cylinder) -->
-  <line x1="172" y1="260" x2="182" y2="280" stroke="url(#goldAcc3D)" stroke-width="4.2" stroke-linecap="round" />
-  <circle cx="171" cy="258" r="1.5" fill="#FFE8A3" />
-
-  <!-- Tailored Dark Chocolate Tuxedo Vest (3D Fabric Sheen) -->
-  <!-- Left Vest Flap -->
-  <path d="M 90 194 C 98 240, 114 272, 136 276 C 125 240, 118 208, 125 186 Z" fill="url(#tuxVest3D)" stroke="#4A2E20" stroke-width="1" />
-  <!-- Left Lapel Highlight -->
-  <path d="M 94 195 C 102 230, 115 255, 130 268" stroke="#6E4735" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6" />
-  <!-- Right Vest Flap -->
-  <path d="M 230 194 C 222 240, 206 272, 184 276 C 195 240, 202 208, 195 186 Z" fill="url(#tuxVest3D)" stroke="#4A2E20" stroke-width="1" />
-  <!-- Right Lapel Highlight -->
-  <path d="M 226 195 C 218 230, 205 255, 190 268" stroke="#6E4735" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6" />
-
-  <!-- 3D Polished Golden Vest Buttons -->
-  <g>
-    <circle cx="160" cy="210" r="4.2" fill="url(#goldAcc3D)" stroke="#8C4600" stroke-width="0.8" />
-    <circle cx="158.5" cy="208.5" r="1.4" fill="#FFFFFF" opacity="0.9" />
-    <circle cx="160" cy="225" r="4.2" fill="url(#goldAcc3D)" stroke="#8C4600" stroke-width="0.8" />
-    <circle cx="158.5" cy="223.5" r="1.4" fill="#FFFFFF" opacity="0.9" />
-    <circle cx="160" cy="240" r="4.2" fill="url(#goldAcc3D)" stroke="#8C4600" stroke-width="0.8" />
-    <circle cx="158.5" cy="238.5" r="1.4" fill="#FFFFFF" opacity="0.9" />
-  </g>
-
-  <!-- Crisp White Shirt Collar (3D Folds) -->
-  <polygon points="140,175 160,196 145,198" fill="#FFFFFF" stroke="#D9D0C5" stroke-width="1.2" />
-  <polygon points="180,175 160,196 175,198" fill="#FFFFFF" stroke="#D9D0C5" stroke-width="1.2" />
-  <!-- Under-Collar Shadow -->
-  <polygon points="146,196 160,202 174,196 160,197" fill="#201008" opacity="0.25" />
-
-  <!-- 3D Volumetric Ruby Satin Bow Tie -->
-  <g class="barnaby-bowtie">
-    <!-- Left Wing with Fold Shadow & Highlight -->
-    <polygon points="160,188 132,176 132,199" fill="url(#bowTie3D)" stroke="#780619" stroke-width="0.8" />
-    <path d="M 134 180 Q 146 186 158 188" stroke="#FFA8B6" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75" />
-    <!-- Right Wing with Fold Shadow & Highlight -->
-    <polygon points="160,188 188,176 188,199" fill="url(#bowTie3D)" stroke="#780619" stroke-width="0.8" />
-    <path d="M 186 180 Q 174 186 162 188" stroke="#FFA8B6" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75" />
-    <!-- Center Ribbon Knot (Spherical 3D) -->
-    <ellipse cx="160" cy="188" rx="6.5" ry="6.5" fill="url(#bowTie3D)" stroke="#780619" stroke-width="1" />
-    <ellipse cx="158" cy="186" rx="2.5" ry="2" fill="#FFA4B2" opacity="0.8" />
-  </g>
-
-  <!-- Left Paw: Holding 3D Golden Reservation Ledger -->
-  <g class="barnaby-ledger-hand">
-    <!-- Ledger 3D Antique Book Cover -->
-    <rect x="50" y="208" width="48" height="66" rx="6" fill="url(#ledgerCover3D)" stroke="url(#goldAcc3D)" stroke-width="2.5" transform="rotate(-12 74 240)" filter="url(#cat3DShadow)" />
-    <!-- Book Spine Gilded Ribs -->
-    <line x1="51" y1="216" x2="56" y2="215" stroke="url(#goldAcc3D)" stroke-width="2" transform="rotate(-12 74 240)" />
-    <line x1="53" y1="240" x2="58" y2="239" stroke="url(#goldAcc3D)" stroke-width="2" transform="rotate(-12 74 240)" />
-    <line x1="55" y1="264" x2="60" y2="263" stroke="url(#goldAcc3D)" stroke-width="2" transform="rotate(-12 74 240)" />
-    <!-- Book Pages Edge & Inset -->
-    <rect x="55" y="213" width="40" height="56" rx="3" fill="#FFFDF8" transform="rotate(-12 74 240)" />
-    <!-- Gilded Leaf Border on Open Page -->
-    <rect x="59" y="217" width="32" height="48" rx="2" fill="none" stroke="#E6C4A2" stroke-width="1" transform="rotate(-12 74 240)" opacity="0.7" />
-    <!-- Ruled Calligraphy Lines & Coffee Cup Stamp -->
-    <line x1="64" y1="228" x2="87" y2="223" stroke="#C49F82" stroke-width="1.8" stroke-linecap="round" />
-    <line x1="66" y1="236" x2="89" y2="231" stroke="#C49F82" stroke-width="1.8" stroke-linecap="round" />
-    <line x1="68" y1="244" x2="87" y2="240" stroke="#C49F82" stroke-width="1.8" stroke-linecap="round" />
-    <!-- Miniature Blue Bell Silhouette Stamp on Ledger -->
-    <path d="M 76 254 Q 78 250 82 250 Q 86 250 88 254" stroke="#8A5A36" stroke-width="1.2" fill="none" />
-
-    <!-- 3D Soft Cream Arm Holding Ledger -->
-    <path d="M 108 238 C 96 242, 85 248, 86 252" fill="none" stroke="url(#creamFur3D)" stroke-width="22" stroke-linecap="round" />
-    <!-- Chubby 3D Cream Paw Mitt -->
-    <ellipse cx="88" cy="246" rx="15" ry="13" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="1.5" />
-    <!-- Soft 3D Rose Jellybean Toe Beans Clasping Book -->
-    <circle cx="82" cy="244" r="3.2" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-    <circle cx="88" cy="242" r="3.2" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-    <circle cx="94" cy="245" r="3.2" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-  </g>
-
-  <!-- Right Paw: Welcoming Wave with 3D Pink Jellybean Pads -->
-  <g class="barnaby-waving-hand">
-    <!-- 3D Volumetric Cream Arm -->
-    <path d="M 224 212 C 248 200, 260 178, 253 158" fill="none" stroke="url(#creamFur3D)" stroke-width="24" stroke-linecap="round" />
-    <path d="M 230 206 C 248 195, 256 178, 252 162" fill="none" stroke="url(#creamHighlight)" stroke-width="8" stroke-linecap="round" opacity="0.65" />
-    <!-- Round 3D Cream Paw Mitt -->
-    <circle cx="254" cy="154" r="15" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="1.5" />
-    <!-- Big 3D Main Rose Jellybean Pad -->
-    <ellipse cx="254" cy="155" rx="7" ry="6" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.6" />
-    <ellipse cx="252" cy="153" rx="2.5" ry="1.8" fill="#FFFFFF" opacity="0.75" />
-    <!-- 3 Little Rounded 3D Toe Beans -->
-    <circle cx="245" cy="145" r="3" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-    <circle cx="244" cy="144" r="1.1" fill="#FFFFFF" opacity="0.8" />
-    <circle cx="253" cy="142" r="3" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-    <circle cx="252" cy="141" r="1.1" fill="#FFFFFF" opacity="0.8" />
-    <circle cx="261" cy="145" r="3" fill="url(#pawPad3D)" stroke="#D67584" stroke-width="0.5" />
-    <circle cx="260" cy="144" r="1.1" fill="#FFFFFF" opacity="0.8" />
-
-    <!-- Magical Golden Sparkles Above Waving Paw -->
-    <g class="barnaby-sparkles">
-      <path d="M 272 128 Q 277 128 277 123 Q 277 128 282 128 Q 277 128 277 133 Q 277 128 272 128 Z" fill="url(#goldAcc3D)" />
-      <path d="M 238 116 Q 242 116 242 112 Q 242 116 246 116 Q 242 116 242 120 Q 242 116 238 116 Z" fill="#FFAEBE" />
-    </g>
-  </g>
-
-  <!-- Bottom Paws (3D Cream Feet) -->
-  <ellipse cx="124" cy="340" rx="19" ry="14" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="2" />
-  <ellipse cx="196" cy="340" rx="19" ry="14" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="2" />
-  <!-- Foot Highlights -->
-  <ellipse cx="120" cy="336" rx="9" ry="5" fill="url(#creamHighlight)" opacity="0.7" />
-  <ellipse cx="192" cy="336" rx="9" ry="5" fill="url(#creamHighlight)" opacity="0.7" />
-  <!-- Toe Indentation Lines -->
-  <line x1="118" y1="337" x2="118" y2="349" stroke="#C49B74" stroke-width="2.2" stroke-linecap="round" />
-  <line x1="128" y1="337" x2="128" y2="349" stroke="#C49B74" stroke-width="2.2" stroke-linecap="round" />
-  <line x1="190" y1="337" x2="190" y2="349" stroke="#C49B74" stroke-width="2.2" stroke-linecap="round" />
-  <line x1="200" y1="337" x2="200" y2="349" stroke="#C49B74" stroke-width="2.2" stroke-linecap="round" />
-
-  <!-- ==================== 3D CHUBBY CREAM HEAD & FACE ==================== -->
-  <g class="barnaby-head-group">
-    <!-- Left 3D Cat Ear -->
-    <polygon points="106,116 78,46 134,74" fill="url(#earOuter3D)" stroke="#D8B58D" stroke-width="2" stroke-linejoin="round" />
-    <!-- Left Inner Pink Hollow -->
-    <polygon points="104,106 86,56 126,78" fill="url(#earInner3D)" />
-    <!-- Left Fluffy White Ear Tufts -->
-    <path d="M 94 92 C 102 85, 114 88, 122 80 C 114 96, 100 102, 94 92 Z" fill="#FFFFFF" opacity="0.9" />
-
-    <!-- Right 3D Cat Ear -->
-    <polygon points="214,116 242,46 186,74" fill="url(#earOuter3D)" stroke="#D8B58D" stroke-width="2" stroke-linejoin="round" />
-    <!-- Right Inner Pink Hollow -->
-    <polygon points="216,106 234,56 194,78" fill="url(#earInner3D)" />
-    <!-- Right Fluffy White Ear Tufts -->
-    <path d="M 226 92 C 218 85, 206 88, 198 80 C 206 96, 220 102, 226 92 Z" fill="#FFFFFF" opacity="0.9" />
-
-    <!-- Chubby Head Base (Volumetric 3D Ball in Toasted Cream) -->
-    <ellipse cx="160" cy="120" rx="74" ry="62" fill="url(#creamFur3D)" stroke="#D8B58D" stroke-width="1.5" filter="url(#cat3DShadow)" />
-
-    <!-- Top-Left Head Dome Highlight -->
-    <ellipse cx="140" cy="92" rx="42" ry="24" fill="url(#creamHighlight)" opacity="0.8" />
-
-    <!-- Chubby 3D Cheeks (Spherical Cream Puffs) -->
-    <ellipse cx="110" cy="136" rx="32" ry="25" fill="url(#creamCheek3D)" stroke="#E0CCA8" stroke-width="1" />
-    <ellipse cx="210" cy="136" rx="32" ry="25" fill="url(#creamCheek3D)" stroke="#E0CCA8" stroke-width="1" />
-
-    <!-- Warm Rosy Cheek Blush Glow -->
-    <ellipse cx="106" cy="140" rx="18" ry="12" fill="url(#blushGlow3D)" />
-    <ellipse cx="214" cy="140" rx="18" ry="12" fill="url(#blushGlow3D)" />
-
-    <!-- 3D Puffy Milky Muzzle (Rounded 3-Shape) -->
-    <!-- Left Muzzle Pad -->
-    <ellipse cx="147" cy="138" rx="18" ry="14" fill="url(#creamMuzzle3D)" filter="url(#contactShadow)" opacity="0.25" />
-    <ellipse cx="147" cy="137" rx="18" ry="14" fill="url(#creamMuzzle3D)" stroke="#E2D4C3" stroke-width="0.8" />
-    <!-- Right Muzzle Pad -->
-    <ellipse cx="173" cy="138" rx="18" ry="14" fill="url(#creamMuzzle3D)" filter="url(#contactShadow)" opacity="0.25" />
-    <ellipse cx="173" cy="137" rx="18" ry="14" fill="url(#creamMuzzle3D)" stroke="#E2D4C3" stroke-width="0.8" />
-    <!-- Chin Pad -->
-    <ellipse cx="160" cy="148" rx="11" ry="8" fill="url(#creamMuzzle3D)" />
-
-    <!-- Whiskers (Warm Chocolate Curved Filaments as in original look) -->
-    <!-- Left Whiskers -->
-    <path d="M 134 135 C 98 130, 68 132, 36 128" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-    <path d="M 134 140 C 96 142, 66 148, 38 150" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-    <path d="M 136 145 C 100 152, 72 162, 42 168" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-
-    <!-- Right Whiskers -->
-    <path d="M 186 135 C 222 130, 252 132, 284 128" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-    <path d="M 186 140 C 224 142, 254 148, 282 150" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-    <path d="M 184 145 C 220 152, 248 162, 278 168" stroke="#7A523D" stroke-width="1.8" stroke-linecap="round" fill="none" />
-
-    <!-- Animated Volumetric 3D Espresso Glass Cat Eyes (Original Beloved Look, with 3D Depth) -->
-    <g class="barnaby-eyes">
-      <!-- Left Eye -->
-      <g>
-        <!-- Deep Eye Socket Rim -->
-        <ellipse cx="131" cy="115" rx="13.5" ry="15.5" fill="#200E06" />
-        <!-- Glossy 3D Espresso Iris -->
-        <ellipse cx="131" cy="115" rx="12" ry="14" fill="url(#espressoEye3D)" />
-        <!-- Bottom-Right Warm Mocha Bounce -->
-        <ellipse cx="133" cy="121" rx="5" ry="3" fill="#6A3B22" opacity="0.6" />
-        <!-- Primary 3D Specular Catchlight (Big White Shine) -->
-        <ellipse cx="127" cy="110" rx="4.5" ry="5.5" fill="#FFFFFF" opacity="0.95" />
-        <!-- Secondary Micro Catchlight -->
-        <circle cx="134" cy="119" r="2" fill="#FFFFFF" opacity="0.9" />
-        <!-- Upper Eyelid 3D Fold -->
-        <path d="M 118 108 Q 131 100 144 108" stroke="#3D2012" stroke-width="2.2" stroke-linecap="round" fill="none" />
-      </g>
-
-      <!-- Right Eye -->
-      <g>
-        <!-- Deep Eye Socket Rim -->
-        <ellipse cx="189" cy="115" rx="13.5" ry="15.5" fill="#200E06" />
-        <!-- Glossy 3D Espresso Iris -->
-        <ellipse cx="189" cy="115" rx="12" ry="14" fill="url(#espressoEye3D)" />
-        <!-- Bottom-Right Warm Mocha Bounce -->
-        <ellipse cx="191" cy="121" rx="5" ry="3" fill="#6A3B22" opacity="0.6" />
-        <!-- Primary 3D Specular Catchlight (Big White Shine) -->
-        <ellipse cx="185" cy="110" rx="4.5" ry="5.5" fill="#FFFFFF" opacity="0.95" />
-        <!-- Secondary Micro Catchlight -->
-        <circle cx="192" cy="119" r="2" fill="#FFFFFF" opacity="0.9" />
-        <!-- Upper Eyelid 3D Fold -->
-        <path d="M 176 108 Q 189 100 202 108" stroke="#3D2012" stroke-width="2.2" stroke-linecap="round" fill="none" />
-      </g>
-    </g>
-
-    <!-- Happy Closed Eyes (State on Purr / Hover) -->
-    <g class="barnaby-happy-eyes">
-      <path d="M 119 117 Q 131 105 143 117" stroke="#29160E" stroke-width="4.2" stroke-linecap="round" fill="none" />
-      <path d="M 177 117 Q 189 105 201 117" stroke="#29160E" stroke-width="4.2" stroke-linecap="round" fill="none" />
-    </g>
-
-    <!-- 3D Glossy Pink Button Nose -->
-    <path d="M 152 126 C 152 124, 168 124, 168 126 C 168 130, 162 135, 160 135 C 158 135, 152 130, 152 126 Z" fill="url(#catNose3D)" stroke="#C85265" stroke-width="0.8" />
-    <!-- Nose Specular Highlight -->
-    <ellipse cx="158" cy="126" rx="2.5" ry="1.2" fill="#FFFFFF" opacity="0.9" />
-
-    <!-- Cute Kitten Mouth & Smile -->
-    <path d="M 160 135 L 160 140" stroke="#7A523D" stroke-width="2.2" stroke-linecap="round" />
-    <path d="M 148 140 Q 154 147 160 140 Q 166 147 172 140" stroke="#7A523D" stroke-width="2.4" stroke-linecap="round" fill="none" />
-    <!-- Cute Pink Lower Tongue Peek -->
-    <path d="M 156 142 Q 160 147 164 142" stroke="#FF7590" stroke-width="2" stroke-linecap="round" fill="#FFA5B8" />
-  </g>
-</svg>
-          </div>
-
-          <!-- Purr / Pet Button -->
-          <div class="barnaby-status-badge">
-            <button type="button" class="purr-btn" id="purr-btn" title="Pet Mr. Barnaby">
-              <span>🐾 Pet Mr. Barnaby</span>
-              <span class="purr-hearts" id="purr-hearts"></span>
-            </button>
-          </div>
-
-          <!-- Barnaby's Order Ledger / Tasting Tray Summary -->
-          <div class="portal-tray-preview" id="portal-tray-preview">
-            <div class="tray-preview-header">
-              <span class="cloche-icon">🛎️</span>
-              <span class="tray-preview-title">Barnaby's Order Ledger</span>
+          <!-- Falling Autumn Maple Leaves (Orange, Red, Golden Yellow) -->
+          <div class="maple-leaves-shower">
+            <!-- Crimson Red Maple Leaves -->
+            <div class="maple-leaf-item ml-red ml-1">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradRed)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2" />
+              </svg>
             </div>
-            <div class="tray-preview-items" id="portal-tray-items">
-              <div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>
+            <div class="maple-leaf-item ml-red ml-2">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradRed)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2" />
+              </svg>
             </div>
-            <div class="tray-preview-footer">
-              <span>Pre-order Total:</span>
-              <strong id="portal-tray-total">৳ 0</strong>
+            <div class="maple-leaf-item ml-red ml-3">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradRed)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#7F1D1D" stroke-width="1.2" />
+              </svg>
+            </div>
+
+            <!-- Vibrant Orange Maple Leaves -->
+            <div class="maple-leaf-item ml-orange ml-4">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradOrange)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2" />
+              </svg>
+            </div>
+            <div class="maple-leaf-item ml-orange ml-5">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradOrange)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2" />
+              </svg>
+            </div>
+            <div class="maple-leaf-item ml-orange ml-6">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradOrange)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#9A3412" stroke-width="1.2" />
+              </svg>
+            </div>
+
+            <!-- Golden Yellow Maple Leaves -->
+            <div class="maple-leaf-item ml-yellow ml-7">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradYellow)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2" />
+              </svg>
+            </div>
+            <div class="maple-leaf-item ml-yellow ml-8">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradYellow)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2" />
+              </svg>
+            </div>
+            <div class="maple-leaf-item ml-yellow ml-9">
+              <svg viewBox="0 0 50 50">
+                <path
+                  d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                  fill="url(#mapleGradYellow)" />
+                <line x1="25" y1="12" x2="25" y2="45" stroke="#B45309" stroke-width="1.2" />
+              </svg>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT: Interactive Booking Form / Confirmation Ticket -->
-        <div class="portal-form-pane">
-          <!-- Active Form View -->
-          <div class="portal-form-view" id="portal-form-view">
-            <div class="form-pane-header">
-              <span class="form-pane-tag">Table Reservation Parlour</span>
-              <h3 class="form-pane-title" id="portal-title">Reserve Your Table</h3>
-              <p class="form-pane-subtitle">Guaranteed private seating with table-side pour-over ceremony in Gulshan 2.</p>
+        <!-- 4. Sensory Aroma Layer: Floating Whole Roasted Coffee Beans & Steam Spirals -->
+        <div class="portal-sensory-decor" aria-hidden="true">
+          <div class="sensory-aroma-glow"></div>
+          <!-- Rising Aroma Steam Ribbons -->
+          <svg class="sensory-steam-wave ss-1" viewBox="0 0 60 140" fill="none">
+            <path d="M30 140 C15 110, 45 80, 25 50 C10 25, 35 10, 20 0" stroke="rgba(191, 90, 50, 0.45)"
+              stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+          <svg class="sensory-steam-wave ss-2" viewBox="0 0 60 140" fill="none">
+            <path d="M25 140 C40 110, 15 80, 35 50 C45 25, 20 10, 30 0" stroke="rgba(214, 110, 67, 0.4)"
+              stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+
+          <!-- Floating Roasted Coffee Beans -->
+          <div class="sensory-bean sb-1"><svg viewBox="0 0 28 20">
+              <ellipse cx="14" cy="10" rx="13" ry="8" fill="url(#beanGrad)" />
+              <path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.8" stroke-linecap="round" />
+            </svg></div>
+          <div class="sensory-bean sb-2"><svg viewBox="0 0 28 20">
+              <ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)" />
+              <path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6" stroke-linecap="round" />
+            </svg></div>
+          <div class="sensory-bean sb-3"><svg viewBox="0 0 28 20">
+              <ellipse cx="14" cy="10" rx="11" ry="6" fill="url(#beanGrad)" />
+              <path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.5" stroke-linecap="round" />
+            </svg></div>
+        </div>
+
+        <!-- 5. Default Sanctuary Sparkles (Warm Cafe Embers) -->
+        <div class="portal-default-decor" aria-hidden="true">
+          <span class="default-sparkle ds-1">✦</span>
+          <span class="default-sparkle ds-2">✦</span>
+          <span class="default-sparkle ds-3">✦</span>
+          <span class="default-sparkle ds-4">✦</span>
+        </div>
+
+        <button type="button" class="portal-close-btn" id="portal-close-btn" title="Close &amp; return to cafe"
+          aria-label="Close reservation portal">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="portal-inner">
+          <!-- LEFT: Character Stage (Mr. Pudding) -->
+          <div class="portal-character-pane">
+            <!-- Speech Bubble -->
+            <div class="barnaby-speech-bubble" id="barnaby-bubble">
+              <span class="bubble-sparkle">✦</span>
+              <p id="barnaby-speech-text">Welcome! I am <strong>Mr. Pudding</strong>, your feline head host. Allow me to
+                prepare our coziest candlelit nook for your visit.</p>
             </div>
 
-            <form id="reservation-form" class="reservation-form" autocomplete="off">
-              <!-- Step 1: Dream Table Selection -->
-              <div class="form-section">
-                <label class="section-label">
-                  <span class="step-num">1</span>
-                  <span>Select Your Dream Setting</span>
-                </label>
-                <div class="table-options-grid">
-                  <label class="table-option" data-table-id="window">
-                    <input type="radio" name="table_setting" value="Rainy Window Alcove">
-                    <span class="table-badge">Most Romantic</span>
-                    <span class="table-icon">🌧️</span>
-                    <strong class="table-title">Rainy Window Alcove</strong>
-                    <span class="table-desc">Candlelit marble table by the glass overlooking rain-kissed greenery.</span>
-                  </label>
+            <!-- Mr. Pudding 3D Character Cutout -->
+            <div class="barnaby-character-wrap" id="barnaby-character" title="Click Mr. Pudding to hear him purr!">
+              <div class="pudding-cutout-stage">
+                <img src="assets/Logo and falcon/mr_pudding_3d_cutout.png" alt="Mr. Pudding the Head Host Cat Chef"
+                  class="pudding-cutout-img" id="pudding-cutout-img">
+                <div class="pudding-contact-shadow"></div>
+              </div>
+            </div>
 
-                  <label class="table-option" data-table-id="candlelit">
-                    <input type="radio" name="table_setting" value="Intimate Velvet Booth">
-                    <span class="btn-ambient-maple" aria-hidden="true">
-                      <!-- Orange, Red, and Yellow Maple Leaves in Cozy button -->
-                      <svg class="btn-maple bm-red" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradRed)"/></svg>
-                      <svg class="btn-maple bm-orange" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradOrange)"/></svg>
-                      <svg class="btn-maple bm-yellow" viewBox="0 0 50 50"><path d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z" fill="url(#mapleGradYellow)"/></svg>
-                    </span>
-                    <span class="table-badge">Cozy &amp; Quiet</span>
-                    <span class="table-icon">🕯️</span>
-                    <strong class="table-title">Intimate Velvet Booth</strong>
-                    <span class="table-desc">Deep mahogany booth tucked under warm amber pendant lamps.</span>
-                  </label>
+            <!-- Purr / Pet Button -->
+            <div class="barnaby-status-badge">
+              <button type="button" class="purr-btn" id="purr-btn" title="Pet Mr. Pudding">
+                <span>🐾 Pet Mr. Pudding</span>
+                <span class="purr-hearts" id="purr-hearts"></span>
+              </button>
+            </div>
 
-                  <label class="table-option" data-table-id="barista">
-                    <input type="radio" name="table_setting" value="Front-Row Barista Bar">
-                    <span class="btn-ambient-sensory" aria-hidden="true">
-                      <span class="btn-steam bs1"></span>
-                      <span class="btn-steam bs2"></span>
-                      <svg class="btn-bean" viewBox="0 0 28 20"><ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)"/><path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6" stroke-linecap="round"/></svg>
-                    </span>
-                    <span class="table-badge">Sensory Brew</span>
-                    <span class="table-icon">☕</span>
-                    <strong class="table-title">Barista Pour-Over Bar</strong>
-                    <span class="table-desc">Front-row stools watching single-origin V60 manual extraction.</span>
-                  </label>
+            <!-- Mr. Pudding's Order Ledger / Tasting Tray Summary -->
+            <div class="portal-tray-preview" id="portal-tray-preview">
+              <div class="tray-preview-header">
+                <span class="cloche-icon">🛎️</span>
+                <span class="tray-preview-title">Mr. Pudding's Order Ledger</span>
+              </div>
+              <div class="tray-preview-items" id="portal-tray-items">
+                <div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>
+              </div>
+              <div class="tray-preview-footer">
+                <span>Pre-order Total:</span>
+                <strong id="portal-tray-total">৳ 0</strong>
+              </div>
+            </div>
+          </div>
 
-                  <label class="table-option" data-table-id="glasshouse">
-                    <input type="radio" name="table_setting" value="Botanical Glasshouse">
-                    <span class="btn-ambient-lush" aria-hidden="true">
-                      <!-- Sprouting Botanical Leaves in Lush button -->
-                      <svg class="btn-leaf bl1" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="13" ry="6" transform="rotate(35 15 15)" fill="url(#leafGradSage)"/></svg>
-                      <svg class="btn-leaf bl2" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="12" ry="5" transform="rotate(-40 15 15)" fill="url(#leafGradDeep)"/></svg>
-                      <svg class="btn-leaf bl3" viewBox="0 0 30 30"><ellipse cx="15" cy="15" rx="11" ry="5" transform="rotate(20 15 15)" fill="url(#leafGradSage)"/></svg>
-                    </span>
-                    <span class="table-badge">Lush &amp; Serene</span>
-                    <span class="table-icon">🌿</span>
-                    <strong class="table-title">Botanical Glasshouse</strong>
-                    <span class="table-desc">Surrounded by exotic monsteras, ficus trees, and acoustic jazz.</span>
-                  </label>
-                </div>
+          <!-- RIGHT: Interactive Booking Form / Confirmation Ticket -->
+          <div class="portal-form-pane">
+            <!-- Active Form View -->
+            <div class="portal-form-view" id="portal-form-view">
+              <div class="form-pane-header">
+                <span class="form-pane-tag">Table Reservation Parlour</span>
+                <h3 class="form-pane-title" id="portal-title">Reserve Your Table</h3>
+                <p class="form-pane-subtitle">Guaranteed private seating with table-side pour-over ceremony in Gulshan
+                  2.</p>
               </div>
 
-              <!-- Step 2: Date & Sitting Timeslot -->
-              <div class="form-section">
-                <label class="section-label">
-                  <span class="step-num">2</span>
-                  <span>Date &amp; Preferred Time Slot</span>
-                </label>
-                <div class="datetime-row">
-                  <div class="date-input-wrap">
-                    <label for="res-date" class="input-sublabel">Reservation Date</label>
-                    <input type="date" id="res-date" name="res_date" class="portal-input date-input" required>
+              <form id="reservation-form" class="reservation-form" autocomplete="off">
+                <!-- Step 1: Dream Table Selection -->
+                <div class="form-section">
+                  <label class="section-label">
+                    <span class="step-num">1</span>
+                    <span>Select Your Dream Setting</span>
+                  </label>
+                  <div class="table-options-grid">
+                    <label class="table-option" data-table-id="window">
+                      <input type="radio" name="table_setting" value="Rainy Window Alcove">
+                      <span class="table-badge">Most Romantic</span>
+                      <span class="table-icon">🌧️</span>
+                      <strong class="table-title">Rainy Window Alcove</strong>
+                      <span class="table-desc">Candlelit marble table by the glass overlooking rain-kissed
+                        greenery.</span>
+                    </label>
+
+                    <label class="table-option" data-table-id="candlelit">
+                      <input type="radio" name="table_setting" value="Intimate Velvet Booth">
+                      <span class="btn-ambient-maple" aria-hidden="true">
+                        <!-- Orange, Red, and Yellow Maple Leaves in Cozy button -->
+                        <svg class="btn-maple bm-red" viewBox="0 0 50 50">
+                          <path
+                            d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                            fill="url(#mapleGradRed)" />
+                        </svg>
+                        <svg class="btn-maple bm-orange" viewBox="0 0 50 50">
+                          <path
+                            d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                            fill="url(#mapleGradOrange)" />
+                        </svg>
+                        <svg class="btn-maple bm-yellow" viewBox="0 0 50 50">
+                          <path
+                            d="M25 4L28 15L37 11L33 21L45 23L35 30L40 41L29 35L26 46L24 46L21 35L10 41L15 30L5 23L17 21L13 11L22 15Z"
+                            fill="url(#mapleGradYellow)" />
+                        </svg>
+                      </span>
+                      <span class="table-badge">Cozy &amp; Quiet</span>
+                      <span class="table-icon">🕯️</span>
+                      <strong class="table-title">Intimate Velvet Booth</strong>
+                      <span class="table-desc">Deep mahogany booth tucked under warm amber pendant lamps.</span>
+                    </label>
+
+                    <label class="table-option" data-table-id="barista">
+                      <input type="radio" name="table_setting" value="Front-Row Barista Bar">
+                      <span class="btn-ambient-sensory" aria-hidden="true">
+                        <span class="btn-steam bs1"></span>
+                        <span class="btn-steam bs2"></span>
+                        <svg class="btn-bean" viewBox="0 0 28 20">
+                          <ellipse cx="14" cy="10" rx="12" ry="7" fill="url(#beanGrad)" />
+                          <path d="M5 10 C10 7, 18 13, 23 10" stroke="#1A0D07" stroke-width="1.6"
+                            stroke-linecap="round" />
+                        </svg>
+                      </span>
+                      <span class="table-badge">Sensory Brew</span>
+                      <span class="table-icon">☕</span>
+                      <strong class="table-title">Barista Pour-Over Bar</strong>
+                      <span class="table-desc">Front-row stools watching single-origin V60 manual extraction.</span>
+                    </label>
+
+                    <label class="table-option" data-table-id="glasshouse">
+                      <input type="radio" name="table_setting" value="Botanical Glasshouse">
+                      <span class="btn-ambient-lush" aria-hidden="true">
+                        <!-- Sprouting Botanical Leaves in Lush button -->
+                        <svg class="btn-leaf bl1" viewBox="0 0 30 30">
+                          <ellipse cx="15" cy="15" rx="13" ry="6" transform="rotate(35 15 15)"
+                            fill="url(#leafGradSage)" />
+                        </svg>
+                        <svg class="btn-leaf bl2" viewBox="0 0 30 30">
+                          <ellipse cx="15" cy="15" rx="12" ry="5" transform="rotate(-40 15 15)"
+                            fill="url(#leafGradDeep)" />
+                        </svg>
+                        <svg class="btn-leaf bl3" viewBox="0 0 30 30">
+                          <ellipse cx="15" cy="15" rx="11" ry="5" transform="rotate(20 15 15)"
+                            fill="url(#leafGradSage)" />
+                        </svg>
+                      </span>
+                      <span class="table-badge">Lush &amp; Serene</span>
+                      <span class="table-icon">🌿</span>
+                      <strong class="table-title">Botanical Glasshouse</strong>
+                      <span class="table-desc">Surrounded by exotic monsteras, ficus trees, and acoustic jazz.</span>
+                    </label>
                   </div>
-                  <div class="timeslot-wrap">
-                    <span class="input-sublabel">Select Sitting</span>
-                    <div class="timeslot-pills">
-                      <button type="button" class="timeslot-pill" data-time="4:00 PM">
-                        <span>4:00 PM</span>
-                        <small>Afternoon Warmth</small>
-                      </button>
-                      <button type="button" class="timeslot-pill" data-time="6:30 PM">
-                        <span>6:30 PM</span>
-                        <small>Sunset Sips</small>
-                      </button>
-                      <button type="button" class="timeslot-pill is-active" data-time="8:30 PM">
-                        <span>8:30 PM</span>
-                        <small>Candlelight Jazz</small>
-                      </button>
-                      <button type="button" class="timeslot-pill" data-time="10:00 PM">
-                        <span>10:00 PM</span>
-                        <small>Night Owl Brew</small>
-                      </button>
+                </div>
+
+                <!-- Step 2: Date & Sitting Timeslot -->
+                <div class="form-section">
+                  <label class="section-label">
+                    <span class="step-num">2</span>
+                    <span>Date &amp; Preferred Time Slot</span>
+                  </label>
+                  <div class="datetime-row">
+                    <div class="date-input-wrap">
+                      <label for="res-date" class="input-sublabel">Reservation Date</label>
+                      <input type="date" id="res-date" name="res_date" class="portal-input date-input" required>
+                    </div>
+                    <div class="timeslot-wrap">
+                      <span class="input-sublabel">Select Sitting</span>
+                      <div class="timeslot-pills">
+                        <button type="button" class="timeslot-pill" data-time="4:00 PM">
+                          <span>4:00 PM</span>
+                          <small>Afternoon Warmth</small>
+                        </button>
+                        <button type="button" class="timeslot-pill" data-time="6:30 PM">
+                          <span>6:30 PM</span>
+                          <small>Sunset Sips</small>
+                        </button>
+                        <button type="button" class="timeslot-pill is-active" data-time="8:30 PM">
+                          <span>8:30 PM</span>
+                          <small>Candlelight Jazz</small>
+                        </button>
+                        <button type="button" class="timeslot-pill" data-time="10:00 PM">
+                          <span>10:00 PM</span>
+                          <small>Night Owl Brew</small>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Step 3: Party Size & Special Occasion -->
-              <div class="form-section">
-                <label class="section-label">
-                  <span class="step-num">3</span>
-                  <span>Party Size &amp; Occasion</span>
-                </label>
-                <div class="guests-occasion-row">
-                  <div class="guest-stepper-wrap">
-                    <span class="input-sublabel">Party Size</span>
-                    <div class="portal-guest-stepper">
-                      <button type="button" class="guest-btn" id="guest-minus" title="Decrease guests">−</button>
-                      <span class="guest-count-val" id="guest-count">2 Guests</span>
-                      <button type="button" class="guest-btn" id="guest-plus" title="Increase guests">+</button>
+                <!-- Step 3: Party Size & Special Occasion -->
+                <div class="form-section">
+                  <label class="section-label">
+                    <span class="step-num">3</span>
+                    <span>Party Size &amp; Occasion</span>
+                  </label>
+                  <div class="guests-occasion-row">
+                    <div class="guest-stepper-wrap">
+                      <span class="input-sublabel">Party Size</span>
+                      <div class="portal-guest-stepper">
+                        <button type="button" class="guest-btn" id="guest-minus" title="Decrease guests">−</button>
+                        <span class="guest-count-val" id="guest-count">2 Guests</span>
+                        <button type="button" class="guest-btn" id="guest-plus" title="Increase guests">+</button>
+                      </div>
+                    </div>
+                    <div class="occasion-wrap">
+                      <span class="input-sublabel">Special Occasion</span>
+                      <div class="occasion-tags">
+                        <button type="button" class="occasion-tag is-active" data-occasion="Date Night">Date
+                          Night</button>
+                        <button type="button" class="occasion-tag" data-occasion="Birthday Celebration 🎂">Birthday
+                          🎂</button>
+                        <button type="button" class="occasion-tag" data-occasion="Quiet Reading 📖">Quiet Reading
+                          📖</button>
+                        <button type="button" class="occasion-tag" data-occasion="Coffee Tasting ☕">Coffee Tasting
+                          ☕</button>
+                      </div>
                     </div>
                   </div>
-                  <div class="occasion-wrap">
-                    <span class="input-sublabel">Special Occasion</span>
-                    <div class="occasion-tags">
-                      <button type="button" class="occasion-tag is-active" data-occasion="Date Night">Date Night</button>
-                      <button type="button" class="occasion-tag" data-occasion="Birthday Celebration 🎂">Birthday 🎂</button>
-                      <button type="button" class="occasion-tag" data-occasion="Quiet Reading 📖">Quiet Reading 📖</button>
-                      <button type="button" class="occasion-tag" data-occasion="Coffee Tasting ☕">Coffee Tasting ☕</button>
+                </div>
+
+                <!-- Step 4: Contact Details -->
+                <div class="form-section">
+                  <label class="section-label">
+                    <span class="step-num">4</span>
+                    <span>Guest Details</span>
+                  </label>
+                  <div class="contact-inputs-grid">
+                    <div class="input-field">
+                      <input type="text" id="res-name" name="res_name" class="portal-input"
+                        placeholder="Your Full Name *" required>
+                    </div>
+                    <div class="input-field">
+                      <input type="tel" id="res-phone" name="res_phone" class="portal-input"
+                        placeholder="Phone or WhatsApp Number *" required>
+                    </div>
+                    <div class="input-field full-width">
+                      <input type="text" id="res-note" name="res_note" class="portal-input"
+                        placeholder="Special requests (e.g. oat milk, quiet table, anniversary rose...)">
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Step 4: Contact Details -->
-              <div class="form-section">
-                <label class="section-label">
-                  <span class="step-num">4</span>
-                  <span>Guest Details</span>
-                </label>
-                <div class="contact-inputs-grid">
-                  <div class="input-field">
-                    <input type="text" id="res-name" name="res_name" class="portal-input" placeholder="Your Full Name *" required>
-                  </div>
-                  <div class="input-field">
-                    <input type="tel" id="res-phone" name="res_phone" class="portal-input" placeholder="Phone or WhatsApp Number *" required>
-                  </div>
-                  <div class="input-field full-width">
-                    <input type="text" id="res-note" name="res_note" class="portal-input" placeholder="Special requests (e.g. oat milk, quiet table, anniversary rose...)">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" class="portal-submit-btn" id="portal-submit-btn">
-                <span>Confirm Reservation with Mr. Barnaby</span>
-                <span class="btn-sparkle">🐾</span>
-              </button>
-            </form>
-          </div>
-
-          <!-- Confirmation Ticket View (Shown after submitting) -->
-          <div class="portal-ticket-view is-hidden" id="portal-ticket-view">
-            <!-- Stamp celebration -->
-            <div class="ticket-celebration">
-              <div class="paw-stamp-badge" id="paw-stamp">
-                <span class="stamp-ring"></span>
-                <span class="stamp-paw">🐾</span>
-                <span class="stamp-text">PAW OF APPROVAL</span>
-                <span class="stamp-cafe">BLUE BELL CAFÉ</span>
-              </div>
-              <h3 class="ticket-congrats">Table Confirmed!</h3>
-              <p class="ticket-congrats-sub">Mr. Barnaby has reserved your candlelit table and notified the baristas.</p>
+                <!-- Submit Button -->
+                <button type="submit" class="portal-submit-btn" id="portal-submit-btn">
+                  <span>Confirm Reservation with Mr. Pudding</span>
+                  <span class="btn-sparkle">🐾</span>
+                </button>
+              </form>
             </div>
 
-            <!-- Vintage Boarding-Pass Style Ticket -->
-            <div class="vintage-cafe-ticket" id="vintage-ticket">
-              <div class="ticket-header">
-                <div class="ticket-brand">
-                  <span class="brand-crest">☕</span>
-                  <div>
-                    <strong>BLUE BELL CAFÉ</strong>
-                    <small>Gulshan 2 Roastery • Table Booking Pass</small>
-                  </div>
+            <!-- Confirmation View (Shown after submitting) -->
+            <div class="portal-ticket-view is-hidden" id="portal-ticket-view">
+              <!-- Stamp celebration -->
+              <div class="ticket-celebration">
+                <div class="paw-stamp-badge" id="paw-stamp">
+                  <span class="stamp-ring"></span>
+                  <span class="stamp-paw">🐾</span>
+                  <span class="stamp-text">PAW OF APPROVAL</span>
+                  <span class="stamp-cafe">BLUE BELL CAFÉ</span>
                 </div>
-                <div class="ticket-pass-id" id="ticket-pass-id">#BBC-7892</div>
-              </div>
-              <div class="ticket-notch-row">
-                <span class="ticket-notch left"></span>
-                <span class="ticket-dash-line"></span>
-                <span class="ticket-notch right"></span>
-              </div>
-              <div class="ticket-body">
-                <div class="ticket-field">
-                  <span class="tf-label">GUEST</span>
-                  <strong class="tf-val" id="ticket-guest-name">Valued Guest</strong>
-                </div>
-                <div class="ticket-field">
-                  <span class="tf-label">TABLE ASSIGNMENT</span>
-                  <strong class="tf-val highlight" id="ticket-table-name">Rainy Window Alcove</strong>
-                </div>
-                <div class="ticket-field">
-                  <span class="tf-label">DATE &amp; TIME</span>
-                  <strong class="tf-val" id="ticket-datetime">Today • 8:30 PM</strong>
-                </div>
-                <div class="ticket-field">
-                  <span class="tf-label">PARTY &amp; OCCASION</span>
-                  <strong class="tf-val" id="ticket-party">2 Guests • Date Night</strong>
-                </div>
-                <div class="ticket-field full-width" id="ticket-order-row">
-                  <span class="tf-label">CURATED ORDER PRE-CHECK</span>
-                  <strong class="tf-val order-summary" id="ticket-order-val">None pre-ordered (Table-side ordering)</strong>
-                </div>
-              </div>
-              <div class="ticket-footer">
-                <div class="ticket-barcode">||| | |||| | ||||| ||| |||| | ||</div>
-                <span class="ticket-status-pill">✓ Status: Paw-Approved</span>
-              </div>
-            </div>
+                <h3 class="ticket-congrats">Table Confirmed!</h3>
+                <p class="ticket-congrats-sub">Mr. Pudding has reserved your candlelit table and notified the baristas.
+                </p>
 
-            <!-- Action Buttons -->
-            <div class="ticket-actions">
-              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-download-btn" title="Download ticket image">
-                <span>📥 Download Ticket (PNG)</span>
-              </button>
-              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-print-btn" title="Print or Save as PDF">
-                <span>🖨️ Print / Save (PDF)</span>
-              </button>
-              <button type="button" class="ticket-action-btn btn-primary" id="ticket-done-btn">
-                <span>Return to Coffee Experience</span>
-              </button>
+                <!-- Return Action Button -->
+                <div class="ticket-actions">
+                  <button type="button" class="ticket-action-btn btn-primary" id="ticket-done-btn">
+                    <span>Return to Coffee Experience</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </main>
 
   <!-- Dedicated Table Reservation Logic -->

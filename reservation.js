@@ -1,11 +1,11 @@
 /* --------------------------------------------------------------------------
-   4. MR. BARNABY'S INTERACTIVE RESERVATION PARLOUR
+   4. MR. PUDDING'S INTERACTIVE RESERVATION PARLOUR
    Controls:
    - Full-screen dining room stage opening & closing
    - Tasting Tray pre-order auto-population
-   - Mr. Barnaby's dynamic speech bubble & purring reactions
+   - Mr. Pudding's dynamic speech bubble & purring reactions
    - Interactive table selection & time slot picking
-   - Paw of Approval wax seal animation & vintage boarding-pass ticket generation
+   - Paw of Approval wax seal confirmation
    -------------------------------------------------------------------------- */
 
 const resPortal = document.getElementById('reservation-portal');
@@ -14,6 +14,8 @@ const portalBackdrop = document.getElementById('portal-backdrop');
 const barnabyBubble = document.getElementById('barnaby-bubble');
 const barnabySpeechText = document.getElementById('barnaby-speech-text');
 const barnabyCharacter = document.getElementById('barnaby-character');
+const purrBtn = document.getElementById('purr-btn');
+const purrHearts = document.getElementById('purr-hearts');
 
 const portalFormView = document.getElementById('portal-form-view');
 const portalTicketView = document.getElementById('portal-ticket-view');
@@ -76,9 +78,12 @@ function openReservationPortal() {
   // Maintain selected theme or activate default light aesthetic theme
   if (!selectedTable) {
     updatePortalTheme('theme-default');
+    if (resPortal) {
+      resPortal.classList.remove('has-setting-selected', 'setting-window', 'setting-candlelit', 'setting-barista', 'setting-glasshouse');
+    }
   }
 
-  // Populate Tasting Tray order items into Barnaby's Ledger
+  // Populate Tasting Tray order items into Mr. Pudding's Ledger
   const trayItemsContainer = document.getElementById('portal-tray-items');
   const trayTotalEl = document.getElementById('portal-tray-total');
 
@@ -108,7 +113,7 @@ function openReservationPortal() {
       trayTotalEl.textContent = '৳ 0';
 
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Barnaby</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
+        barnabySpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Pudding</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
       }
     }
   }
@@ -168,20 +173,73 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-// Interactive Barnaby Petting / Purring
+// Interactive Mr. Pudding 3D Doll Activities & Purring
+let puddingActivityIndex = 0;
+const puddingActivities = [
+  {
+    msg: `Voila! 🛎️ <em>*Lifts silver cloche*</em> A fresh pour-over bloom prepared with our signature roast just for your table!`,
+    badge: '🛎️ (Serving!)',
+    isServing: true
+  },
+  {
+    msg: `Purrrr... ♡ The finest chin scratches in Gulshan! Your reservation is receiving my five-star feline care.`,
+    badge: '🐾 (Purring!)',
+    isServing: false
+  },
+  {
+    msg: `Ding! 🥐 Our French hazelnut pastries just came out of the oven! I will whisper to the barista to set one aside for you.`,
+    badge: '✨ (Delighted!)',
+    isServing: true
+  },
+  {
+    msg: `Meow! 🐾 High paw! My ears perk up whenever guests book their dream candlelit nook. You're in wonderful hands!`,
+    badge: '🐾 (High Paw!)',
+    isServing: false
+  }
+];
+
+function spawnPuddingSparkle() {
+  if (!barnabyCharacter) return;
+  const emojis = ['🐾', '☕', '✨', '💛', '🌟', '🥐'];
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      const p = document.createElement('span');
+      p.className = 'pudding-click-particle';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      const offsetX = (Math.random() - 0.5) * 80;
+      p.style.left = `calc(50% + ${offsetX}px)`;
+      p.style.bottom = '110px';
+      barnabyCharacter.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }, i * 140);
+  }
+}
+
 function triggerBarnabyPurr() {
   if (!barnabyCharacter) return;
+
+  const current = puddingActivities[puddingActivityIndex % puddingActivities.length];
+  puddingActivityIndex++;
+
   barnabyCharacter.classList.add('is-purring');
+  if (current.isServing) {
+    barnabyCharacter.classList.add('is-serving');
+  }
+
   if (barnabySpeechText) {
-    barnabySpeechText.innerHTML = `Purrrr... You give the most delightful chin scratches! Rest assured, your table is in the most caring paws.`;
+    barnabySpeechText.innerHTML = current.msg;
   }
   if (purrHearts) {
-    purrHearts.textContent = '🐾 (Purring!)';
+    purrHearts.textContent = current.badge;
   }
+
+  spawnPuddingSparkle();
+
   setTimeout(() => {
     barnabyCharacter.classList.remove('is-purring');
+    barnabyCharacter.classList.remove('is-serving');
     if (purrHearts) purrHearts.textContent = '';
-  }, 2500);
+  }, 2800);
 }
 
 if (barnabyCharacter) barnabyCharacter.addEventListener('click', triggerBarnabyPurr);
@@ -201,6 +259,12 @@ tableOptions.forEach((option) => {
     }
 
     const tableId = option.getAttribute('data-table-id');
+    if (resPortal && tableId) {
+      resPortal.classList.add('has-setting-selected');
+      resPortal.classList.remove('setting-window', 'setting-candlelit', 'setting-barista', 'setting-glasshouse');
+      resPortal.classList.add(`setting-${tableId}`);
+    }
+
     if (tableId === 'window') {
       updatePortalTheme('theme-rainy');
       if (barnabySpeechText) {
@@ -288,31 +352,7 @@ if (resForm) {
     const randomCode = Math.floor(1000 + Math.random() * 9000);
     const bookingId = `#BBC-${randomCode}`;
 
-    // Populate ticket
-    const ticketIdEl = document.getElementById('ticket-pass-id');
-    const ticketGuestEl = document.getElementById('ticket-guest-name');
-    const ticketTableEl = document.getElementById('ticket-table-name');
-    const ticketDatetimeEl = document.getElementById('ticket-datetime');
-    const ticketPartyEl = document.getElementById('ticket-party');
-    const ticketOrderValEl = document.getElementById('ticket-order-val');
-
-    if (ticketIdEl) ticketIdEl.textContent = bookingId;
-    if (ticketGuestEl) ticketGuestEl.textContent = guestName;
-    if (ticketTableEl) ticketTableEl.textContent = selectedTable;
-    if (ticketDatetimeEl) ticketDatetimeEl.textContent = `${dateVal} • ${selectedTimeSlot}`;
-    if (ticketPartyEl) ticketPartyEl.textContent = `${currentGuestCount} ${currentGuestCount === 1 ? 'Guest' : 'Guests'} • ${selectedOccasion}`;
-
-    if (ticketOrderValEl) {
-      const savedTray = getSavedTastingTray();
-      if (savedTray && savedTray.items && savedTray.items.length > 0) {
-        const itemNames = savedTray.items.map((item) => `${item.quantity}x ${item.name}`);
-        ticketOrderValEl.textContent = itemNames.join(', ');
-      } else {
-        ticketOrderValEl.textContent = 'Fresh table-side ordering upon arrival';
-      }
-    }
-
-    // Switch view to ticket
+    // Switch view to confirmation celebration
     if (portalFormView) portalFormView.classList.add('is-hidden');
     if (portalTicketView) portalTicketView.classList.remove('is-hidden');
 
@@ -325,196 +365,14 @@ if (resForm) {
       });
     }
 
-    // Barnaby's congratulations speech
+    // Mr. Pudding's congratulations speech
     if (barnabySpeechText) {
       barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
     }
   });
 }
 
-// Ticket Action Buttons: High-Res PNG Download & 1-Page Print
-function downloadTicketAsImage() {
-  const passId = document.getElementById('ticket-pass-id')?.innerText.trim() || '#BBC-7892';
-  const guestName = document.getElementById('ticket-guest-name')?.innerText.trim() || 'Valued Guest';
-  const tableName = document.getElementById('ticket-table-name')?.innerText.trim() || 'Rainy Window Alcove';
-  const dateTime = document.getElementById('ticket-datetime')?.innerText.trim() || 'Today • 8:30 PM';
-  const partyOccasion = document.getElementById('ticket-party')?.innerText.trim() || '2 Guests • Date Night';
-  const orderVal = document.getElementById('ticket-order-val')?.innerText.trim() || 'None pre-ordered (Table-side ordering)';
-
-  // 2x Retina Resolution for ultra-sharp text and graphics
-  const scale = 2;
-  const width = 500;
-  const height = 370;
-  const canvas = document.createElement('canvas');
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(scale, scale);
-
-  // Card Background
-  ctx.fillStyle = '#FFFFFF';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, width, height, 18);
-  ctx.fill();
-
-  // Card Outer Border
-  ctx.strokeStyle = '#2D4C3A';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, width, height, 18);
-  ctx.stroke();
-
-  // Header Banner Background
-  ctx.fillStyle = '#F4F8F5';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, width, 68, [18, 18, 0, 0]);
-  ctx.fill();
-
-  ctx.strokeStyle = '#D5E2D9';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, 68);
-  ctx.lineTo(width, 68);
-  ctx.stroke();
-
-  // Crest Icon
-  ctx.font = '22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillText('☕', 20, 42);
-
-  // Café Name
-  ctx.font = 'bold 16px Georgia, "Times New Roman", Times, serif';
-  ctx.fillStyle = '#1B3324';
-  ctx.fillText('BLUE BELL CAFÉ', 52, 35);
-
-  ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillStyle = '#557560';
-  ctx.fillText('Gulshan 2 Sanctuary • Table Booking Pass', 52, 53);
-
-  // Pass ID Pill
-  ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  ctx.fillStyle = '#2D6A4F';
-  ctx.textAlign = 'right';
-  ctx.fillText(passId, width - 22, 42);
-  ctx.textAlign = 'left';
-
-  // Dashed Cutout Notch Row
-  const notchY = 82;
-  ctx.beginPath();
-  ctx.setLineDash([5, 4]);
-  ctx.strokeStyle = '#C4D6CB';
-  ctx.lineWidth = 1.5;
-  ctx.moveTo(18, notchY);
-  ctx.lineTo(width - 18, notchY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Left Notch Cutout
-  ctx.fillStyle = '#F0F5F2';
-  ctx.beginPath();
-  ctx.arc(0, notchY, 9, -Math.PI / 2, Math.PI / 2);
-  ctx.fill();
-  ctx.strokeStyle = '#2D4C3A';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // Right Notch Cutout
-  ctx.fillStyle = '#F0F5F2';
-  ctx.beginPath();
-  ctx.arc(width, notchY, 9, Math.PI / 2, 3 * Math.PI / 2);
-  ctx.fill();
-  ctx.strokeStyle = '#2D4C3A';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // Details Grid Fields
-  function drawField(label, val, x, y, isHighlight = false) {
-    ctx.font = 'bold 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillStyle = '#6E8A78';
-    ctx.fillText(label, x, y);
-
-    if (isHighlight) {
-      ctx.font = 'bold 16px Georgia, "Times New Roman", Times, serif';
-      ctx.fillStyle = '#2D6A4F';
-    } else {
-      ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.fillStyle = '#1B3324';
-    }
-    ctx.fillText(val, x, y + 18);
-  }
-
-  const col1 = 24;
-  const col2 = 260;
-  drawField('GUEST', guestName, col1, 114);
-  drawField('TABLE ASSIGNMENT', tableName, col2, 114, true);
-
-  drawField('DATE & TIME', dateTime, col1, 166);
-  drawField('PARTY & OCCASION', partyOccasion, col2, 166);
-
-  drawField('CURATED ORDER PRE-CHECK', orderVal, col1, 218);
-
-  // Footer Banner Background
-  const footerY = 308;
-  ctx.fillStyle = '#F4F8F5';
-  ctx.beginPath();
-  ctx.roundRect(0, footerY, width, height - footerY, [0, 0, 18, 18]);
-  ctx.fill();
-
-  ctx.strokeStyle = '#D5E2D9';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, footerY);
-  ctx.lineTo(width, footerY);
-  ctx.stroke();
-
-  // Barcode Graphic Text
-  ctx.font = '16px monospace';
-  ctx.fillStyle = '#557560';
-  ctx.fillText('||| | |||| | ||||| ||| |||| | ||', 24, footerY + 38);
-
-  // Status Badge Pill
-  const pillText = '✓ Status: Paw-Approved';
-  ctx.font = 'bold 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-  const pillW = ctx.measureText(pillText).width + 20;
-  const pillH = 26;
-  const pillX = width - pillW - 22;
-  const pillY = footerY + 18;
-
-  ctx.fillStyle = '#E8F5EC';
-  ctx.beginPath();
-  ctx.roundRect(pillX, pillY, pillW, pillH, 13);
-  ctx.fill();
-
-  ctx.strokeStyle = '#2D6A4F';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(pillX, pillY, pillW, pillH, 13);
-  ctx.stroke();
-
-  ctx.fillStyle = '#2D6A4F';
-  ctx.fillText(pillText, pillX + 10, pillY + 17);
-
-  // Trigger Download Link
-  const safeId = passId.replace(/[^a-zA-Z0-9_-]/g, '');
-  const downloadLink = document.createElement('a');
-  downloadLink.download = `Blue-Bell-Cafe-Pass-${safeId}.png`;
-  downloadLink.href = canvas.toDataURL('image/png');
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-}
-
-const ticketDownloadBtn = document.getElementById('ticket-download-btn');
-if (ticketDownloadBtn) {
-  ticketDownloadBtn.addEventListener('click', downloadTicketAsImage);
-}
-
-const ticketPrintBtn = document.getElementById('ticket-print-btn');
-if (ticketPrintBtn) {
-  ticketPrintBtn.addEventListener('click', () => {
-    window.print();
-  });
-}
-
+// Done Action Button: Clear Tray & Return to Cafe
 const ticketDoneBtn = document.getElementById('ticket-done-btn');
 if (ticketDoneBtn) {
   ticketDoneBtn.addEventListener('click', () => {
