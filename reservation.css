@@ -1,0 +1,2436 @@
+/* ==========================================================================
+   BLUE BELL CAFÉ — TABLE RESERVATION PARLOUR (reservation.css)
+   Dedicated stylesheet for Monsieur Barnaby's Table Reservation Portal
+   ========================================================================== */
+
+:root {
+  --sw-bg: #120D0A;
+  --sw-ink: #F9F5F0;
+  --sw-ink-soft: #C4B5AA;
+  --sw-accent: #E2A76F;
+  --sw-gold: #D4AF37;
+  --sw-font-display: "Playfair Display", Georgia, serif;
+  --sw-font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--sw-font-body);
+  background: #140D09;
+  color: #2D2319;
+  overflow-x: hidden;
+}
+
+/* Dedicated Page Navigation Header */
+.reservation-nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px clamp(16px, 4vw, 48px);
+  background: rgba(20, 13, 9, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(245, 202, 154, 0.22);
+}
+
+.res-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  border: 1.5px solid rgba(230, 170, 104, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.res-brand-badge:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.res-brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+.res-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, rgba(82, 52, 36, 0.6) 0%, rgba(56, 35, 24, 0.7) 100%);
+  border: 1px solid rgba(245, 202, 154, 0.4);
+  border-radius: 999px;
+  color: #F8D2AC;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.res-back-btn:hover {
+  background: linear-gradient(135deg, #F5CA96 0%, #D88E4E 100%);
+  color: #1F1008;
+  border-color: #FFF0E0;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(245, 202, 154, 0.4);
+}
+
+.res-back-btn .back-arrow {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.res-back-btn:hover .back-arrow {
+  transform: translateX(-3px);
+}
+
+/* Page Mode Adjustments for Portal */
+.reservation-portal {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 10 !important;
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  min-height: calc(100vh - 65px);
+  padding: 24px clamp(12px, 3vw, 32px) 60px !important;
+}
+
+.reservation-portal.is-hidden {
+  display: flex !important;
+}
+
+.portal-close-btn {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   5. MONSIEUR BARNABY'S TABLE RESERVATION PARLOUR (LIGHT & AESTHETIC RE-DESIGN)
+   Full-screen theatrical dining portal featuring Monsieur Barnaby, the Maître D'
+   cartoon cat.
+   
+   5 Dynamic Ambient Atmospheric Color Themes:
+   1. Default: Warm Alabaster & Cream Linen
+   2. Rainy Window Alcove: Misty Cloudy & Slate Blue Overcast
+   3. Intimate Velvet Booth: Warm Amber Glow & Honeyed Candlelight
+   4. Barista Pour-Over Bar: Artisanal Terracotta, Copper & Roasted Cinnamon
+   5. Botanical Glasshouse: Lush Garden Sage, Fresh Eucalyptus & Living Greenery
+   
+   Typography:
+   - Editorial Serif Headings: Georgia, "Times New Roman", Times, serif
+   - UI & Body Text: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif
+   (Clean default system fonts — authentic, timeless, zero "vibe coded" styling)
+   ========================================================================== */
+
+/* ---- THEME TOKENS: 5 CURATED SCENARIOS ---- */
+
+/* Scenario 1: Default (Warm Alabaster & Cream Linen) */
+.reservation-portal,
+.reservation-portal.theme-default {
+  --portal-backdrop: radial-gradient(circle at 50% 20%, rgba(248, 244, 237, 0.94) 0%, rgba(235, 227, 216, 0.97) 100%);
+  --portal-card-bg: linear-gradient(150deg, #FFFFFF 0%, #FAF6F0 100%);
+  --portal-border: #E5D7C7;
+  --portal-shadow: 0 24px 70px rgba(72, 48, 32, 0.12), 0 2px 10px rgba(0, 0, 0, 0.04);
+  --portal-form-pane-bg: #FFFFFF;
+  --portal-form-pane-border: #ECE1D4;
+  --portal-text-title: #241811;
+  --portal-text-body: #543E31;
+  --portal-text-sub: #7E6657;
+  --portal-card-option-bg: #FAF6F0;
+  --portal-card-option-border: #E6D9CA;
+  --portal-card-option-hover: #F3EBE0;
+  --portal-accent: #C27854;
+  --portal-accent-soft: rgba(194, 120, 84, 0.14);
+  --portal-tag-color: #A44C5C;
+  --portal-step-badge-bg: #C27854;
+  --portal-step-badge-color: #FFFFFF;
+  --portal-input-bg: #FFFFFF;
+  --portal-input-border: #DFCFC0;
+  --portal-input-focus-border: #C27854;
+  --portal-btn-bg: linear-gradient(135deg, #DE996A 0%, #C27854 100%);
+  --portal-btn-color: #FFFFFF;
+  --portal-btn-shadow: 0 8px 24px rgba(194, 120, 84, 0.32);
+  --portal-close-bg: #F5ECE2;
+  --portal-close-color: #543E31;
+  --portal-close-border: #DFCFC0;
+  --portal-bubble-bg: #FFFFFF;
+  --portal-bubble-border: #E5D7C7;
+  --portal-bubble-text: #241811;
+  --portal-tray-bg: #FAF6F0;
+  --portal-tray-border: #E8DCD0;
+  --fairy-glow-color: #FFAE42;
+}
+
+/* Scenario 2: Rainy Window Alcove (Cloudy Vibe: Misty Slate-Blue & Drizzle Overcast) */
+.reservation-portal.theme-rainy {
+  --portal-backdrop: radial-gradient(circle at 50% 20%, rgba(236, 243, 248, 0.95) 0%, rgba(214, 226, 236, 0.97) 100%);
+  --portal-card-bg: linear-gradient(150deg, #FDFFFF 0%, #EEF4F8 100%);
+  --portal-border: #C6D7E4;
+  --portal-shadow: 0 24px 70px rgba(45, 70, 94, 0.14), 0 2px 10px rgba(0, 0, 0, 0.04);
+  --portal-form-pane-bg: rgba(255, 255, 255, 0.94);
+  --portal-form-pane-border: #D2E0EB;
+  --portal-text-title: #182532;
+  --portal-text-body: #425567;
+  --portal-text-sub: #6A7E91;
+  --portal-card-option-bg: #F2F7FA;
+  --portal-card-option-border: #CFDEE8;
+  --portal-card-option-hover: #E4EEF5;
+  --portal-accent: #467394;
+  --portal-accent-soft: rgba(70, 115, 148, 0.14);
+  --portal-tag-color: #386485;
+  --portal-step-badge-bg: #467394;
+  --portal-step-badge-color: #FFFFFF;
+  --portal-input-bg: #FFFFFF;
+  --portal-input-border: #C8D8E4;
+  --portal-input-focus-border: #467394;
+  --portal-btn-bg: linear-gradient(135deg, #5B8AA9 0%, #406A89 100%);
+  --portal-btn-color: #FFFFFF;
+  --portal-btn-shadow: 0 8px 24px rgba(70, 115, 148, 0.32);
+  --portal-close-bg: #E8F1F6;
+  --portal-close-color: #384F63;
+  --portal-close-border: #C6D7E4;
+  --portal-bubble-bg: #FFFFFF;
+  --portal-bubble-border: #C6D7E4;
+  --portal-bubble-text: #182532;
+  --portal-tray-bg: #F0F6F9;
+  --portal-tray-border: #D2E0EB;
+  --fairy-glow-color: #8EB7D8;
+}
+
+/* Scenario 3: Intimate Velvet Booth (Cozy Ambience: Warm Amber Glow & Honeyed Candlelight) */
+.reservation-portal.theme-cozy {
+  --portal-backdrop: radial-gradient(circle at 50% 20%, rgba(255, 248, 236, 0.95) 0%, rgba(246, 233, 210, 0.97) 100%);
+  --portal-card-bg: linear-gradient(150deg, #FFFDF8 0%, #FAF0DD 100%);
+  --portal-border: #E8CFAC;
+  --portal-shadow: 0 24px 70px rgba(128, 76, 22, 0.14), 0 2px 10px rgba(0, 0, 0, 0.04);
+  --portal-form-pane-bg: rgba(255, 255, 255, 0.95);
+  --portal-form-pane-border: #EDD8BA;
+  --portal-text-title: #2B160A;
+  --portal-text-body: #5A3B24;
+  --portal-text-sub: #846146;
+  --portal-card-option-bg: #FBF4E8;
+  --portal-card-option-border: #E8D2AF;
+  --portal-card-option-hover: #F5E7D1;
+  --portal-accent: #D47E24;
+  --portal-accent-soft: rgba(212, 126, 36, 0.14);
+  --portal-tag-color: #B55B14;
+  --portal-step-badge-bg: #D47E24;
+  --portal-step-badge-color: #FFFFFF;
+  --portal-input-bg: #FFFFFF;
+  --portal-input-border: #E3CBA6;
+  --portal-input-focus-border: #D47E24;
+  --portal-btn-bg: linear-gradient(135deg, #E8953C 0%, #C86F18 100%);
+  --portal-btn-color: #FFFFFF;
+  --portal-btn-shadow: 0 8px 24px rgba(212, 126, 36, 0.35);
+  --portal-close-bg: #F7EBDA;
+  --portal-close-color: #5A3B24;
+  --portal-close-border: #E3CBA6;
+  --portal-bubble-bg: #FFFFFF;
+  --portal-bubble-border: #E8CFAC;
+  --portal-bubble-text: #2B160A;
+  --portal-tray-bg: #FBF3E6;
+  --portal-tray-border: #EDD7BA;
+  --fairy-glow-color: #FFB74D;
+}
+
+/* Scenario 4: Barista Pour-Over Bar (Sensory Aesthetic: Terracotta, Roasted Copper & Cinnamon) */
+.reservation-portal.theme-sensory {
+  --portal-backdrop: radial-gradient(circle at 50% 20%, rgba(255, 247, 241, 0.95) 0%, rgba(246, 230, 220, 0.97) 100%);
+  --portal-card-bg: linear-gradient(150deg, #FFFDFB 0%, #F8EFE7 100%);
+  --portal-border: #E6CEBF;
+  --portal-shadow: 0 24px 70px rgba(112, 48, 28, 0.13), 0 2px 10px rgba(0, 0, 0, 0.04);
+  --portal-form-pane-bg: rgba(255, 255, 255, 0.94);
+  --portal-form-pane-border: #E9D5C8;
+  --portal-text-title: #2B140E;
+  --portal-text-body: #5C3A2E;
+  --portal-text-sub: #876253;
+  --portal-card-option-bg: #FAF3EC;
+  --portal-card-option-border: #E6D0C2;
+  --portal-card-option-hover: #F2E4D8;
+  --portal-accent: #BF5A32;
+  --portal-accent-soft: rgba(191, 90, 50, 0.13);
+  --portal-tag-color: #AB4822;
+  --portal-step-badge-bg: #BF5A32;
+  --portal-step-badge-color: #FFFFFF;
+  --portal-input-bg: #FFFFFF;
+  --portal-input-border: #E2CDC1;
+  --portal-input-focus-border: #BF5A32;
+  --portal-btn-bg: linear-gradient(135deg, #D66E43 0%, #B44A22 100%);
+  --portal-btn-color: #FFFFFF;
+  --portal-btn-shadow: 0 8px 24px rgba(191, 90, 50, 0.33);
+  --portal-close-bg: #F6ECE5;
+  --portal-close-color: #5C3A2E;
+  --portal-close-border: #E2CDC1;
+  --portal-bubble-bg: #FFFFFF;
+  --portal-bubble-border: #E6CEBF;
+  --portal-bubble-text: #2B140E;
+  --portal-tray-bg: #F8EFE7;
+  --portal-tray-border: #E9D6C9;
+  --fairy-glow-color: #FF9E6D;
+}
+
+/* Scenario 5: Botanical Glasshouse (Lush Greenery: Sage, Eucalyptus & Appearing Foliage) */
+.reservation-portal.theme-lush {
+  --portal-backdrop: radial-gradient(circle at 50% 20%, rgba(241, 248, 242, 0.95) 0%, rgba(223, 237, 226, 0.97) 100%);
+  --portal-card-bg: linear-gradient(150deg, #FCFDFC 0%, #EEF6F0 100%);
+  --portal-border: #C5DEC9;
+  --portal-shadow: 0 24px 70px rgba(32, 75, 45, 0.13), 0 2px 10px rgba(0, 0, 0, 0.04);
+  --portal-form-pane-bg: rgba(255, 255, 255, 0.94);
+  --portal-form-pane-border: #CFE4D4;
+  --portal-text-title: #122517;
+  --portal-text-body: #37533E;
+  --portal-text-sub: #5F7B65;
+  --portal-card-option-bg: #F0F7F2;
+  --portal-card-option-border: #C9DFCD;
+  --portal-card-option-hover: #E2EFE5;
+  --portal-accent: #3A8050;
+  --portal-accent-soft: rgba(58, 128, 80, 0.13);
+  --portal-tag-color: #2D6B3F;
+  --portal-step-badge-bg: #3A8050;
+  --portal-step-badge-color: #FFFFFF;
+  --portal-input-bg: #FFFFFF;
+  --portal-input-border: #C2DBC7;
+  --portal-input-focus-border: #3A8050;
+  --portal-btn-bg: linear-gradient(135deg, #4A9760 0%, #317645 100%);
+  --portal-btn-color: #FFFFFF;
+  --portal-btn-shadow: 0 8px 24px rgba(58, 128, 80, 0.32);
+  --portal-close-bg: #E8F3EA;
+  --portal-close-color: #314E38;
+  --portal-close-border: #C2DBC7;
+  --portal-bubble-bg: #FFFFFF;
+  --portal-bubble-border: #C5DEC9;
+  --portal-bubble-text: #122517;
+  --portal-tray-bg: #EEF6F0;
+  --portal-tray-border: #D2E6D7;
+  --fairy-glow-color: #81C784;
+}
+
+/* ---- PORTAL WRAPPER & BACKDROP ---- */
+.reservation-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.reservation-portal.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.portal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--portal-backdrop);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1;
+  transition: background 0.5s ease;
+}
+
+/* Floating Fairy Lights Garland */
+.portal-fairy-lights {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 40px;
+}
+
+.fairy-bulb {
+  width: 10px;
+  height: 14px;
+  border-radius: 50% 50% 60% 60%;
+  background: #FFE8A3;
+  box-shadow: 0 0 14px var(--fairy-glow-color), 0 0 26px rgba(255, 174, 66, 0.45);
+  position: relative;
+  animation: fairyFlicker 3s ease-in-out infinite alternate;
+  transition: box-shadow 0.45s ease;
+}
+
+.fairy-bulb::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  background: #7D593E;
+  border-radius: 1px;
+}
+
+.fairy-bulb.b1 { animation-delay: 0.1s; }
+.fairy-bulb.b2 { animation-delay: 0.8s; }
+.fairy-bulb.b3 { animation-delay: 0.4s; }
+.fairy-bulb.b4 { animation-delay: 1.2s; }
+.fairy-bulb.b5 { animation-delay: 0.6s; }
+.fairy-bulb.b6 { animation-delay: 1.5s; }
+.fairy-bulb.b7 { animation-delay: 0.3s; }
+
+@keyframes fairyFlicker {
+  0% { opacity: 0.7; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.85; transform: scale(1); }
+}
+
+/* ---- PORTAL MODAL CONTAINER ---- */
+.portal-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  background: var(--portal-card-bg);
+  border: 1.5px solid var(--portal-border);
+  border-radius: 32px;
+  box-shadow: var(--portal-shadow);
+  padding: 38px 40px 42px;
+  box-sizing: border-box;
+  color: var(--portal-text-title);
+  animation: portalZoomIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease, color 0.45s ease;
+  overflow: hidden;
+}
+
+@keyframes portalZoomIn {
+  from { opacity: 0; transform: scale(0.95) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ---- DYNAMIC ATMOSPHERIC LAYERS ---- */
+
+/* 1. Botanical Greenery (Appears on Lush / Botanical Glasshouse - Rich Abundant Leaves) */
+.portal-botanical-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 32px;
+  z-index: 3;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reservation-portal.theme-lush .portal-botanical-decor {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Top Hanging Canopy of Overlapping Monstera & Eucalyptus across the top */
+.botanical-canopy {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 85px;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(27, 94, 32, 0.15));
+  animation: canopyBreeze 7s ease-in-out infinite alternate;
+}
+
+@keyframes canopyBreeze {
+  0% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(3px) scaleY(1.03); }
+}
+
+.botanical-leaf {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(35, 75, 45, 0.14));
+}
+
+.leaf-top-left {
+  top: -12px;
+  left: -12px;
+  width: 160px;
+  height: 160px;
+  animation: leafSway1 6s ease-in-out infinite alternate;
+}
+
+.leaf-top-right {
+  top: -16px;
+  right: 60px;
+  width: 150px;
+  height: 150px;
+  animation: leafSway2 7s ease-in-out infinite alternate;
+}
+
+/* Cascading Ivy Vines along Left & Right Edges */
+.leaf-left-cascade {
+  position: absolute;
+  top: 130px;
+  left: -6px;
+  width: 55px;
+  height: 280px;
+  animation: vineSwayLeft 6.5s ease-in-out infinite alternate;
+}
+
+.leaf-right-cascade {
+  position: absolute;
+  top: 110px;
+  right: -6px;
+  width: 55px;
+  height: 270px;
+  animation: vineSwayRight 7.5s ease-in-out infinite alternate;
+}
+
+@keyframes vineSwayLeft {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(3.5deg) translateX(2px); }
+}
+
+@keyframes vineSwayRight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-3.5deg) translateX(-2px); }
+}
+
+.leaf-bottom-left {
+  bottom: -15px;
+  left: 6px;
+  width: 140px;
+  height: 140px;
+  animation: leafSway2 6.5s ease-in-out infinite alternate;
+}
+
+.leaf-bottom-right {
+  bottom: -10px;
+  right: -10px;
+  width: 135px;
+  height: 135px;
+  animation: leafSway1 5.5s ease-in-out infinite alternate;
+}
+
+/* Floating green leaves drifting organically across the modal */
+.botanical-floating-leaf {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.botanical-floating-leaf svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bfl-1 {
+  top: 25%;
+  left: 18%;
+  width: 26px;
+  height: 26px;
+  animation: bflDrift 9s ease-in-out infinite alternate;
+}
+
+.bfl-2 {
+  top: 60%;
+  left: 28%;
+  width: 22px;
+  height: 22px;
+  animation: bflDrift 11s ease-in-out infinite alternate 1.5s;
+}
+
+.bfl-3 {
+  top: 35%;
+  right: 22%;
+  width: 28px;
+  height: 28px;
+  animation: bflDrift 10s ease-in-out infinite alternate 0.8s;
+}
+
+.bfl-4 {
+  bottom: 18%;
+  right: 12%;
+  width: 24px;
+  height: 24px;
+  animation: bflDrift 8.5s ease-in-out infinite alternate 2.2s;
+}
+
+@keyframes bflDrift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(14px, -18px) rotate(45deg); }
+  100% { transform: translate(-10px, 12px) rotate(-30deg); }
+}
+
+@keyframes leafSway1 {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(4deg) scale(1.02); }
+}
+
+@keyframes leafSway2 {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(-5deg) scale(1.02); }
+}
+
+/* 2. Rainy Window Alcove: Real Falling Rain, Condensation Drops & Overcast Mist */
+.portal-cloudy-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 32px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reservation-portal.theme-rainy .portal-cloudy-decor {
+  opacity: 1;
+}
+
+.cloud-mist {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+.mist-1 {
+  top: -40px;
+  left: 20%;
+  width: 340px;
+  height: 150px;
+  background: radial-gradient(ellipse, rgba(165, 200, 225, 0.32) 0%, transparent 70%);
+  animation: mistDrift1 12s ease-in-out infinite alternate;
+}
+
+.mist-2 {
+  top: 10px;
+  right: 15%;
+  width: 300px;
+  height: 140px;
+  background: radial-gradient(ellipse, rgba(150, 190, 218, 0.28) 0%, transparent 70%);
+  animation: mistDrift2 10s ease-in-out infinite alternate;
+}
+
+@keyframes mistDrift1 {
+  0% { transform: translateX(0) scale(1); }
+  100% { transform: translateX(35px) scale(1.08); }
+}
+
+@keyframes mistDrift2 {
+  0% { transform: translateX(0) scale(1); }
+  100% { transform: translateX(-30px) scale(1.06); }
+}
+
+/* Continuous Cascading Rain Shower */
+.rain-shower-pane {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rain-streak {
+  position: absolute;
+  top: -80px;
+  width: 1.5px;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(64, 115, 150, 0.55), rgba(70, 130, 175, 0.8), transparent);
+  transform: rotate(14deg);
+  animation: rainStreakFall 1.1s linear infinite;
+}
+
+.rain-streak.r1 { left: 8%; animation-duration: 0.95s; animation-delay: 0.1s; }
+.rain-streak.r2 { left: 16%; animation-duration: 1.25s; animation-delay: 0.6s; height: 50px; }
+.rain-streak.r3 { left: 25%; animation-duration: 1.05s; animation-delay: 0.3s; }
+.rain-streak.r4 { left: 34%; animation-duration: 1.35s; animation-delay: 0.8s; height: 55px; }
+.rain-streak.r5 { left: 42%; animation-duration: 0.9s; animation-delay: 0.2s; }
+.rain-streak.r6 { left: 52%; animation-duration: 1.15s; animation-delay: 0.7s; }
+.rain-streak.r7 { left: 61%; animation-duration: 1s; animation-delay: 0.4s; height: 65px; }
+.rain-streak.r8 { left: 70%; animation-duration: 1.3s; animation-delay: 0.9s; }
+.rain-streak.r9 { left: 78%; animation-duration: 0.92s; animation-delay: 0.15s; }
+.rain-streak.r10 { left: 85%; animation-duration: 1.2s; animation-delay: 0.5s; height: 48px; }
+.rain-streak.r11 { left: 91%; animation-duration: 1.08s; animation-delay: 0.35s; }
+.rain-streak.r12 { left: 97%; animation-duration: 1.28s; animation-delay: 0.75s; }
+
+@keyframes rainStreakFall {
+  0% { transform: translateY(0) rotate(14deg); opacity: 0; }
+  15% { opacity: 0.85; }
+  85% { opacity: 0.75; }
+  100% { transform: translateY(750px) rotate(14deg); opacity: 0; }
+}
+
+/* Condensation Droplets Sliding on Windowpane */
+.window-water-drops {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glass-droplet {
+  position: absolute;
+  width: 6px;
+  height: 8px;
+  border-radius: 50% 50% 60% 60%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(160, 200, 225, 0.6) 60%, rgba(70, 115, 148, 0.4) 100%);
+  box-shadow: 0 2px 4px rgba(40, 70, 95, 0.18);
+  animation: dropletSlide 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.glass-droplet.gd1 { top: 15%; left: 12%; animation-duration: 7s; animation-delay: 0.2s; }
+.glass-droplet.gd2 { top: 35%; left: 28%; animation-duration: 8.5s; animation-delay: 1.8s; width: 5px; height: 7px; }
+.glass-droplet.gd3 { top: 22%; left: 48%; animation-duration: 6.5s; animation-delay: 0.9s; }
+.glass-droplet.gd4 { top: 45%; left: 66%; animation-duration: 7.8s; animation-delay: 2.4s; width: 7px; height: 9px; }
+.glass-droplet.gd5 { top: 18%; left: 82%; animation-duration: 6.2s; animation-delay: 1.2s; }
+.glass-droplet.gd6 { top: 52%; left: 93%; animation-duration: 8s; animation-delay: 3s; }
+
+@keyframes dropletSlide {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.9; }
+  70% { opacity: 0.85; transform: translateY(60px); }
+  95% { opacity: 0.4; }
+  100% { transform: translateY(140px); opacity: 0; }
+}
+
+/* 3. Cozy Velvet Booth: Falling Orange, Red & Yellow Maple Leaves & Candle Hearth */
+.portal-cozy-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 32px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reservation-portal.theme-cozy .portal-cozy-decor {
+  opacity: 1;
+}
+
+.hearth-radial-glow {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 650px;
+  height: 270px;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255, 192, 100, 0.22) 0%, rgba(255, 150, 50, 0.06) 55%, transparent 75%);
+  filter: blur(22px);
+  animation: hearthFlicker 4s ease-in-out infinite alternate;
+}
+
+@keyframes hearthFlicker {
+  0% { opacity: 0.75; transform: translateX(-50%) scale(0.96); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1.04); }
+}
+
+/* Falling Autumn Maple Leaves */
+.maple-leaves-shower {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.maple-leaf-item {
+  position: absolute;
+  top: -45px;
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 3px 8px rgba(139, 45, 10, 0.25));
+  animation: mapleFlutterFall 9s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+}
+
+.maple-leaf-item svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Crimson Red Maple Leaves */
+.ml-1 { left: 10%; animation-duration: 8.5s; animation-delay: 0.2s; width: 38px; height: 38px; }
+.ml-2 { left: 45%; animation-duration: 9.5s; animation-delay: 2.8s; width: 34px; height: 34px; }
+.ml-3 { left: 78%; animation-duration: 8s; animation-delay: 1.4s; width: 36px; height: 36px; }
+
+/* Vibrant Orange Maple Leaves */
+.ml-4 { left: 24%; animation-duration: 10s; animation-delay: 1.9s; width: 40px; height: 40px; }
+.ml-5 { left: 60%; animation-duration: 8.8s; animation-delay: 0.6s; width: 35px; height: 35px; }
+.ml-6 { left: 88%; animation-duration: 9.2s; animation-delay: 3.5s; width: 38px; height: 38px; }
+
+/* Golden Yellow Maple Leaves */
+.ml-7 { left: 5%; animation-duration: 10.5s; animation-delay: 3.2s; width: 35px; height: 35px; }
+.ml-8 { left: 36%; animation-duration: 8.2s; animation-delay: 0.9s; width: 38px; height: 38px; }
+.ml-9 { left: 70%; animation-duration: 9.8s; animation-delay: 2.1s; width: 34px; height: 34px; }
+
+@keyframes mapleFlutterFall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(0.9);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  35% {
+    transform: translateY(180px) translateX(28px) rotate(80deg) scale(1.04);
+  }
+  65% {
+    transform: translateY(380px) translateX(-22px) rotate(190deg) scale(0.98);
+  }
+  88% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(680px) translateX(25px) rotate(310deg) scale(0.92);
+    opacity: 0;
+  }
+}
+
+/* 4. Sensory Aroma Layer: Floating Whole Roasted Coffee Beans & Steam Spirals */
+.portal-sensory-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 32px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reservation-portal.theme-sensory .portal-sensory-decor {
+  opacity: 1;
+}
+
+.sensory-aroma-glow {
+  position: absolute;
+  top: -10px;
+  right: 20%;
+  width: 480px;
+  height: 220px;
+  background: radial-gradient(ellipse at 50% 20%, rgba(214, 110, 67, 0.18) 0%, rgba(188, 92, 54, 0.04) 55%, transparent 75%);
+  filter: blur(25px);
+}
+
+.sensory-steam-wave {
+  position: absolute;
+  pointer-events: none;
+  animation: steamRise 5s ease-in-out infinite;
+}
+
+.ss-1 {
+  top: 60px;
+  right: 28%;
+  width: 45px;
+  height: 120px;
+  animation-delay: 0.2s;
+}
+
+.ss-2 {
+  top: 90px;
+  right: 36%;
+  width: 40px;
+  height: 110px;
+  animation-delay: 2.2s;
+}
+
+@keyframes steamRise {
+  0% { transform: translateY(20px) scaleX(0.9); opacity: 0; }
+  35% { opacity: 0.7; }
+  100% { transform: translateY(-70px) scaleX(1.2); opacity: 0; }
+}
+
+.sensory-bean {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(70, 35, 15, 0.25));
+  animation: beanTumble 8s ease-in-out infinite alternate;
+}
+
+.sensory-bean svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sb-1 { top: 22%; left: 20%; width: 28px; height: 20px; animation-duration: 7s; }
+.sb-2 { top: 58%; right: 18%; width: 26px; height: 18px; animation-duration: 9s; animation-delay: 1.2s; }
+.sb-3 { bottom: 22%; left: 24%; width: 24px; height: 17px; animation-duration: 8.5s; animation-delay: 2.5s; }
+
+@keyframes beanTumble {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-20px) rotate(40deg) scale(1.08); }
+  100% { transform: translateY(15px) rotate(-35deg) scale(0.96); }
+}
+
+/* 5. Default Sanctuary Sparkles (Warm Cafe Embers) */
+.portal-default-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 32px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.reservation-portal.theme-default .portal-default-decor {
+  opacity: 1;
+}
+
+.default-sparkle {
+  position: absolute;
+  color: #C27854;
+  opacity: 0.6;
+  animation: sparkleFloat 4s ease-in-out infinite alternate;
+  font-size: 1.1rem;
+}
+
+.ds-1 { top: 18%; left: 22%; animation-delay: 0.1s; }
+.ds-2 { top: 32%; right: 26%; animation-delay: 1.4s; font-size: 0.85rem; }
+.ds-3 { bottom: 28%; left: 30%; animation-delay: 2.2s; }
+.ds-4 { bottom: 15%; right: 18%; animation-delay: 0.8s; font-size: 0.9rem; }
+
+@keyframes sparkleFloat {
+  0% { transform: scale(0.85) rotate(0deg); opacity: 0.3; }
+  100% { transform: scale(1.2) rotate(20deg); opacity: 0.8; }
+}
+
+/* ---- CLOSE BUTTON ---- */
+.portal-close-btn {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--portal-close-bg);
+  border: 1.5px solid var(--portal-close-border);
+  color: var(--portal-close-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+}
+
+.portal-close-btn:hover {
+  background: var(--portal-accent);
+  border-color: var(--portal-accent);
+  color: #FFFFFF;
+  transform: rotate(90deg) scale(1.08);
+  box-shadow: 0 4px 16px var(--portal-accent-soft);
+}
+
+/* ---- TWO-COLUMN GRID ---- */
+.portal-inner {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 36px;
+  align-items: start;
+  position: relative;
+  z-index: 10;
+}
+
+/* ---- LEFT COLUMN: MONSIEUR BARNABY STAGE ---- */
+.portal-character-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+}
+
+/* Speech Bubble */
+.barnaby-speech-bubble {
+  position: relative;
+  background: var(--portal-bubble-bg);
+  border: 2px solid var(--portal-bubble-border);
+  border-radius: 20px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+  animation: bubbleFloat 3.5s ease-in-out infinite alternate;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.barnaby-speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 11px solid var(--portal-bubble-bg);
+  transition: border-top-color 0.4s ease;
+}
+
+.bubble-sparkle {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  font-size: 1rem;
+  animation: sparkleTwinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes bubbleFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes sparkleTwinkle {
+  0% { transform: scale(0.9) rotate(0deg); opacity: 0.7; }
+  100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+}
+
+.barnaby-speech-bubble p {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--portal-bubble-text);
+  text-align: center;
+  transition: color 0.4s ease;
+}
+
+.barnaby-speech-bubble strong {
+  color: var(--portal-accent);
+  font-weight: 700;
+  transition: color 0.4s ease;
+}
+
+/* Barnaby Character SVG Wrap */
+.barnaby-character-wrap {
+  width: 250px;
+  height: 295px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.barnaby-character-wrap:hover {
+  transform: scale(1.03) translateY(-2px);
+}
+
+.barnaby-character-wrap.is-purring {
+  animation: barnabyPurrVibe 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes barnabyPurrVibe {
+  0% { transform: translateY(0) scale(1.03) rotate(-0.6deg); }
+  100% { transform: translateY(-3px) scale(1.04) rotate(0.6deg); }
+}
+
+.barnaby-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 14px 28px rgba(60, 36, 20, 0.14));
+  transition: filter 0.3s ease;
+}
+
+.barnaby-character-wrap:hover .barnaby-svg {
+  filter: drop-shadow(0 18px 32px rgba(60, 36, 20, 0.20));
+}
+
+/* Barnaby SVG Micro-Animations */
+.barnaby-tail {
+  transform-origin: 220px 275px;
+  animation: barnabyTail 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes barnabyTail {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(14deg); }
+}
+
+.barnaby-waving-hand {
+  transform-origin: 228px 210px;
+  animation: barnabyWave 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes barnabyWave {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-11deg); }
+}
+
+/* Eyes blinking animation */
+.barnaby-happy-eyes {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.barnaby-eyes {
+  opacity: 1;
+  transform-origin: 160px 115px;
+  transition: opacity 0.2s ease;
+  animation: catBlink 4.5s infinite;
+}
+
+@keyframes catBlink {
+  0%, 95%, 100% { transform: scaleY(1); }
+  97.5% { transform: scaleY(0.08); }
+}
+
+/* On Purr / Hover */
+.barnaby-character-wrap:hover .barnaby-eyes,
+.barnaby-character-wrap.is-purring .barnaby-eyes {
+  opacity: 0;
+}
+
+.barnaby-character-wrap:hover .barnaby-happy-eyes,
+.barnaby-character-wrap.is-purring .barnaby-happy-eyes {
+  opacity: 1;
+}
+
+/* Pet Button */
+.barnaby-status-badge {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.purr-btn {
+  background: var(--portal-card-option-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--portal-text-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.22s ease;
+}
+
+.purr-btn:hover {
+  background: var(--portal-accent);
+  border-color: var(--portal-accent);
+  color: #FFFFFF;
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px var(--portal-accent-soft);
+}
+
+/* Tasting Tray Pre-Order Box */
+.portal-tray-preview {
+  width: 100%;
+  background: var(--portal-tray-bg);
+  border: 1.5px solid var(--portal-tray-border);
+  border-radius: 20px;
+  padding: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.tray-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--portal-tray-border);
+}
+
+.cloche-icon {
+  font-size: 1.15rem;
+}
+
+.tray-preview-title {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  letter-spacing: -0.01em;
+}
+
+.tray-preview-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.tray-empty-hint {
+  font-size: 0.8rem;
+  color: var(--portal-text-sub);
+  font-style: italic;
+  text-align: center;
+  padding: 6px 0;
+}
+
+.tray-preitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--portal-text-body);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--portal-tray-border);
+}
+
+.preitem-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--portal-text-title);
+  font-weight: 600;
+}
+
+.preitem-qty {
+  font-size: 0.74rem;
+  color: var(--portal-text-sub);
+  background: var(--portal-accent-soft);
+  border: 1px solid var(--portal-accent-soft);
+  color: var(--portal-accent);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-weight: 700;
+}
+
+.preitem-price {
+  font-weight: 700;
+  color: var(--portal-accent);
+}
+
+.tray-preview-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--portal-tray-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.84rem;
+  color: var(--portal-text-body);
+}
+
+.tray-preview-footer strong {
+  font-size: 1.05rem;
+  color: var(--portal-text-title);
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+}
+
+/* ---- RIGHT COLUMN: RESERVATION PARLOUR FORM ---- */
+.portal-form-pane {
+  background: var(--portal-form-pane-bg);
+  border: 1px solid var(--portal-form-pane-border);
+  border-radius: 24px;
+  padding: 28px 30px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.form-pane-header {
+  margin-bottom: 22px;
+}
+
+.form-pane-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--portal-tag-color);
+  margin-bottom: 6px;
+  transition: color 0.4s ease;
+}
+
+.form-pane-title {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 1.95rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  margin: 0 0 6px;
+  letter-spacing: -0.015em;
+  transition: color 0.4s ease;
+}
+
+.form-pane-subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  color: var(--portal-text-sub);
+  margin: 0;
+  line-height: 1.45;
+  transition: color 0.4s ease;
+}
+
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  letter-spacing: -0.01em;
+  transition: color 0.4s ease;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--portal-step-badge-bg);
+  color: var(--portal-step-badge-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.input-sublabel {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--portal-text-sub);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Step 1: Dream Table Options Grid */
+.table-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.table-options-grid.pulse-highlight {
+  animation: gridPulse 1.2s ease-in-out;
+}
+
+@keyframes gridPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); filter: drop-shadow(0 0 10px var(--portal-accent)); }
+}
+
+.table-option {
+  position: relative;
+  background: var(--portal-card-option-bg);
+  border: 1.5px solid var(--portal-card-option-border);
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.table-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.table-option:hover {
+  border-color: var(--portal-accent);
+  transform: translateY(-2px);
+  background: var(--portal-card-option-hover);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.table-option.is-selected {
+  background: #FFFFFF;
+  border-color: var(--portal-accent);
+  box-shadow: 0 6px 20px var(--portal-accent-soft), 0 0 0 1.5px var(--portal-accent);
+  transform: translateY(-2px);
+}
+
+/* In-Button / In-Card Ambient Micro-Decorations */
+.btn-ambient-maple,
+.btn-ambient-sensory,
+.btn-ambient-lush {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 2. Cozy Button: Mini Orange, Red & Yellow Maple Leaves */
+.btn-maple {
+  position: absolute;
+  filter: drop-shadow(0 2px 4px rgba(180, 60, 20, 0.25));
+  transition: transform 0.3s ease;
+}
+
+.bm-red {
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  animation: btnMapleSway1 4s ease-in-out infinite alternate;
+}
+
+.bm-orange {
+  top: 24px;
+  right: 28px;
+  width: 18px;
+  height: 18px;
+  animation: btnMapleSway2 5s ease-in-out infinite alternate 0.5s;
+}
+
+.bm-yellow {
+  top: 6px;
+  right: 36px;
+  width: 16px;
+  height: 16px;
+  animation: btnMapleSway1 4.5s ease-in-out infinite alternate 1s;
+}
+
+@keyframes btnMapleSway1 {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(18deg) scale(1.08) translateY(-2px); }
+}
+
+@keyframes btnMapleSway2 {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(-15deg) scale(1.06) translateY(2px); }
+}
+
+/* 3. Sensory Button: Coffee Steam & Roasted Bean */
+.btn-steam {
+  position: absolute;
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, transparent, rgba(191, 90, 50, 0.6), transparent);
+  border-radius: 999px;
+  animation: btnSteamRise 2.5s ease-in-out infinite;
+}
+
+.bs1 { top: 12px; right: 28px; animation-delay: 0.2s; }
+.bs2 { top: 8px; right: 20px; animation-delay: 1.2s; }
+
+@keyframes btnSteamRise {
+  0% { transform: translateY(12px) scaleX(0.8); opacity: 0; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(-8px) scaleX(1.3); opacity: 0; }
+}
+
+.btn-bean {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  width: 20px;
+  height: 14px;
+  filter: drop-shadow(0 2px 4px rgba(70, 35, 15, 0.2));
+  animation: btnBeanSpin 6s ease-in-out infinite alternate;
+}
+
+@keyframes btnBeanSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(20deg) scale(1.08); }
+}
+
+/* 4. Lush Button: Sprouting Botanical Leaves */
+.btn-leaf {
+  position: absolute;
+  filter: drop-shadow(0 2px 4px rgba(35, 75, 45, 0.2));
+}
+
+.bl1 {
+  top: 8px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  animation: btnLeafGrow 5s ease-in-out infinite alternate;
+}
+
+.bl2 {
+  top: 22px;
+  right: 24px;
+  width: 18px;
+  height: 18px;
+  animation: btnLeafGrow 6s ease-in-out infinite alternate 0.8s;
+}
+
+.bl3 {
+  top: 6px;
+  right: 32px;
+  width: 16px;
+  height: 16px;
+  animation: btnLeafGrow 5.5s ease-in-out infinite alternate 1.6s;
+}
+
+@keyframes btnLeafGrow {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(8deg); }
+}
+
+.table-badge {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--portal-tag-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: color 0.4s ease;
+}
+
+.table-icon {
+  font-size: 1.5rem;
+  margin: 2px 0;
+}
+
+.table-title {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  letter-spacing: -0.01em;
+  transition: color 0.4s ease;
+}
+
+.table-desc {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.77rem;
+  color: var(--portal-text-body);
+  line-height: 1.4;
+  transition: color 0.4s ease;
+}
+
+/* Step 2: Date & Sitting Timeslot */
+.datetime-row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.portal-input {
+  width: 100%;
+  background: var(--portal-input-bg);
+  border: 1.5px solid var(--portal-input-border);
+  border-radius: 14px;
+  padding: 10px 14px;
+  color: var(--portal-text-title);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.portal-input:focus {
+  outline: none;
+  border-color: var(--portal-input-focus-border);
+  box-shadow: 0 0 0 3px var(--portal-accent-soft);
+}
+
+.portal-input::placeholder {
+  color: var(--portal-text-sub);
+  opacity: 0.7;
+}
+
+.date-input {
+  cursor: pointer;
+  color-scheme: light;
+}
+
+.timeslot-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.timeslot-pill {
+  background: var(--portal-card-option-bg);
+  border: 1.2px solid var(--portal-card-option-border);
+  border-radius: 12px;
+  padding: 8px 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: all 0.22s ease;
+}
+
+.timeslot-pill span {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  transition: color 0.2s ease;
+}
+
+.timeslot-pill small {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.65rem;
+  color: var(--portal-text-sub);
+  transition: color 0.2s ease;
+}
+
+.timeslot-pill:hover {
+  border-color: var(--portal-accent);
+  background: var(--portal-card-option-hover);
+}
+
+.timeslot-pill.is-active {
+  background: var(--portal-btn-bg);
+  border-color: transparent;
+  box-shadow: var(--portal-btn-shadow);
+}
+
+.timeslot-pill.is-active span {
+  color: var(--portal-btn-color);
+}
+
+.timeslot-pill.is-active small {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+/* Step 3: Guests & Occasion */
+.guests-occasion-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.portal-guest-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--portal-card-option-bg);
+  border: 1.5px solid var(--portal-card-option-border);
+  border-radius: 14px;
+  padding: 5px 8px;
+  transition: border-color 0.4s ease;
+}
+
+.guest-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--portal-card-option-border);
+  background: var(--portal-input-bg);
+  color: var(--portal-text-title);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guest-btn:hover {
+  background: var(--portal-accent);
+  border-color: var(--portal-accent);
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+.guest-count-val {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+}
+
+.occasion-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.occasion-tag {
+  background: var(--portal-card-option-bg);
+  border: 1px solid var(--portal-card-option-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--portal-text-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.occasion-tag:hover {
+  border-color: var(--portal-accent);
+  color: var(--portal-text-title);
+}
+
+.occasion-tag.is-active {
+  background: var(--portal-accent-soft);
+  border-color: var(--portal-accent);
+  color: var(--portal-accent);
+  font-weight: 700;
+  box-shadow: 0 2px 8px var(--portal-accent-soft);
+}
+
+/* Step 4: Contact Inputs */
+.contact-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.input-field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Submit Button */
+.portal-submit-btn {
+  margin-top: 6px;
+  background: var(--portal-btn-bg);
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--portal-btn-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: var(--portal-btn-shadow);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-submit-btn:hover {
+  transform: translateY(-2px) scale(1.015);
+  filter: brightness(1.05);
+  box-shadow: var(--portal-btn-shadow), 0 12px 30px var(--portal-accent-soft);
+}
+
+.portal-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---- CONFIRMATION TICKET VIEW ---- */
+.portal-ticket-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+  animation: ticketViewIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes ticketViewIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.ticket-celebration {
+  margin-bottom: 24px;
+}
+
+/* Wax Seal / Paw of Approval Badge */
+.paw-stamp-badge {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FF7082 0%, #D42E46 70%, #941729 100%);
+  border: 3px dashed #FFE3B3;
+  margin: 0 auto 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(212, 46, 70, 0.45), inset 0 2px 8px rgba(255, 255, 255, 0.4);
+  animation: stampSlam 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes stampSlam {
+  0% { transform: scale(2.2) rotate(-25deg); opacity: 0; }
+  70% { transform: scale(0.9) rotate(8deg); }
+  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+
+.stamp-paw {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.stamp-text {
+  font-size: 0.56rem;
+  font-weight: 900;
+  color: #FFF2DF;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.stamp-cafe {
+  font-size: 0.48rem;
+  font-weight: 700;
+  color: #FFD4DB;
+  letter-spacing: 0.04em;
+}
+
+.ticket-congrats {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  margin: 0 0 4px;
+  letter-spacing: -0.015em;
+}
+  font-weight: 500;
+}
+
+/* Step 3: Guests & Occasion */
+.guests-occasion-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.portal-guest-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--portal-card-option-bg);
+  border: 1.5px solid var(--portal-card-option-border);
+  border-radius: 14px;
+  padding: 5px 8px;
+  transition: border-color 0.4s ease;
+}
+
+.guest-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--portal-card-option-border);
+  background: var(--portal-input-bg);
+  color: var(--portal-text-title);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guest-btn:hover {
+  background: var(--portal-accent);
+  border-color: var(--portal-accent);
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+.guest-count-val {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+}
+
+.occasion-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.occasion-tag {
+  background: var(--portal-card-option-bg);
+  border: 1px solid var(--portal-card-option-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--portal-text-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.occasion-tag:hover {
+  border-color: var(--portal-accent);
+  color: var(--portal-text-title);
+}
+
+.occasion-tag.is-active {
+  background: var(--portal-accent-soft);
+  border-color: var(--portal-accent);
+  color: var(--portal-accent);
+  font-weight: 700;
+  box-shadow: 0 2px 8px var(--portal-accent-soft);
+}
+
+/* Step 4: Contact Inputs */
+.contact-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.input-field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Submit Button */
+.portal-submit-btn {
+  margin-top: 6px;
+  background: var(--portal-btn-bg);
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--portal-btn-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: var(--portal-btn-shadow);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-submit-btn:hover {
+  transform: translateY(-2px) scale(1.015);
+  filter: brightness(1.05);
+  box-shadow: var(--portal-btn-shadow), 0 12px 30px var(--portal-accent-soft);
+}
+
+.portal-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---- CONFIRMATION TICKET VIEW ---- */
+.portal-ticket-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+  animation: ticketViewIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes ticketViewIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.ticket-celebration {
+  margin-bottom: 24px;
+}
+
+/* Wax Seal / Paw of Approval Badge */
+.paw-stamp-badge {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FF7082 0%, #D42E46 70%, #941729 100%);
+  border: 3px dashed #FFE3B3;
+  margin: 0 auto 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(212, 46, 70, 0.45), inset 0 2px 8px rgba(255, 255, 255, 0.4);
+  animation: stampSlam 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes stampSlam {
+  0% { transform: scale(2.2) rotate(-25deg); opacity: 0; }
+  70% { transform: scale(0.9) rotate(8deg); }
+  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+
+.stamp-paw {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.stamp-text {
+  font-size: 0.56rem;
+  font-weight: 900;
+  color: #FFF2DF;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.stamp-cafe {
+  font-size: 0.48rem;
+  font-weight: 700;
+  color: #FFD4DB;
+  letter-spacing: 0.04em;
+}
+
+.ticket-congrats {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  margin: 0 0 4px;
+  letter-spacing: -0.015em;
+}
+
+.ticket-congrats-sub {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.9rem;
+  color: var(--portal-text-sub);
+  margin: 0;
+}
+
+/* Vintage Boarding-Pass Cafe Ticket */
+.vintage-cafe-ticket {
+  width: 100%;
+  max-width: 520px;
+  background: #FFFFFF;
+  border: 2px solid var(--portal-border);
+  border-radius: 20px;
+  color: var(--portal-text-title);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: border-color 0.4s ease;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  background: var(--portal-card-option-bg);
+  border-bottom: 1px solid var(--portal-border);
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.brand-crest {
+  font-size: 1.5rem;
+}
+
+.ticket-brand strong {
+  display: block;
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  letter-spacing: 0.02em;
+}
+
+.ticket-brand small {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.72rem;
+  color: var(--portal-text-sub);
+}
+
+.ticket-pass-id {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--portal-accent);
+  letter-spacing: 0.05em;
+}
+
+/* Cutout Notches */
+.ticket-notch-row {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+}
+
+.ticket-notch {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--portal-card-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--portal-border);
+}
+
+.ticket-notch.left { left: -9px; }
+.ticket-notch.right { right: -9px; }
+
+.ticket-dash-line {
+  width: 100%;
+  margin: 0 16px;
+  border-top: 2px dashed var(--portal-border);
+}
+
+/* Ticket Body Grid */
+.ticket-body {
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  text-align: left;
+}
+
+.ticket-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ticket-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.tf-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--portal-text-sub);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tf-val {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+}
+
+.tf-val.highlight {
+  color: var(--portal-accent);
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+  font-size: 1.05rem;
+}
+
+.tf-val.order-summary {
+  font-size: 0.84rem;
+  color: var(--portal-text-body);
+  font-weight: 500;
+}
+
+/* Ticket Footer */
+.ticket-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 22px;
+  background: var(--portal-card-option-bg);
+  border-top: 1px solid var(--portal-border);
+}
+
+.ticket-barcode {
+  font-family: monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: var(--portal-text-sub);
+  opacity: 0.75;
+}
+
+.ticket-status-pill {
+  background: rgba(58, 128, 80, 0.12);
+  border: 1px solid rgba(58, 128, 80, 0.35);
+  color: #2E6D40;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Ticket Action Buttons */
+.ticket-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.ticket-action-btn {
+  flex: 1 1 calc(50% - 10px);
+  min-width: 140px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ticket-action-btn.btn-primary {
+  flex: 1 1 100%;
+  background: var(--portal-btn-bg);
+  border: none;
+  color: var(--portal-btn-color);
+  box-shadow: var(--portal-btn-shadow);
+}
+
+.ticket-action-btn.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.ticket-action-btn.btn-secondary {
+  background: var(--portal-card-option-bg);
+  border: 1.5px solid var(--portal-border);
+  color: var(--portal-text-body);
+}
+
+.ticket-action-btn.btn-secondary:hover {
+  background: var(--portal-card-option-hover);
+  border-color: var(--portal-accent);
+  color: var(--portal-text-title);
+}
+
+@media (max-width: 900px) {
+  .portal-modal {
+    padding: 24px 20px 30px;
+  }
+
+  .portal-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .portal-character-pane {
+    order: 2;
+  }
+
+  .portal-form-pane {
+    order: 1;
+  }
+
+  .barnaby-character-wrap {
+    width: 200px;
+    height: 235px;
+  }
+
+  .table-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .datetime-row {
+    grid-template-columns: 1fr;
+  }
+
+  .timeslot-pills {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .guests-occasion-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-body {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-actions {
+    flex-direction: column;
+  }
+
+  .ticket-action-btn {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   6. PRINT STYLESHEET: VINTAGE TABLE PASS ONLY (EXACTLY 1 PAGE)
+   ============================================================ */
+@media print {
+  @page {
+    size: auto;
+    margin: 12mm;
+  }
+
+  html, body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+    color: #1A120B !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide absolutely everything in body except reservation portal */
+  body > * {
+    display: none !important;
+  }
+
+  /* Show only the reservation portal wrapper */
+  body > #reservation-portal {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide backdrop, decor layers, character stage, header, form, celebration badge, action buttons */
+  #reservation-portal .portal-backdrop,
+  #reservation-portal .portal-close-btn,
+  #reservation-portal .portal-header,
+  #reservation-portal .portal-character-pane,
+  #reservation-portal .portal-botanical-decor,
+  #reservation-portal .portal-cloudy-decor,
+  #reservation-portal .portal-cozy-decor,
+  #reservation-portal .portal-sensory-decor,
+  #reservation-portal .portal-default-decor,
+  #reservation-portal .reservation-form,
+  #reservation-portal .ticket-celebration,
+  #reservation-portal .ticket-actions {
+    display: none !important;
+  }
+
+  #reservation-portal .portal-modal {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  #reservation-portal .portal-inner,
+  #reservation-portal .portal-form-pane,
+  #reservation-portal .portal-ticket-view {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Format only the vintage ticket on the single page */
+  #vintage-ticket {
+    display: block !important;
+    width: 440px !important;
+    max-width: 440px !important;
+    margin: 30px auto !important;
+    box-shadow: none !important;
+    border: 2px solid #2D4C3A !important;
+    border-radius: 16px !important;
+    background: #FFFFFF !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .ticket-header {
+    background: #F4F8F5 !important;
+    border-bottom: 1px solid #D5E2D9 !important;
+  }
+
+  .ticket-footer {
+    background: #F4F8F5 !important;
+    border-top: 1px solid #D5E2D9 !important;
+  }
+
+  .ticket-notch {
+    background: #FFFFFF !important;
+    border: 1px solid #D5E2D9 !important;
+  }
+
+  .ticket-dash-line {
+    border-top: 2px dashed #B8D0C0 !important;
+  }
+
+  .tf-val.highlight {
+    color: #2D6A4F !important;
+  }
+
+  .ticket-pass-id {
+    color: #2D6A4F !important;
+  }
+
+  .ticket-status-pill {
+    background: #E8F5EC !important;
+    border-color: #2D6A4F !important;
+    color: #2D6A4F !important;
+  }
+}
