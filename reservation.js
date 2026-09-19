@@ -1,9 +1,9 @@
 /* --------------------------------------------------------------------------
-   4. MONSIEUR BARNABY'S INTERACTIVE RESERVATION PARLOUR
+   4. MR. BARNABY'S INTERACTIVE RESERVATION PARLOUR
    Controls:
    - Full-screen dining room stage opening & closing
    - Tasting Tray pre-order auto-population
-   - Monsieur Barnaby's dynamic speech bubble & purring reactions
+   - Mr. Barnaby's dynamic speech bubble & purring reactions
    - Interactive table selection & time slot picking
    - Paw of Approval wax seal animation & vintage boarding-pass ticket generation
    -------------------------------------------------------------------------- */
@@ -103,14 +103,14 @@ function openReservationPortal() {
       trayTotalEl.textContent = `৳ ${savedTray.totalPrice.toLocaleString()}`;
 
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ah, magnifique taste! ♡ I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
+        barnabySpeechText.innerHTML = `Ah, magnificent taste! ♡ I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
       }
     } else {
       trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
       trayTotalEl.textContent = '৳ 0';
 
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Bonjour, dear coffee lover! ♡ I am <strong>Monsieur Barnaby</strong>, your maître d'. Allow me to prepare our coziest candlelit nook for your visit!`;
+        barnabySpeechText.innerHTML = `Hello, dear coffee lover! ♡ I am <strong>Mr. Barnaby</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
       }
     }
   }
@@ -301,7 +301,7 @@ if (resForm) {
 
     // Barnaby's congratulations speech
     if (barnabySpeechText) {
-      barnabySpeechText.innerHTML = `Félicitations, <strong>${guestName}</strong>! ♡ Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
+      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! ♡ Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
     }
   });
 }

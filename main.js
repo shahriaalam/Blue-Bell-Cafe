@@ -15,7 +15,7 @@ mountLetsScroll(document.getElementById('world'), {
   // Brand Header Configuration (Horizontal logo inside white capsule)
   brand: {
     name: 'Blue Bell Café',
-    logo: 'assets/logo.png',
+    logo: 'assets/Logo and falcon/logo.png',
     logoOnly: true, // Only show the logo graphic without duplicate text
     href: '#top'
   },

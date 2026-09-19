@@ -2,8 +2,20 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/assets/logo.png",
+      "destination": "/assets/Logo and falcon/logo.png"
+    },
+    {
       "source": "/assets/Logo.png",
-      "destination": "/assets/logo.png"
+      "destination": "/assets/Logo and falcon/logo.png"
+    },
+    {
+      "source": "/assets/favicon.png",
+      "destination": "/assets/Logo and falcon/Falcon.jpg"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/assets/Logo and falcon/Falcon.jpg"
     }
   ]
 }

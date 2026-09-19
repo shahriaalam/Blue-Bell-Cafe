@@ -1,6 +1,6 @@
 /* ==========================================================================
    BLUE BELL CAFÉ — TABLE RESERVATION PARLOUR (reservation.css)
-   Dedicated stylesheet for Monsieur Barnaby's Table Reservation Portal
+   Dedicated stylesheet for Mr. Barnaby's Table Reservation Portal
    ========================================================================== */
 
 :root {
@@ -123,8 +123,8 @@ html, body {
 }
 
 /* ==========================================================================
-   5. MONSIEUR BARNABY'S TABLE RESERVATION PARLOUR (LIGHT & AESTHETIC RE-DESIGN)
-   Full-screen theatrical dining portal featuring Monsieur Barnaby, the Maître D'
+   5. MR. BARNABY'S TABLE RESERVATION PARLOUR (LIGHT & AESTHETIC RE-DESIGN)
+   Full-screen theatrical dining portal featuring Mr. Barnaby, the Head Host
    cartoon cat.
    
    5 Dynamic Ambient Atmospheric Color Themes:
@@ -964,7 +964,7 @@ html, body {
   z-index: 10;
 }
 
-/* ---- LEFT COLUMN: MONSIEUR BARNABY STAGE ---- */
+/* ---- LEFT COLUMN: MR. BARNABY STAGE ---- */
 .portal-character-pane {
   display: flex;
   flex-direction: column;
@@ -1644,201 +1644,6 @@ html, body {
 
 .timeslot-pill.is-active small {
   color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-}
-
-/* Step 3: Guests & Occasion */
-.guests-occasion-row {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.portal-guest-stepper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--portal-card-option-bg);
-  border: 1.5px solid var(--portal-card-option-border);
-  border-radius: 14px;
-  padding: 5px 8px;
-  transition: border-color 0.4s ease;
-}
-
-.guest-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--portal-card-option-border);
-  background: var(--portal-input-bg);
-  color: var(--portal-text-title);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 1.1rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.guest-btn:hover {
-  background: var(--portal-accent);
-  border-color: var(--portal-accent);
-  color: #FFFFFF;
-  transform: scale(1.1);
-}
-
-.guest-count-val {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--portal-text-title);
-}
-
-.occasion-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.occasion-tag {
-  background: var(--portal-card-option-bg);
-  border: 1px solid var(--portal-card-option-border);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--portal-text-body);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.occasion-tag:hover {
-  border-color: var(--portal-accent);
-  color: var(--portal-text-title);
-}
-
-.occasion-tag.is-active {
-  background: var(--portal-accent-soft);
-  border-color: var(--portal-accent);
-  color: var(--portal-accent);
-  font-weight: 700;
-  box-shadow: 0 2px 8px var(--portal-accent-soft);
-}
-
-/* Step 4: Contact Inputs */
-.contact-inputs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.input-field.full-width {
-  grid-column: 1 / -1;
-}
-
-/* Submit Button */
-.portal-submit-btn {
-  margin-top: 6px;
-  background: var(--portal-btn-bg);
-  border: none;
-  border-radius: 999px;
-  padding: 14px 28px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--portal-btn-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: var(--portal-btn-shadow);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.portal-submit-btn:hover {
-  transform: translateY(-2px) scale(1.015);
-  filter: brightness(1.05);
-  box-shadow: var(--portal-btn-shadow), 0 12px 30px var(--portal-accent-soft);
-}
-
-.portal-submit-btn:active {
-  transform: scale(0.98);
-}
-
-/* ---- CONFIRMATION TICKET VIEW ---- */
-.portal-ticket-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 10px 0;
-  animation: ticketViewIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes ticketViewIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.ticket-celebration {
-  margin-bottom: 24px;
-}
-
-/* Wax Seal / Paw of Approval Badge */
-.paw-stamp-badge {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #FF7082 0%, #D42E46 70%, #941729 100%);
-  border: 3px dashed #FFE3B3;
-  margin: 0 auto 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(212, 46, 70, 0.45), inset 0 2px 8px rgba(255, 255, 255, 0.4);
-  animation: stampSlam 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes stampSlam {
-  0% { transform: scale(2.2) rotate(-25deg); opacity: 0; }
-  70% { transform: scale(0.9) rotate(8deg); }
-  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
-}
-
-.stamp-paw {
-  font-size: 1.8rem;
-  line-height: 1;
-}
-
-.stamp-text {
-  font-size: 0.56rem;
-  font-weight: 900;
-  color: #FFF2DF;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-
-.stamp-cafe {
-  font-size: 0.48rem;
-  font-weight: 700;
-  color: #FFD4DB;
-  letter-spacing: 0.04em;
-}
-
-.ticket-congrats {
-  font-family: Georgia, "Times New Roman", Times, serif !important;
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: var(--portal-text-title);
-  margin: 0 0 4px;
-  letter-spacing: -0.015em;
-}
   font-weight: 500;
 }
 
