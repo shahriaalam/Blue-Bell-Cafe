@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="reservation.css">
   <!-- Instant Prefetch for Main Sanctuary -->
@@ -301,9 +301,9 @@
 
       <!-- 5. Default Sanctuary Sparkles (Warm Cafe Embers) -->
       <div class="portal-default-decor" aria-hidden="true">
-        <span class="default-sparkle ds-1">✨</span>
+        <span class="default-sparkle ds-1">✦</span>
         <span class="default-sparkle ds-2">✦</span>
-        <span class="default-sparkle ds-3">✨</span>
+        <span class="default-sparkle ds-3">✦</span>
         <span class="default-sparkle ds-4">✦</span>
       </div>
 
@@ -319,8 +319,8 @@
         <div class="portal-character-pane">
           <!-- Speech Bubble -->
           <div class="barnaby-speech-bubble" id="barnaby-bubble">
-            <span class="bubble-sparkle">✨</span>
-            <p id="barnaby-speech-text">Hello, coffee lover! ♡ I am <strong>Mr. Barnaby</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!</p>
+            <span class="bubble-sparkle">✦</span>
+            <p id="barnaby-speech-text">Welcome! I am <strong>Mr. Barnaby</strong>, your feline head host. Allow me to prepare our coziest candlelit nook for your visit.</p>
           </div>
 
           <!-- The Chubby Cat Waiter Interactive Character -->
@@ -722,7 +722,7 @@
           <div class="barnaby-status-badge">
             <button type="button" class="purr-btn" id="purr-btn" title="Pet Mr. Barnaby">
               <span>🐾 Pet Mr. Barnaby</span>
-              <span class="purr-hearts" id="purr-hearts">♡ ♡</span>
+              <span class="purr-hearts" id="purr-hearts"></span>
             </button>
           </div>
 
@@ -747,7 +747,7 @@
           <!-- Active Form View -->
           <div class="portal-form-view" id="portal-form-view">
             <div class="form-pane-header">
-              <span class="form-pane-tag">♡ Table Booking Sanctuary</span>
+              <span class="form-pane-tag">Table Reservation Parlour</span>
               <h3 class="form-pane-title" id="portal-title">Reserve Your Table</h3>
               <p class="form-pane-subtitle">Guaranteed private seating with table-side pour-over ceremony in Gulshan 2.</p>
             </div>
@@ -762,7 +762,7 @@
                 <div class="table-options-grid">
                   <label class="table-option" data-table-id="window">
                     <input type="radio" name="table_setting" value="Rainy Window Alcove">
-                    <span class="table-badge">Most Romantic ♡</span>
+                    <span class="table-badge">Most Romantic</span>
                     <span class="table-icon">🌧️</span>
                     <strong class="table-title">Rainy Window Alcove</strong>
                     <span class="table-desc">Candlelit marble table by the glass overlooking rain-kissed greenery.</span>
@@ -857,14 +857,14 @@
                     <span class="input-sublabel">Party Size</span>
                     <div class="portal-guest-stepper">
                       <button type="button" class="guest-btn" id="guest-minus" title="Decrease guests">−</button>
-                      <span class="guest-count-val" id="guest-count">2 Guests ♡</span>
+                      <span class="guest-count-val" id="guest-count">2 Guests</span>
                       <button type="button" class="guest-btn" id="guest-plus" title="Increase guests">+</button>
                     </div>
                   </div>
                   <div class="occasion-wrap">
                     <span class="input-sublabel">Special Occasion</span>
                     <div class="occasion-tags">
-                      <button type="button" class="occasion-tag is-active" data-occasion="Date Night ♡">Date Night ♡</button>
+                      <button type="button" class="occasion-tag is-active" data-occasion="Date Night">Date Night</button>
                       <button type="button" class="occasion-tag" data-occasion="Birthday Celebration 🎂">Birthday 🎂</button>
                       <button type="button" class="occasion-tag" data-occasion="Quiet Reading 📖">Quiet Reading 📖</button>
                       <button type="button" class="occasion-tag" data-occasion="Coffee Tasting ☕">Coffee Tasting ☕</button>
@@ -894,7 +894,7 @@
 
               <!-- Submit Button -->
               <button type="submit" class="portal-submit-btn" id="portal-submit-btn">
-                <span>Seal Reservation with Barnaby's Paw ♡</span>
+                <span>Confirm Reservation with Mr. Barnaby</span>
                 <span class="btn-sparkle">🐾</span>
               </button>
             </form>
@@ -910,7 +910,7 @@
                 <span class="stamp-text">PAW OF APPROVAL</span>
                 <span class="stamp-cafe">BLUE BELL CAFÉ</span>
               </div>
-              <h3 class="ticket-congrats">Table Confirmed! ♡</h3>
+              <h3 class="ticket-congrats">Table Confirmed!</h3>
               <p class="ticket-congrats-sub">Mr. Barnaby has reserved your candlelit table and notified the baristas.</p>
             </div>
 
@@ -921,7 +921,7 @@
                   <span class="brand-crest">☕</span>
                   <div>
                     <strong>BLUE BELL CAFÉ</strong>
-                    <small>Gulshan 2 Sanctuary • Table Booking Pass</small>
+                    <small>Gulshan 2 Roastery • Table Booking Pass</small>
                   </div>
                 </div>
                 <div class="ticket-pass-id" id="ticket-pass-id">#BBC-7892</div>
@@ -946,7 +946,7 @@
                 </div>
                 <div class="ticket-field">
                   <span class="tf-label">PARTY &amp; OCCASION</span>
-                  <strong class="tf-val" id="ticket-party">2 Guests • Date Night ♡</strong>
+                  <strong class="tf-val" id="ticket-party">2 Guests • Date Night</strong>
                 </div>
                 <div class="ticket-field full-width" id="ticket-order-row">
                   <span class="tf-label">CURATED ORDER PRE-CHECK</span>
@@ -961,14 +961,14 @@
 
             <!-- Action Buttons -->
             <div class="ticket-actions">
-              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-download-btn" title="Download cute ticket image">
+              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-download-btn" title="Download ticket image">
                 <span>📥 Download Ticket (PNG)</span>
               </button>
-              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-print-btn" title="Print or Save as 1-Page PDF">
+              <button type="button" class="ticket-action-btn btn-secondary" id="ticket-print-btn" title="Print or Save as PDF">
                 <span>🖨️ Print / Save (PDF)</span>
               </button>
               <button type="button" class="ticket-action-btn btn-primary" id="ticket-done-btn">
-                <span>Return to Coffee Experience ♡</span>
+                <span>Return to Coffee Experience</span>
               </button>
             </div>
           </div>

@@ -319,12 +319,12 @@ const tastingTray = {
 
     if (qty > 0) {
       btn.classList.add('is-added');
-      btn.innerHTML = '<span>♥ In Tasting Tray</span>';
+      btn.innerHTML = '<span>✓ In Tasting Tray</span>';
       if (parentControl) parentControl.classList.add('is-active');
       if (stepperValue) stepperValue.textContent = qty;
     } else {
       btn.classList.remove('is-added');
-      btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+      btn.innerHTML = '<span>Add to Tasting Tray</span>';
       if (parentControl) parentControl.classList.remove('is-active');
       if (stepperValue) stepperValue.textContent = '1';
     }
@@ -337,7 +337,7 @@ const tastingTray = {
       const btn = ctrl.querySelector('.add-to-tray-btn');
       if (btn) {
         btn.classList.remove('is-added');
-        btn.innerHTML = '<span>♡ Add to Tasting Tray</span>';
+        btn.innerHTML = '<span>Add to Tasting Tray</span>';
       }
       const val = ctrl.querySelector('.qty-step-value');
       if (val) val.textContent = '1';
@@ -368,7 +368,7 @@ const tastingTray = {
     const totalVal = document.getElementById('tray-total-val');
 
     if (countLabel) {
-      countLabel.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'} selected ♡`;
+      countLabel.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'} selected`;
     }
     if (totalVal) {
       totalVal.textContent = `৳ ${totalPrice.toLocaleString()}`;

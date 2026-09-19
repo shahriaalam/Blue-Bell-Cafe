@@ -14,8 +14,6 @@ const portalBackdrop = document.getElementById('portal-backdrop');
 const barnabyBubble = document.getElementById('barnaby-bubble');
 const barnabySpeechText = document.getElementById('barnaby-speech-text');
 const barnabyCharacter = document.getElementById('barnaby-character');
-const purrBtn = document.getElementById('purr-btn');
-const purrHearts = document.getElementById('purr-hearts');
 
 const portalFormView = document.getElementById('portal-form-view');
 const portalTicketView = document.getElementById('portal-ticket-view');
@@ -28,7 +26,7 @@ const guestPlusBtn = document.getElementById('guest-plus');
 
 let currentGuestCount = 2;
 let selectedTimeSlot = '8:30 PM';
-let selectedOccasion = 'Date Night ♡';
+let selectedOccasion = 'Date Night';
 let selectedTable = '';
 
 // Helper function to dynamically update the atmospheric color theme
@@ -103,14 +101,14 @@ function openReservationPortal() {
       trayTotalEl.textContent = `৳ ${savedTray.totalPrice.toLocaleString()}`;
 
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ah, magnificent taste! ♡ I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
+        barnabySpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
       }
     } else {
       trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
       trayTotalEl.textContent = '৳ 0';
 
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Hello, dear coffee lover! ♡ I am <strong>Mr. Barnaby</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
+        barnabySpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Barnaby</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
       }
     }
   }
@@ -175,14 +173,14 @@ function triggerBarnabyPurr() {
   if (!barnabyCharacter) return;
   barnabyCharacter.classList.add('is-purring');
   if (barnabySpeechText) {
-    barnabySpeechText.innerHTML = `Purrrr... ♡ You give the most delightful chin scratches! Rest assured, your table is in the most caring paws.`;
+    barnabySpeechText.innerHTML = `Purrrr... You give the most delightful chin scratches! Rest assured, your table is in the most caring paws.`;
   }
   if (purrHearts) {
-    purrHearts.textContent = '♡ (Purring!) ♡';
+    purrHearts.textContent = '🐾 (Purring!)';
   }
   setTimeout(() => {
     barnabyCharacter.classList.remove('is-purring');
-    if (purrHearts) purrHearts.textContent = '♡ ♡';
+    if (purrHearts) purrHearts.textContent = '';
   }, 2500);
 }
 
@@ -206,7 +204,7 @@ tableOptions.forEach((option) => {
     if (tableId === 'window') {
       updatePortalTheme('theme-rainy');
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ah, the <strong>Rainy Window Alcove</strong>! Watching raindrops trickling on the glass with hot single-origin pour-over... pure romance! ♡`;
+        barnabySpeechText.innerHTML = `Ah, the <strong>Rainy Window Alcove</strong>! Watching raindrops trickling on the glass with hot single-origin pour-over... pure romance!`;
       }
     } else if (tableId === 'candlelit') {
       updatePortalTheme('theme-cozy');
@@ -242,14 +240,14 @@ if (guestMinusBtn && guestPlusBtn && guestCountEl) {
   guestMinusBtn.addEventListener('click', () => {
     if (currentGuestCount > 1) {
       currentGuestCount--;
-      guestCountEl.textContent = `${currentGuestCount} ${currentGuestCount === 1 ? 'Guest' : 'Guests'} ${currentGuestCount === 2 ? '♡' : ''}`;
+      guestCountEl.textContent = `${currentGuestCount} ${currentGuestCount === 1 ? 'Guest' : 'Guests'}`;
     }
   });
 
   guestPlusBtn.addEventListener('click', () => {
     if (currentGuestCount < 12) {
       currentGuestCount++;
-      guestCountEl.textContent = `${currentGuestCount} Guests ${currentGuestCount === 2 ? '♡' : ''}`;
+      guestCountEl.textContent = `${currentGuestCount} Guests`;
     }
   });
 }
@@ -260,7 +258,7 @@ occasionTags.forEach((tag) => {
   tag.addEventListener('click', () => {
     occasionTags.forEach((t) => t.classList.remove('is-active'));
     tag.classList.add('is-active');
-    selectedOccasion = tag.getAttribute('data-occasion') || 'Date Night ♡';
+    selectedOccasion = tag.getAttribute('data-occasion') || 'Date Night';
   });
 });
 
@@ -271,7 +269,7 @@ if (resForm) {
 
     if (!selectedTable) {
       if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Please choose your preferred <strong>Dream Setting</strong> above so I can prepare the ideal nook for you! ♡`;
+        barnabySpeechText.innerHTML = `Please choose your preferred <strong>Dream Setting</strong> above so I can prepare the ideal nook for you!`;
       }
       const grid = document.querySelector('.table-options-grid');
       if (grid) {
@@ -329,7 +327,7 @@ if (resForm) {
 
     // Barnaby's congratulations speech
     if (barnabySpeechText) {
-      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! ♡ Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
+      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
     }
   });
 }
@@ -340,7 +338,7 @@ function downloadTicketAsImage() {
   const guestName = document.getElementById('ticket-guest-name')?.innerText.trim() || 'Valued Guest';
   const tableName = document.getElementById('ticket-table-name')?.innerText.trim() || 'Rainy Window Alcove';
   const dateTime = document.getElementById('ticket-datetime')?.innerText.trim() || 'Today • 8:30 PM';
-  const partyOccasion = document.getElementById('ticket-party')?.innerText.trim() || '2 Guests • Date Night ♡';
+  const partyOccasion = document.getElementById('ticket-party')?.innerText.trim() || '2 Guests • Date Night';
   const orderVal = document.getElementById('ticket-order-val')?.innerText.trim() || 'None pre-ordered (Table-side ordering)';
 
   // 2x Retina Resolution for ultra-sharp text and graphics

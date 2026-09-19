@@ -8,7 +8,7 @@
    - Deep roasted espresso noir background
    - Warm ivory and toasted almond text
    - Golden caramel / amber highlights and Parisian antique brass
-   - Modern serif (Playfair Display) and clean sans-serif (Plus Jakarta Sans)
+   - Modern editorial serif (Fraunces) and clean humanist sans-serif (DM Sans)
    -------------------------------------------------------------------------- */
 :root,
 .sw-root {
@@ -27,9 +27,9 @@
   /* Parisian antique brass */
   --sw-gold: #D4AF37;
 
-/* Typography */
-  --sw-font-display: "Playfair Display", Georgia, serif;
-  --sw-font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+/* Typography: Editorial human-crafted serif and humanist sans */
+  --sw-font-display: "Fraunces", Georgia, serif;
+  --sw-font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 @view-transition {
@@ -166,15 +166,15 @@
 }
 
 .loader-status {
-  font-family: var(--sw-font-display, "Playfair Display", Georgia, serif);
+  font-family: var(--sw-font-display, "Fraunces", Georgia, serif);
   font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: #2D1B10;
 }
 
 .loader-detail {
-  font-family: var(--sw-font-body, "Plus Jakarta Sans", sans-serif);
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
   font-size: 0.82rem;
   font-weight: 500;
   color: #7E5F48;
@@ -227,10 +227,10 @@
   letter-spacing: 0.03em;
   text-decoration: none !important;
   color: #1A100B !important;
-  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 52%, #C47D3B 100%);
+  background: linear-gradient(135deg, #F3DEBE 0%, #D4AF37 50%, #B87333 100%);
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(226, 167, 111, 0.42), 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 18px rgba(184, 115, 51, 0.28), 0 2px 6px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -250,17 +250,17 @@
   line-height: 1;
 }
 
-/* Hover elevation and expanded golden glow */
+/* Hover elevation with refined champagne-gold warmth */
 .sw-topcta:hover {
-  transform: translateY(-2px) scale(1.03);
+  transform: translateY(-2px);
   color: #120D0A !important;
-  background: linear-gradient(135deg, #FFF1DF 0%, #EDB784 50%, #D18945 100%);
-  box-shadow: 0 8px 30px rgba(226, 167, 111, 0.65), 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  background: linear-gradient(135deg, #FAF0DE 0%, #DFBA45 50%, #C48040 100%);
+  box-shadow: 0 6px 24px rgba(184, 115, 51, 0.38), 0 3px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.85);
   border-color: rgba(255, 255, 255, 0.95);
 }
 
 .sw-topcta:hover::after {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .sw-topcta:active {
@@ -453,12 +453,12 @@
 /* Primary Button ("Reserve a Table") */
 .sw-btn--primary {
   color: #1A100B !important; /* Deep roasted espresso noir - sharp, crystal-clear contrast */
-  background: linear-gradient(135deg, #FBE0C3 0%, #E2A76F 52%, #C47D3B 100%) !important;
+  background: linear-gradient(135deg, #F3DEBE 0%, #D4AF37 50%, #B87333 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.75) !important;
   box-shadow: 
-    0 4px 20px rgba(226, 167, 111, 0.45), 
-    0 2px 6px rgba(0, 0, 0, 0.2), 
-    inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+    0 4px 18px rgba(184, 115, 51, 0.28), 
+    0 2px 6px rgba(0, 0, 0, 0.18), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.75) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -473,18 +473,18 @@
 }
 
 .sw-btn--primary:hover {
-  transform: translateY(-2px) scale(1.03) !important;
+  transform: translateY(-2px) !important;
   color: #120D0A !important;
-  background: linear-gradient(135deg, #FFF1DF 0%, #EDB784 50%, #D18945 100%) !important;
+  background: linear-gradient(135deg, #FAF0DE 0%, #DFBA45 50%, #C48040 100%) !important;
   box-shadow: 
-    0 8px 30px rgba(226, 167, 111, 0.65), 
-    0 4px 12px rgba(0, 0, 0, 0.25), 
-    inset 0 1px 2px rgba(255, 255, 255, 0.95) !important;
+    0 6px 24px rgba(184, 115, 51, 0.38), 
+    0 3px 8px rgba(0, 0, 0, 0.2), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
   border-color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .sw-btn--primary:hover::after {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .sw-btn--primary:active {
@@ -877,17 +877,17 @@
 .menu-filter-btn:hover {
   color: #231610;
   background: #FFFFFF;
-  border-color: #D4806A;
+  border-color: #C27854;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 128, 106, 0.2);
+  box-shadow: 0 6px 20px rgba(194, 120, 84, 0.2);
 }
 
 .menu-filter-btn.is-active {
   color: #FFFFFF;
-  background: linear-gradient(135deg, #E69D87 0%, #D4806A 100%);
+  background: linear-gradient(135deg, #C27854 0%, #A45D3B 100%);
   font-weight: 700;
-  border-color: #D4806A;
-  box-shadow: 0 6px 22px rgba(212, 128, 106, 0.38);
+  border-color: #A45D3B;
+  box-shadow: 0 6px 22px rgba(164, 93, 59, 0.35);
 }
 
 .menu-filter-btn.is-active .tab-count {
@@ -918,7 +918,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #E69D87, #D4806A, #E69D87);
+  background: linear-gradient(90deg, #D4AF37, #C27854, #D4AF37);
 }
 
 .spotlight-media {
@@ -979,8 +979,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #D4806A;
-  box-shadow: 0 0 8px rgba(212, 128, 106, 0.6);
+  background: #C27854;
+  box-shadow: 0 0 8px rgba(194, 120, 84, 0.5);
 }
 
 .spotlight-title {
@@ -1052,16 +1052,16 @@
 .spotlight-btn {
   padding: 11px 24px !important;
   font-size: 0.86rem !important;
-  background: linear-gradient(135deg, #E69D87 0%, #D4806A 100%) !important;
+  background: linear-gradient(135deg, #C27854 0%, #A45D3B 100%) !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
   border: 1px solid #FFF2EC !important;
-  box-shadow: 0 6px 20px rgba(212, 128, 106, 0.38) !important;
+  box-shadow: 0 4px 18px rgba(164, 93, 59, 0.3) !important;
 }
 
 .spotlight-btn:hover {
   transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 10px 28px rgba(212, 128, 106, 0.52) !important;
+  box-shadow: 0 8px 24px rgba(164, 93, 59, 0.45) !important;
 }
 
 /* ---- Menu Grid: 3-Column Responsive Layout ---- */
@@ -1095,15 +1095,15 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #E69D87, transparent);
+  background: linear-gradient(90deg, transparent, #C27854, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .menu-card:hover {
   transform: translateY(-6px);
-  border-color: #D4806A;
-  box-shadow: 0 18px 42px rgba(160, 115, 95, 0.16), 0 2px 10px rgba(212, 137, 114, 0.15);
+  border-color: #C27854;
+  box-shadow: 0 14px 38px rgba(18, 13, 10, 0.1), 0 2px 8px rgba(194, 120, 84, 0.12);
 }
 
 .menu-card:hover::before {
@@ -1298,7 +1298,7 @@
   font-size: 0.74rem;
   color: #5C4134;
   background: #FFF8F4;
-  border-left: 3px solid #D4806A;
+  border-left: 3px solid #C27854;
   padding: 6px 10px;
   border-radius: 0 8px 8px 0;
   display: flex;
@@ -1309,6 +1309,13 @@
 
 .card-pairing strong {
   color: #231610;
+}
+
+.pairing-icon {
+  color: #B87333;
+  font-size: 0.72rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 /* ---- Card Tray Control & Add to Tray Button ---- */
@@ -1338,7 +1345,7 @@
   padding: 10px 18px;
   border-radius: 999px;
   background: #FAF3ED;
-  border: 1.5px solid rgba(212, 137, 114, 0.48);
+  border: 1.5px solid rgba(194, 120, 84, 0.45);
   color: #543327;
   font-family: var(--sw-font-body);
   font-size: 0.81rem;
@@ -1353,18 +1360,18 @@
 }
 
 .add-to-tray-btn:hover {
-  background: linear-gradient(135deg, #E69D87 0%, #D4806A 100%);
+  background: linear-gradient(135deg, #C27854 0%, #A45D3B 100%);
   color: #FFFFFF;
-  border-color: #D4806A;
+  border-color: #A45D3B;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 128, 106, 0.35);
+  box-shadow: 0 4px 16px rgba(164, 93, 59, 0.28);
 }
 
 .add-to-tray-btn.is-added {
-  background: #E88B9C;
-  border-color: #E88B9C;
+  background: #704226;
+  border-color: #5A331D;
   color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(232, 139, 156, 0.35);
+  box-shadow: 0 4px 14px rgba(90, 51, 29, 0.28);
 }
 
 /* ---- Quantity Stepper Popup (Appears below button when added) ---- */
@@ -1375,9 +1382,9 @@
   gap: 12px;
   padding: 5px 14px;
   background: #FFFFFF;
-  border: 1.5px solid rgba(232, 139, 156, 0.48);
+  border: 1.5px solid rgba(194, 120, 84, 0.38);
   border-radius: 999px;
-  box-shadow: 0 6px 18px rgba(212, 128, 106, 0.12), 0 2px 6px rgba(232, 139, 156, 0.12);
+  box-shadow: 0 4px 14px rgba(18, 13, 10, 0.08);
   width: fit-content;
   margin: 0 auto;
 }
@@ -1402,7 +1409,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  border: 1.2px solid rgba(212, 137, 114, 0.38);
+  border: 1.2px solid rgba(194, 120, 84, 0.35);
   background: #FAF3ED;
   color: #543327;
   font-family: var(--sw-font-body);
@@ -1419,11 +1426,11 @@
 }
 
 .qty-step-btn:hover {
-  background: #E88B9C;
-  border-color: #E88B9C;
+  background: #C27854;
+  border-color: #A45D3B;
   color: #FFFFFF;
-  transform: scale(1.15);
-  box-shadow: 0 3px 10px rgba(232, 139, 156, 0.45);
+  transform: scale(1.12);
+  box-shadow: 0 2px 8px rgba(194, 120, 84, 0.35);
 }
 
 .qty-step-btn:active {
@@ -1512,8 +1519,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #D4806A;
-  box-shadow: 0 0 8px rgba(212, 128, 106, 0.6);
+  background: #C27854;
+  box-shadow: 0 0 8px rgba(194, 120, 84, 0.5);
 }
 
 .tray-total {
@@ -1563,21 +1570,21 @@
   gap: 6px;
   padding: 8px 18px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #E69D87 0%, #D4806A 100%);
+  background: linear-gradient(135deg, #C27854 0%, #A45D3B 100%);
   color: #FFFFFF;
   border: 1px solid #FFF2EC;
   font-family: var(--sw-font-body);
   font-size: 0.79rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(212, 128, 106, 0.35);
+  box-shadow: 0 4px 16px rgba(164, 93, 59, 0.32);
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .tray-order-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(212, 128, 106, 0.52);
+  box-shadow: 0 6px 20px rgba(164, 93, 59, 0.45);
 }
 
 /* ==========================================================================
