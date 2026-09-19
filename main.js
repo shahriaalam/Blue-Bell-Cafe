@@ -49,7 +49,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#A45D3B', // Roasted terracotta
       eyebrow: 'Act I — Pure Origin',
-      title: 'The Bean Selection.',
+      title: 'The Bean Selection',
       body: 'Behind the sunlit oak counter, our barista handpicks glistening, dark-roasted Arabica beans, awakening delicate notes of dark chocolate and hazelnut.',
       tags: ['Single Origin', 'Sun-Kissed Roast', 'Handpicked']
     },
@@ -64,7 +64,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#B57C48', // Antique brass amber
       eyebrow: 'Act II — Golden Precision',
-      title: 'Weighed to Perfection.',
+      title: 'Weighed to Perfection',
       body: 'Every single gram matters. The roasted beans are weighed on a vintage brass scale before entering the gleaming glass hopper.',
       tags: ['Precision Scale', 'Artisanal Ratio', 'Brass Details']
     },
@@ -79,7 +79,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#8C5230', // Deep hazelnut mocha
       eyebrow: 'Act III — Awakening the Aroma',
-      title: 'The Artisanal Grind.',
+      title: 'The Artisanal Grind',
       body: 'Crushed gently between precision burrs, fresh coffee falls like dark velvet silk into the heavy brass portafilter, perfuming the morning air.',
       tags: ['Velvet Powder', 'Aromatic Bloom', 'Burr Precision']
     },
@@ -94,7 +94,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#9E5B38', // Warm polished wood
       eyebrow: 'Act IV — The Precise Ritual',
-      title: 'The Masterful Tamp.',
+      title: 'The Masterful Tamp',
       body: 'With steady hands and a polished rosewood tamper, the coffee bed is compacted into a perfectly smooth, mirror-level surface ready for pressure.',
       tags: ['Rosewood Tamper', 'Level Bed', 'Craft Technique']
     },
@@ -109,7 +109,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#C47D3B', // Golden espresso crema
       eyebrow: 'Act V — Liquid Gold',
-      title: 'The Golden Extraction.',
+      title: 'The Golden Extraction',
       body: 'Locked into the vintage copper and brass espresso machine, nine bars of pressure coax dual streams of rich tiger-striped crema into warm ceramic cups.',
       tags: ['9-Bar Pressure', 'Tiger Crema', 'Liquid Gold']
     },
@@ -124,7 +124,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#D4A373', // Silky warm milk
       eyebrow: 'Act VI — Silky Steam',
-      title: 'Texturing Velvet Milk.',
+      title: 'Texturing Velvet Milk',
       body: 'Cold fresh milk is swirled into a glossy vortex under gentle steam, transforming into dense, microfoam silk with a natural sweet sheen.',
       tags: ['Velvet Microfoam', 'Glossy Texture', 'Silky Vortex']
     },
@@ -139,7 +139,7 @@ mountLetsScroll(document.getElementById('world'), {
       linger: 0.22,
       accent: '#C95D63', // Romantic dusky rose
       eyebrow: 'Act VII — The Swan Symphony',
-      title: 'The Swan Symphony.',
+      title: 'The Swan Symphony',
       body: 'With rhythmic, practiced wrist motions, the barista pours velvety white microfoam across golden crema — painting a majestic swan in full flight.',
       tags: ['Swan Latte Art', 'Master Pour', 'Pure Romance']
     },
@@ -177,6 +177,21 @@ document.addEventListener('click', (e) => {
     }
   }
 });
+
+// Auto-scroll to artisanal menu if returning via #cafe-menu
+if (window.location.hash === '#cafe-menu') {
+  const scrollToMenu = () => {
+    setTimeout(() => {
+      const menuEl = document.getElementById('cafe-menu');
+      if (menuEl) menuEl.scrollIntoView({ behavior: 'smooth' });
+    }, 120);
+  };
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', scrollToMenu);
+  } else {
+    scrollToMenu();
+  }
+}
 
 /* --------------------------------------------------------------------------
    2. DYNAMIC FLOATING CONTROLS DOCKING
@@ -430,14 +445,56 @@ if (clearTrayBtn) {
     tastingTray.clear();
     try {
       localStorage.removeItem('bbc_tasting_tray');
-    } catch (e) {}
+    } catch (e) { }
   });
 }
+
+// Smooth page transition helper with steaming coffee loader
+function smoothNavigateTo(url) {
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    veil.classList.add('is-active');
+  }
+  // Instant navigation trigger
+  setTimeout(() => {
+    window.location.href = url;
+  }, 25);
+}
+
+// Pre-warm / prefetch reservation page on hover or touch for instant navigation
+document.addEventListener('pointerenter', (e) => {
+  const link = e.target.closest && e.target.closest('a[href*="reservation.html"]');
+  if (link && !link._prefetched) {
+    link._prefetched = true;
+    const pre = document.createElement('link');
+    pre.rel = 'prefetch';
+    pre.href = link.getAttribute('href') || 'reservation.html';
+    document.head.appendChild(pre);
+  }
+}, true);
+
+// Reset transition veil on page show (handles Back button & bfcache)
+window.addEventListener('pageshow', () => {
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    veil.classList.remove('is-active');
+  }
+});
+
+// Intercept all reservation navigation links for silky-smooth crossfade
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="reservation.html"]');
+  if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+    e.preventDefault();
+    smoothNavigateTo(link.getAttribute('href') || 'reservation.html');
+  }
+});
 
 // Wire Proceed to Booking Button in Tasting Tray Dock
 const trayOrderBtn = document.getElementById('tray-order-btn');
 if (trayOrderBtn) {
-  trayOrderBtn.addEventListener('click', () => {
+  trayOrderBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     try {
       const itemsList = Array.from(tastingTray.items.values());
       const trayData = {
@@ -449,6 +506,6 @@ if (trayOrderBtn) {
     } catch (err) {
       console.warn('Could not save tasting tray state to localStorage:', err);
     }
-    window.location.href = 'reservation.html';
+    smoothNavigateTo('reservation.html');
   });
 }

@@ -15,9 +15,46 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Instant Prefetch for Table Reservation Parlour -->
+  <link rel="prefetch" href="reservation.html">
+  <link rel="prefetch" href="reservation.css">
+  <link rel="prefetch" href="reservation.js">
 </head>
 
 <body>
+  <!-- Page Entrance / Exit Crossfade Veil with Artisanal Steaming Coffee Loader -->
+  <div class="page-transition-veil" id="page-transition-veil" aria-hidden="true">
+    <div class="coffee-loader">
+      <div class="coffee-cup-box">
+        <svg class="coffee-cup-art" viewBox="0 0 100 100" width="84" height="84" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rising Steam Tendrils -->
+          <g class="steam-group">
+            <path class="steam-trail s1" d="M36 34 C33 24, 40 16, 36 6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path class="steam-trail s2" d="M50 30 C53 20, 47 12, 51 3" stroke="#E2A76F" stroke-width="2.8" stroke-linecap="round" fill="none" />
+            <path class="steam-trail s3" d="M64 34 C67 24, 60 16, 64 6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" fill="none" />
+          </g>
+          <!-- Elegant Saucer Plate -->
+          <ellipse cx="50" cy="85" rx="36" ry="6" fill="#EDE4D8" stroke="#C49A6C" stroke-width="2" />
+          <ellipse cx="50" cy="84" rx="28" ry="4" fill="#FAF6F0" />
+          <!-- Ceramic Cup Outer Silhouette -->
+          <path d="M22 42 C22 72, 32 82, 50 82 C68 82, 78 72, 78 42 Z" fill="#FFFDF9" stroke="#C49A6C" stroke-width="2.2" />
+          <!-- Inner Coffee Surface & Rim -->
+          <ellipse cx="50" cy="42" rx="28" ry="6.5" fill="#FAF6F0" stroke="#C49A6C" stroke-width="2.2" />
+          <ellipse cx="50" cy="43" rx="24" ry="5" fill="#5A2E17" />
+          <!-- Latte Art Rosette / Heart -->
+          <path class="coffee-heart" d="M46 42 Q50 45 54 42 Q50 40 46 42 Z" fill="#FFF2E5" opacity="0.9" />
+          <!-- Ergonomic Ceramic Handle -->
+          <path d="M75 48 C90 48, 90 70, 72 72" stroke="#C49A6C" stroke-width="3.5" stroke-linecap="round" fill="none" />
+          <path d="M75 51 C85 51, 85 67, 72 69" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        </svg>
+        <div class="cup-ambient-glow"></div>
+      </div>
+      <div class="loader-caption">
+        <span class="loader-status">Pouring Table Ambience...</span>
+        <span class="loader-detail">Preparing your candlelit table with Mr. Barnaby</span>
+      </div>
+    </div>
+  </div>
 
   <div id="top"></div>
   <div class="ambient-vignette"></div>

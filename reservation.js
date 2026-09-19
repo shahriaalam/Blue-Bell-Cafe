@@ -120,9 +120,37 @@ function openReservationPortal() {
   document.body.style.overflow = 'hidden';
 }
 
-function returnToCafeHome() {
-  window.location.href = 'index.html';
+function returnToCafeHome(targetUrl = 'index.html#cafe-menu') {
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    veil.classList.add('is-active');
+  }
+  setTimeout(() => {
+    window.location.href = targetUrl;
+  }, 25);
 }
+
+// Fade out transition veil once parlour is mounted
+function dismissVeil() {
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    requestAnimationFrame(() => {
+      veil.classList.remove('is-active');
+    });
+  }
+}
+window.addEventListener('DOMContentLoaded', dismissVeil);
+window.addEventListener('pageshow', dismissVeil);
+
+// Smooth intercept for all return links
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="index.html"]');
+  if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+    e.preventDefault();
+    const dest = link.getAttribute('href') || 'index.html#cafe-menu';
+    returnToCafeHome(dest);
+  }
+});
 
 // Wire Close / Return Triggers
 if (portalCloseBtn) {
@@ -495,7 +523,7 @@ if (ticketDoneBtn) {
     try {
       localStorage.removeItem('bbc_tasting_tray');
     } catch (e) {}
-    window.location.href = 'index.html';
+    returnToCafeHome();
   });
 }
 
