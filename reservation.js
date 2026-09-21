@@ -74,6 +74,7 @@ function openReservationPortal() {
   // Reset to form view
   if (portalFormView) portalFormView.classList.remove('is-hidden');
   if (portalTicketView) portalTicketView.classList.add('is-hidden');
+  if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
 
   // Maintain selected theme or activate default light aesthetic theme
   if (!selectedTable) {
@@ -287,15 +288,64 @@ tableOptions.forEach((option) => {
   });
 });
 
-// Timeslot Pills selection
+// Timeslot Pills & Custom Time Selection
 const timeslotPills = document.querySelectorAll('.timeslot-pill');
+const customTimePill = document.getElementById('custom-time-pill');
+const customTimePickerRow = document.getElementById('custom-time-picker-row');
+const resCustomTimeInput = document.getElementById('res-custom-time');
+const customTimeStatus = document.getElementById('custom-time-status');
+const customPillLabel = document.getElementById('custom-pill-label');
+const customPillSub = document.getElementById('custom-pill-sub');
+
+let customSelectedTime = '7:00 PM';
+
+function formatTime12h(time24) {
+  if (!time24) return '7:00 PM';
+  const parts = time24.split(':');
+  let h = parseInt(parts[0], 10);
+  const m = parts[1] || '00';
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m} ${ampm}`;
+}
+
 timeslotPills.forEach((pill) => {
   pill.addEventListener('click', () => {
     timeslotPills.forEach((p) => p.classList.remove('is-active'));
     pill.classList.add('is-active');
-    selectedTimeSlot = pill.getAttribute('data-time') || '8:30 PM';
+
+    const dataTime = pill.getAttribute('data-time');
+    if (dataTime === 'custom') {
+      if (customTimePickerRow) customTimePickerRow.classList.remove('is-hidden');
+      if (resCustomTimeInput) {
+        customSelectedTime = formatTime12h(resCustomTimeInput.value);
+        selectedTimeSlot = customSelectedTime;
+        if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
+        if (customPillLabel) customPillLabel.textContent = customSelectedTime;
+        if (customPillSub) customPillSub.textContent = 'Custom ⏰';
+      }
+    } else {
+      if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
+      selectedTimeSlot = dataTime || '8:30 PM';
+      if (customPillLabel) customPillLabel.textContent = 'Custom ⏰';
+      if (customPillSub) customPillSub.textContent = 'Pick Time';
+    }
   });
 });
+
+if (resCustomTimeInput) {
+  resCustomTimeInput.addEventListener('input', () => {
+    customSelectedTime = formatTime12h(resCustomTimeInput.value);
+    selectedTimeSlot = customSelectedTime;
+    if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
+    if (customPillLabel) customPillLabel.textContent = customSelectedTime;
+    if (customPillSub) customPillSub.textContent = 'Custom ⏰';
+
+    // Ensure custom pill is selected
+    timeslotPills.forEach((p) => p.classList.remove('is-active'));
+    if (customTimePill) customTimePill.classList.add('is-active');
+  });
+}
 
 // Guest Stepper
 if (guestMinusBtn && guestPlusBtn && guestCountEl) {
@@ -366,15 +416,15 @@ if (resForm) {
       });
     }
 
-    // Dynamic subtitle tailored to the guest's selected table setting
+    // Dynamic subtitle tailored to the guest's selected table setting and chosen time
     const ticketCongratsSub = document.querySelector('.ticket-congrats-sub');
     if (ticketCongratsSub && selectedTable) {
-      ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} and notified the baristas.`;
+      ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} for ${selectedTimeSlot} on ${dateVal} and notified the baristas.`;
     }
 
     // Mr. Pudding's congratulations speech
     if (barnabySpeechText) {
-      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
+      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially reserved for <strong>${selectedTimeSlot}</strong> with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
     }
   });
 }

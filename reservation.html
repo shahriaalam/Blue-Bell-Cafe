@@ -591,7 +591,10 @@
                       <input type="date" id="res-date" name="res_date" class="portal-input date-input" required>
                     </div>
                     <div class="timeslot-wrap">
-                      <span class="input-sublabel">Select Sitting</span>
+                      <div class="timeslot-header">
+                        <span class="input-sublabel">Select Sitting</span>
+                        <span class="timeslot-note">Open 8:00 AM – 11:00 PM</span>
+                      </div>
                       <div class="timeslot-pills">
                         <button type="button" class="timeslot-pill" data-time="4:00 PM">
                           <span>4:00 PM</span>
@@ -609,6 +612,22 @@
                           <span>10:00 PM</span>
                           <small>Night Owl Brew</small>
                         </button>
+                        <button type="button" class="timeslot-pill custom-time-pill" id="custom-time-pill" data-time="custom" title="Choose your custom time">
+                          <span id="custom-pill-label">Custom ⏰</span>
+                          <small id="custom-pill-sub">Pick Time</small>
+                        </button>
+                      </div>
+
+                      <!-- Custom Time Picker Row (Revealed when Custom ⏰ is selected) -->
+                      <div class="custom-time-picker-row is-hidden" id="custom-time-picker-row">
+                        <div class="custom-time-header">
+                          <span class="custom-time-title">⏰ Choose Your Exact Arrival Time:</span>
+                          <span class="custom-time-hours">8:00 AM – 11:00 PM Daily</span>
+                        </div>
+                        <div class="custom-time-input-wrap">
+                          <input type="time" id="res-custom-time" class="portal-input custom-time-field" value="19:00" min="08:00" max="23:00">
+                          <span class="custom-time-status" id="custom-time-status">Reserved for: <strong>7:00 PM</strong></span>
+                        </div>
                       </div>
                     </div>
                   </div>

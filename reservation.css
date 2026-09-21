@@ -2239,9 +2239,24 @@ body {
   color-scheme: light;
 }
 
+.timeslot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.timeslot-note {
+  font-family: var(--sw-font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--portal-text-sub);
+  opacity: 0.85;
+}
+
 .timeslot-pills {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
 
@@ -2291,6 +2306,79 @@ body {
 .timeslot-pill.is-active small {
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
+}
+
+/* Custom Time Drawer */
+.custom-time-picker-row {
+  margin-top: 10px;
+  background: var(--portal-card-option-bg);
+  border: 1.5px solid var(--portal-accent);
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 14px var(--portal-accent-soft);
+  animation: customTimeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes customTimeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-time-picker-row.is-hidden {
+  display: none !important;
+}
+
+.custom-time-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.custom-time-title {
+  font-family: var(--sw-font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+}
+
+.custom-time-hours {
+  font-family: var(--sw-font-body);
+  font-size: 0.72rem;
+  color: var(--portal-text-sub);
+  font-weight: 600;
+}
+
+.custom-time-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.custom-time-field {
+  flex: 0 0 140px;
+  max-width: 150px;
+  padding: 8px 12px;
+  font-size: 0.92rem;
+  cursor: pointer;
+  color-scheme: light;
+}
+
+.custom-time-status {
+  font-family: var(--sw-font-body);
+  font-size: 0.84rem;
+  color: var(--portal-text-body);
+}
+
+.custom-time-status strong {
+  color: var(--portal-accent);
+  font-weight: 700;
 }
 
 /* Step 3: Guests & Occasion */
