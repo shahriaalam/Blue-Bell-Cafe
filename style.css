@@ -1156,6 +1156,12 @@
   border: 1px solid #F2D5BD;
 }
 
+.badge-bistro {
+  background: #EBF5EF;
+  color: #2D6A4F;
+  border: 1px solid #C8E6D3;
+}
+
 .badge-light {
   background: #F4EBE3;
   color: #6C5245;

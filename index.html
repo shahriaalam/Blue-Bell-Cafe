@@ -91,7 +91,7 @@
           <button type="button" class="menu-filter-btn is-active" data-category="all">
             <span class="tab-icon">☕</span>
             <span>All Creations</span>
-            <span class="tab-count">12</span>
+            <span class="tab-count">17</span>
           </button>
           <button type="button" class="menu-filter-btn" data-category="pour-over">
             <span class="tab-icon">🫗</span>
@@ -108,10 +108,15 @@
             <span>Cold Drip &amp; Elixirs</span>
             <span class="tab-count">3</span>
           </button>
+          <button type="button" class="menu-filter-btn" data-category="bistro">
+            <span class="tab-icon">🍳</span>
+            <span>Bistro &amp; Kitchen</span>
+            <span class="tab-count">4</span>
+          </button>
           <button type="button" class="menu-filter-btn" data-category="bakery">
-            <span class="tab-icon">🥐</span>
-            <span>Artisanal Bakery</span>
-            <span class="tab-count">3</span>
+            <span class="tab-icon">🍰</span>
+            <span>Bakery &amp; Desserts</span>
+            <span class="tab-count">4</span>
           </button>
         </nav>
       </header>
@@ -164,7 +169,7 @@
         </div>
       </div>
 
-      <!-- Menu Grid: 12 Artisanal Items Across 4 Categories -->
+      <!-- Menu Grid: 17 Artisanal Items Across 5 Categories -->
       <div class="menu-grid" id="menu-grid">
 
         <!-- ITEM 1: Ethiopian Yirgacheffe G1 -->
@@ -886,6 +891,311 @@
           <div class="card-tray-control">
             <button type="button" class="add-to-tray-btn" data-id="bak-03" data-name="Burnt Basque Cheesecake"
               data-price="460" data-cat="bakery">
+              <span>Add to Tasting Tray</span>
+            </button>
+            <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
+              <button type="button" class="qty-step-btn qty-minus" aria-label="Decrease quantity"
+                title="Decrease">−</button>
+              <div class="qty-step-display">
+                <span class="qty-step-value">1</span>
+                <span class="qty-step-label">qty</span>
+              </div>
+              <button type="button" class="qty-step-btn qty-plus" aria-label="Increase quantity"
+                title="Increase">+</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 13: The Roastery American Breakfast -->
+        <article class="menu-card" data-category="bistro">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="card-badge badge-bistro">🍳 Roastery Brunch</span>
+              <span class="card-badge badge-light">All-Day Classic</span>
+            </div>
+            <div class="card-price">
+              <span class="currency">৳</span><span class="amount">750</span>
+            </div>
+          </div>
+          <div class="card-img-wrap">
+            <img src="assets/menu/american_breakfast.jpg" alt="The Roastery American Breakfast" class="card-img" loading="lazy">
+          </div>
+          <h4 class="card-title">The Roastery American Breakfast</h4>
+          <p class="card-terroir">Two Farm Eggs Sunny-Side Up, Crispy Bacon, Herbed Chicken Sausages, Hash Browns &amp; Buttered Sourdough</p>
+          <p class="card-notes">
+            <span class="note-label">Tasting Notes:</span>
+            <span class="note-pill">Golden Yolk</span>
+            <span class="note-pill">Crispy Bacon</span>
+            <span class="note-pill">Herbed Sausage</span>
+          </p>
+          <div class="card-metrics">
+            <div class="metric-item">
+              <span class="metric-name">Heartiness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Savory</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Warmth</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+          </div>
+          <div class="card-pairing">
+            <span class="pairing-icon">✦</span>
+            <span>Pairs with: <strong>Blue Bell Saffron Latte</strong></span>
+          </div>
+          <div class="card-tray-control">
+            <button type="button" class="add-to-tray-btn" data-id="bis-01" data-name="American Breakfast"
+              data-price="750" data-cat="bistro">
+              <span>Add to Tasting Tray</span>
+            </button>
+            <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
+              <button type="button" class="qty-step-btn qty-minus" aria-label="Decrease quantity"
+                title="Decrease">−</button>
+              <div class="qty-step-display">
+                <span class="qty-step-value">1</span>
+                <span class="qty-step-label">qty</span>
+              </div>
+              <button type="button" class="qty-step-btn qty-plus" aria-label="Increase quantity"
+                title="Increase">+</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 14: Tuscan Slow-Baked Lasagna -->
+        <article class="menu-card" data-category="bistro">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="card-badge badge-bistro">🍝 Chef's Table</span>
+              <span class="card-badge badge-light">Slow-Baked</span>
+            </div>
+            <div class="card-price">
+              <span class="currency">৳</span><span class="amount">780</span>
+            </div>
+          </div>
+          <div class="card-img-wrap">
+            <img src="assets/menu/lasagna.jpg" alt="Tuscan Slow-Baked Lasagna" class="card-img" loading="lazy">
+          </div>
+          <h4 class="card-title">Tuscan Slow-Baked Lasagna</h4>
+          <p class="card-terroir">Layered Fresh Egg Pasta, 8-Hour Braised Beef Bolognese Ragù, Velvety Béchamel &amp; Aged Parmigiano</p>
+          <p class="card-notes">
+            <span class="note-label">Tasting Notes:</span>
+            <span class="note-pill">San Marzano Tomato</span>
+            <span class="note-pill">Melted Mozzarella</span>
+            <span class="note-pill">Slow Ragù</span>
+          </p>
+          <div class="card-metrics">
+            <div class="metric-item">
+              <span class="metric-name">Savory</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Richness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Warmth</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+          </div>
+          <div class="card-pairing">
+            <span class="pairing-icon">✦</span>
+            <span>Pairs with: <strong>18-Hour Kyoto Cold Drip</strong></span>
+          </div>
+          <div class="card-tray-control">
+            <button type="button" class="add-to-tray-btn" data-id="bis-02" data-name="Tuscan Lasagna"
+              data-price="780" data-cat="bistro">
+              <span>Add to Tasting Tray</span>
+            </button>
+            <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
+              <button type="button" class="qty-step-btn qty-minus" aria-label="Decrease quantity"
+                title="Decrease">−</button>
+              <div class="qty-step-display">
+                <span class="qty-step-value">1</span>
+                <span class="qty-step-label">qty</span>
+              </div>
+              <button type="button" class="qty-step-btn qty-plus" aria-label="Increase quantity"
+                title="Increase">+</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 15: Truffle Fettuccine Alfredo -->
+        <article class="menu-card" data-category="bistro">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="card-badge badge-bistro">🧀 Artisan Pasta</span>
+              <span class="card-badge badge-light">Black Truffle</span>
+            </div>
+            <div class="card-price">
+              <span class="currency">৳</span><span class="amount">690</span>
+            </div>
+          </div>
+          <div class="card-img-wrap">
+            <img src="assets/menu/fettuccine_alfredo.jpg" alt="Truffle Fettuccine Alfredo" class="card-img" loading="lazy">
+          </div>
+          <h4 class="card-title">Truffle Fettuccine Alfredo</h4>
+          <p class="card-terroir">Bronze-Cut Fettuccine Ribbon Pasta, Normandy Cultured Butter, 24-Month Parmigiano &amp; Black Truffle Cream</p>
+          <p class="card-notes">
+            <span class="note-label">Tasting Notes:</span>
+            <span class="note-pill">Aged Parmigiano</span>
+            <span class="note-pill">Black Truffle</span>
+            <span class="note-pill">Cracked Peppercorn</span>
+          </p>
+          <div class="card-metrics">
+            <div class="metric-item">
+              <span class="metric-name">Savory</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Richness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Creaminess</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+          </div>
+          <div class="card-pairing">
+            <span class="pairing-icon">✦</span>
+            <span>Pairs with: <strong>Cascara &amp; Orange Tonic</strong></span>
+          </div>
+          <div class="card-tray-control">
+            <button type="button" class="add-to-tray-btn" data-id="bis-03" data-name="Fettuccine Alfredo"
+              data-price="690" data-cat="bistro">
+              <span>Add to Tasting Tray</span>
+            </button>
+            <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
+              <button type="button" class="qty-step-btn qty-minus" aria-label="Decrease quantity"
+                title="Decrease">−</button>
+              <div class="qty-step-display">
+                <span class="qty-step-value">1</span>
+                <span class="qty-step-label">qty</span>
+              </div>
+              <button type="button" class="qty-step-btn qty-plus" aria-label="Increase quantity"
+                title="Increase">+</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 16: Artisan Café Club Sandwich -->
+        <article class="menu-card" data-category="bistro">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="card-badge badge-bistro">🥪 Toasted Brioche</span>
+              <span class="card-badge badge-light">Triple-Decker</span>
+            </div>
+            <div class="card-price">
+              <span class="currency">৳</span><span class="amount">580</span>
+            </div>
+          </div>
+          <div class="card-img-wrap">
+            <img src="assets/menu/club_sandwich.jpg" alt="Artisan Café Club Sandwich" class="card-img" loading="lazy">
+          </div>
+          <h4 class="card-title">Artisan Café Club Sandwich</h4>
+          <p class="card-terroir">Triple-Decker Brioche Toast, Smoked Chicken Breast, Crisp Turkey Bacon, Hass Avocado &amp; Sun-Dried Herb Mayo</p>
+          <p class="card-notes">
+            <span class="note-label">Tasting Notes:</span>
+            <span class="note-pill">Smoked Chicken</span>
+            <span class="note-pill">Brioche Crunch</span>
+            <span class="note-pill">Avocado Cream</span>
+          </p>
+          <div class="card-metrics">
+            <div class="metric-item">
+              <span class="metric-name">Savory</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Crispness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Freshness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot"></span></div>
+            </div>
+          </div>
+          <div class="card-pairing">
+            <span class="pairing-icon">✦</span>
+            <span>Pairs with: <strong>Ethiopian Yirgacheffe G1</strong></span>
+          </div>
+          <div class="card-tray-control">
+            <button type="button" class="add-to-tray-btn" data-id="bis-04" data-name="Café Club Sandwich"
+              data-price="580" data-cat="bistro">
+              <span>Add to Tasting Tray</span>
+            </button>
+            <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
+              <button type="button" class="qty-step-btn qty-minus" aria-label="Decrease quantity"
+                title="Decrease">−</button>
+              <div class="qty-step-display">
+                <span class="qty-step-value">1</span>
+                <span class="qty-step-label">qty</span>
+              </div>
+              <button type="button" class="qty-step-btn qty-plus" aria-label="Increase quantity"
+                title="Increase">+</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 17: Venetian Espresso Tiramisu -->
+        <article class="menu-card" data-category="bakery">
+          <div class="card-top">
+            <div class="card-badges">
+              <span class="card-badge badge-bakery">☕ Espresso Soaked</span>
+              <span class="card-badge badge-light">Sabayon Cream</span>
+            </div>
+            <div class="card-price">
+              <span class="currency">৳</span><span class="amount">480</span>
+            </div>
+          </div>
+          <div class="card-img-wrap">
+            <img src="assets/menu/tiramisu.jpg" alt="Venetian Espresso Tiramisu" class="card-img" loading="lazy">
+          </div>
+          <h4 class="card-title">Venetian Espresso Tiramisu</h4>
+          <p class="card-terroir">House-Baked Savoiardi Ladyfingers, Single-Origin Espresso Soak, Mascarpone Sabayon &amp; Cocoa Dusting</p>
+          <p class="card-notes">
+            <span class="note-label">Flavor Profile:</span>
+            <span class="note-pill">Mascarpone Cream</span>
+            <span class="note-pill">Espresso Soak</span>
+            <span class="note-pill">Dutch Cocoa</span>
+          </p>
+          <div class="card-metrics">
+            <div class="metric-item">
+              <span class="metric-name">Richness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Creaminess</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot filled"></span></div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-name">Sweetness</span>
+              <div class="metric-dots"><span class="dot filled"></span><span class="dot filled"></span><span
+                  class="dot filled"></span><span class="dot"></span></div>
+            </div>
+          </div>
+          <div class="card-pairing">
+            <span class="pairing-icon">✦</span>
+            <span>Pairs with: <strong>Cinnamon Spiced Flat White</strong></span>
+          </div>
+          <div class="card-tray-control">
+            <button type="button" class="add-to-tray-btn" data-id="bak-04" data-name="Venetian Tiramisu"
+              data-price="480" data-cat="bakery">
               <span>Add to Tasting Tray</span>
             </button>
             <div class="tray-qty-stepper" role="group" aria-label="Quantity selector">
