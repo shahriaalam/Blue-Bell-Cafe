@@ -17,6 +17,14 @@
     {
       "source": "/favicon.ico",
       "destination": "/assets/Logo and falcon/Falcon.jpg"
+    },
+    {
+      "source": "/reservation",
+      "destination": "/reservation/reservation.html"
+    },
+    {
+      "source": "/reservation.html",
+      "destination": "/reservation/reservation.html"
     }
   ],
   "headers": [

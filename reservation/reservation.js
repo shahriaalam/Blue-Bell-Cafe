@@ -136,34 +136,83 @@ function getSavedTastingTray() {
 }
 
 /**
- * Populates Mr. Pudding's pre-order ledger with selected tray items.
+ * Saves modified tasting tray back to localStorage.
+ * @param {Array} items
+ */
+function saveTastingTray(items) {
+  try {
+    if (!items || items.length === 0) {
+      localStorage.removeItem('bbc_tasting_tray');
+      return;
+    }
+    const totalCount = items.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0);
+    const totalPrice = items.reduce((sum, it) => sum + ((Number(it.price) || 0) * (Number(it.quantity) || 1)), 0);
+    const trayData = {
+      items: items,
+      totalCount: totalCount,
+      totalPrice: totalPrice
+    };
+    localStorage.setItem('bbc_tasting_tray', JSON.stringify(trayData));
+  } catch (err) {
+    console.warn('[BlueBell] Unable to update tasting tray persistence:', err);
+  }
+}
+
+/**
+ * Populates Mr. Pudding's pre-order ledger with selected tray items
+ * and provides interactive quantity adjustment and item removal.
  */
 function populateTastingTrayLedger() {
   const trayItemsContainer = document.getElementById('portal-tray-items');
   const trayTotalEl = document.getElementById('portal-tray-total');
+  const clearAllBtn = document.getElementById('tray-clear-all-btn');
   if (!trayItemsContainer || !trayTotalEl) return;
 
   const savedTray = getSavedTastingTray();
   if (savedTray && savedTray.items && savedTray.items.length > 0) {
+    if (clearAllBtn) {
+      clearAllBtn.classList.remove('is-hidden');
+      clearAllBtn.onclick = () => {
+        saveTastingTray([]);
+        populateTastingTrayLedger();
+      };
+    }
+
     let html = '';
-    savedTray.items.forEach((item) => {
+    savedTray.items.forEach((item, index) => {
+      const itemKey = item.id || `item_${index}`;
+      const qty = Number(item.quantity) || 1;
+      const unitPrice = Number(item.price) || 0;
+      const rowTotal = unitPrice * qty;
+
       html += `
-        <div class="tray-preitem">
-          <span class="preitem-name">
-            <span>☕ ${item.name}</span>
-            <span class="preitem-qty">×${item.quantity}</span>
-          </span>
-          <span class="preitem-price">৳ ${(item.price * item.quantity).toLocaleString()}</span>
+        <div class="tray-preitem" data-key="${itemKey}">
+          <div class="preitem-info">
+            <span class="preitem-title" title="${item.name}">☕ ${item.name}</span>
+          </div>
+          <div class="preitem-actions">
+            <div class="preitem-stepper" role="group" aria-label="Quantity for ${item.name}">
+              <button type="button" class="preitem-btn btn-minus" data-key="${itemKey}" title="Decrease quantity" aria-label="Decrease quantity">−</button>
+              <span class="preitem-qty-val">${qty}</span>
+              <button type="button" class="preitem-btn btn-plus" data-key="${itemKey}" title="Increase quantity" aria-label="Increase quantity">+</button>
+            </div>
+            <span class="preitem-price">৳ ${rowTotal.toLocaleString()}</span>
+            <button type="button" class="preitem-remove-btn" data-key="${itemKey}" title="Remove ${item.name}" aria-label="Remove item">✕</button>
+          </div>
         </div>
       `;
     });
     trayItemsContainer.innerHTML = html;
     trayTotalEl.textContent = `৳ ${savedTray.totalPrice.toLocaleString()}`;
 
+    // Wire click events for plus, minus, and remove buttons
+    wireTrayLedgerControls(savedTray.items);
+
     if (puddingSpeechText) {
-      puddingSpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
+      puddingSpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected ${savedTray.totalCount === 1 ? 'delicacy' : 'delicacies'}</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
     }
   } else {
+    if (clearAllBtn) clearAllBtn.classList.add('is-hidden');
     trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
     trayTotalEl.textContent = '৳ 0';
 
@@ -171,6 +220,61 @@ function populateTastingTrayLedger() {
       puddingSpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Pudding</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
     }
   }
+}
+
+/**
+ * Attaches event listeners for quantity changes and item removal in the ledger.
+ * @param {Array} items - The current list of items in the tasting tray
+ */
+function wireTrayLedgerControls(items) {
+  const trayItemsContainer = document.getElementById('portal-tray-items');
+  if (!trayItemsContainer) return;
+
+  // Plus button: increase item quantity
+  trayItemsContainer.querySelectorAll('.btn-plus').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-key');
+      const item = items.find((it, idx) => (it.id || `item_${idx}`) === key);
+      if (item) {
+        item.quantity = (Number(item.quantity) || 1) + 1;
+        saveTastingTray(items);
+        populateTastingTrayLedger();
+      }
+    });
+  });
+
+  // Minus button: decrease item quantity or remove if at 1
+  trayItemsContainer.querySelectorAll('.btn-minus').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-key');
+      const index = items.findIndex((it, idx) => (it.id || `item_${idx}`) === key);
+      if (index !== -1) {
+        if (Number(items[index].quantity) > 1) {
+          items[index].quantity = Number(items[index].quantity) - 1;
+        } else {
+          items.splice(index, 1);
+        }
+        saveTastingTray(items);
+        populateTastingTrayLedger();
+      }
+    });
+  });
+
+  // Remove button: instantly delete the item
+  trayItemsContainer.querySelectorAll('.preitem-remove-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-key');
+      const index = items.findIndex((it, idx) => (it.id || `item_${idx}`) === key);
+      if (index !== -1) {
+        items.splice(index, 1);
+        saveTastingTray(items);
+        populateTastingTrayLedger();
+      }
+    });
+  });
 }
 
 
@@ -449,7 +553,7 @@ if (resForm) {
  * Smoothly transitions back to the main coffee sanctuary with a crossfade veil.
  * @param {string} [targetUrl='index.html'] - Destination URL
  */
-function returnToCafeHome(targetUrl = 'index.html') {
+function returnToCafeHome(targetUrl = '../index.html') {
   try {
     sessionStorage.setItem('bbc_return_to_top', 'true');
   } catch (e) {
@@ -483,7 +587,7 @@ document.addEventListener('click', (e) => {
   const link = e.target.closest('a[href*="index.html"]');
   if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
     e.preventDefault();
-    const dest = link.getAttribute('href') || 'index.html';
+    const dest = link.getAttribute('href') || '../index.html';
     returnToCafeHome(dest);
   }
 });
@@ -492,13 +596,13 @@ document.addEventListener('click', (e) => {
 if (portalCloseBtn) {
   portalCloseBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    returnToCafeHome('index.html');
+    returnToCafeHome('../index.html');
   });
 }
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    returnToCafeHome('index.html');
+    returnToCafeHome('../index.html');
   }
 });
 
@@ -511,7 +615,7 @@ if (ticketDoneBtn) {
     } catch (e) {
       /* Safe ignore */
     }
-    returnToCafeHome('index.html');
+    returnToCafeHome('../index.html');
   });
 }
 

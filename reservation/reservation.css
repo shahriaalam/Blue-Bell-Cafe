@@ -542,22 +542,22 @@ body {
 
 /* 1. Rainy Window Alcove */
 .reservation-portal.setting-window .portal-setting-bg {
-  background-image: url('assets/settings/rainy_window.jpg');
+  background-image: url('../assets/settings/rainy_window.jpg');
 }
 
 /* 2. Intimate Velvet Booth */
 .reservation-portal.setting-candlelit .portal-setting-bg {
-  background-image: url('assets/settings/velvet_booth.jpg');
+  background-image: url('../assets/settings/velvet_booth.jpg');
 }
 
 /* 3. Barista Pour-Over Bar */
 .reservation-portal.setting-barista .portal-setting-bg {
-  background-image: url('assets/settings/barista_bar.jpg');
+  background-image: url('../assets/settings/barista_bar.jpg');
 }
 
 /* 4. Botanical Glasshouse */
 .reservation-portal.setting-glasshouse .portal-setting-bg {
-  background-image: url('assets/settings/botanical_glasshouse.jpg');
+  background-image: url('../assets/settings/botanical_glasshouse.jpg');
 }
 
 /* Floating Fairy Lights Garland */
@@ -1763,10 +1763,16 @@ body {
 .tray-preview-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--portal-tray-border);
+}
+
+.tray-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .cloche-icon {
@@ -1782,13 +1788,46 @@ body {
   letter-spacing: -0.01em;
 }
 
+.tray-clear-all-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--portal-text-sub);
+  font-family: var(--sw-font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.tray-clear-all-btn:hover {
+  background: rgba(212, 46, 70, 0.1);
+  color: #D42E46;
+  border-color: rgba(212, 46, 70, 0.25);
+}
+
+.tray-clear-all-btn.is-hidden {
+  display: none !important;
+}
+
 .tray-preview-items {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 140px;
+  max-height: 180px;
   overflow-y: auto;
   padding-right: 4px;
+}
+
+.tray-preview-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tray-preview-items::-webkit-scrollbar-thumb {
+  background: var(--portal-border);
+  border-radius: 4px;
 }
 
 .tray-empty-hint {
@@ -1803,34 +1842,127 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   font-size: 0.82rem;
   color: var(--portal-text-body);
-  padding: 4px 0;
+  padding: 5px 0;
   border-bottom: 1px dashed var(--portal-tray-border);
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
-.preitem-name {
+.tray-preitem:last-child {
+  border-bottom: none;
+}
+
+.preitem-info {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.preitem-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--portal-text-title);
+}
+
+.preitem-actions {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--portal-text-title);
-  font-weight: 600;
+  flex-shrink: 0;
 }
 
-.preitem-qty {
-  font-size: 0.74rem;
-  color: var(--portal-text-sub);
-  background: var(--portal-accent-soft);
-  border: 1px solid var(--portal-accent-soft);
-  color: var(--portal-accent);
+.preitem-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: var(--portal-card-option-bg);
+  border: 1px solid var(--portal-border);
   border-radius: 999px;
-  padding: 1px 7px;
+  padding: 1px 3px;
+  gap: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.preitem-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: var(--portal-accent-soft);
+  color: var(--portal-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
   font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preitem-btn:hover {
+  background: var(--portal-accent);
+  color: #FFFFFF;
+  transform: scale(1.12);
+}
+
+.preitem-btn:active {
+  transform: scale(0.92);
+}
+
+.preitem-qty-val {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  min-width: 15px;
+  text-align: center;
+  user-select: none;
 }
 
 .preitem-price {
   font-weight: 700;
   color: var(--portal-accent);
+  font-size: 0.82rem;
+  min-width: 48px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.preitem-remove-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--portal-text-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.55;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preitem-remove-btn:hover {
+  background: rgba(212, 46, 70, 0.12);
+  color: #D42E46;
+  border-color: rgba(212, 46, 70, 0.25);
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.preitem-remove-btn:active {
+  transform: scale(0.9);
 }
 
 .tray-preview-footer {
@@ -2515,7 +2647,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
+  width: 100%;
   padding: 10px 0;
   animation: ticketViewIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -2533,6 +2667,12 @@ body {
 }
 
 .ticket-celebration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
   margin-bottom: 24px;
 }
 
@@ -2779,8 +2919,10 @@ body {
 .ticket-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-  margin-top: 24px;
+  margin: 24px auto 0;
   width: 100%;
   max-width: 520px;
 }
@@ -2875,6 +3017,9 @@ body {
 
   .ticket-actions {
     flex-direction: column;
+    align-items: center;
+    margin: 20px auto 0;
+    width: 100%;
   }
 
   .ticket-action-btn {

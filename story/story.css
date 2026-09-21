@@ -1,0 +1,589 @@
+/* BLUE BELL CAFÉ — STORY SUB-STYLESHEET (story/story.css) */
+
+/* --------------------------------------------------------------------------
+   2.5. FIXED TOPBAR CONTAINER (.sw-topbar)
+   Unified header housing the brand logo capsule, navigation tabs, and CTA.
+   Uses pointer-events: none on the outer bar and auto on pills so empty space
+   remains transparent to gestures while buttons remain interactive.
+   -------------------------------------------------------------------------- */
+.sw-topbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 50 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: clamp(8px, 1.5vw, 18px) !important;
+  padding: clamp(10px, 1.8vw, 22px) clamp(12px, 3.5vw, 48px) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  pointer-events: none !important;
+  transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1), gap 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-topbar>* {
+  pointer-events: auto !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOPBAR CALL-TO-ACTION BUTTON ("Reserve a Table")
+   A luminous golden amber gradient pill on the top right that invites
+   guests to book a table, smoothly jumping to the final table service chapter.
+   -------------------------------------------------------------------------- */
+.sw-topcta {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(8px, 1vw, 10px) clamp(14px, 1.6vw, 22px);
+  font-family: var(--sw-font-body);
+  font-size: clamp(0.78rem, 0.88vw, 0.86rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  color: #1A100B !important;
+  background: linear-gradient(135deg, #F3DEBE 0%, #D4AF37 50%, #B87333 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(184, 115, 51, 0.28), 0 2px 6px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0 !important;
+}
+
+/* Arrow indicator inside the CTA button */
+.sw-topcta::after {
+  content: '→';
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Hover elevation with refined champagne-gold warmth */
+.sw-topcta:hover {
+  transform: translateY(-2px);
+  color: #120D0A !important;
+  background: linear-gradient(135deg, #FAF0DE 0%, #DFBA45 50%, #C48040 100%);
+  box-shadow: 0 6px 24px rgba(184, 115, 51, 0.38), 0 3px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.sw-topcta:hover::after {
+  transform: translateX(3px);
+}
+
+.sw-topcta:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(226, 167, 111, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   4. BRAND LOGO CAPSULE (Top-Left)
+   Encapsulates the transparent Blue Bell Café logo within a crisp white
+   pill capsule with a golden rim and subtle drop shadow.
+   -------------------------------------------------------------------------- */
+.sw-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-brand:hover {
+  transform: translateY(-2px);
+}
+
+/* White protective capsule for the logo */
+.sw-brand__logo-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(5px, 0.8vw, 7px) clamp(12px, 1.4vw, 18px) !important;
+  background: #FFFFFF !important;
+  /* Pure white background ensures navy blue & brown logo pop */
+  border-radius: 999px !important;
+  border: 1.5px solid rgba(226, 167, 111, 0.45) !important;
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    0 0 0 3px rgba(255, 255, 255, 0.25),
+    0 0 16px rgba(226, 167, 111, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-brand:hover .sw-brand__logo-wrap {
+  border-color: var(--sw-accent, #E2A76F) !important;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.45),
+    0 0 0 4px rgba(255, 255, 255, 0.4),
+    0 0 24px rgba(226, 167, 111, 0.45) !important;
+  transform: scale(1.02);
+}
+
+/* Logo image itself */
+.sw-brand__logo {
+  height: clamp(26px, 3.2vw, 38px) !important;
+  width: auto !important;
+  max-width: clamp(100px, 13vw, 150px) !important;
+  object-fit: contain !important;
+  display: block !important;
+  transform: none !important;
+  border-radius: 0 !important;
+}
+
+/* Hidden text name because the logo image already has "Blue Bell Café" */
+.sw-brand__name {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. TOP NAVIGATION BAR (.sw-nav)
+   A dark roasted espresso frosted glass pill containing the chapter titles
+   (Selection, Dosing, Grinding, etc.) with high-contrast ivory text.
+   Engineered with smooth horizontal scrolling & fluid flex compression
+   so it effortlessly scales across screen widths without breaking.
+   -------------------------------------------------------------------------- */
+.sw-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  padding: 5px 7px !important;
+  background: rgba(18, 13, 10, 0.88) !important;
+  /* Deep roasted espresso glass */
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(226, 167, 111, 0.35) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.12) !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  flex-shrink: 1 !important;
+  min-width: 0 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.sw-nav::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Individual navigation link items */
+.sw-nav__item {
+  font: inherit !important;
+  font-family: var(--sw-font-body) !important;
+  font-size: clamp(0.72rem, 0.82vw, 0.82rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: #EDE4DC !important;
+  /* Bright warm ivory */
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  padding: clamp(6px, 0.7vw, 8px) clamp(8px, 1.1vw, 15px) !important;
+  border-radius: 999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  flex-shrink: 0 !important;
+  user-select: none !important;
+}
+
+.sw-nav__num {
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+}
+
+.sw-nav__sep {
+  opacity: 0.75 !important;
+}
+
+.sw-nav__name {
+  transition: opacity 0.2s ease, max-width 0.3s ease !important;
+}
+
+.sw-nav__item:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  transform: translateY(-1px);
+}
+
+/* Active chapter item (matches the scene's dynamic accent color) */
+.sw-nav__item.is-active {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  background: var(--sw-accent, #E2A76F) !important;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--sw-accent, #E2A76F) 55%, transparent) !important;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   5.5. STORY SECTION CALL-TO-ACTION BUTTONS (.sw-copy__cta, .sw-btn)
+   Action buttons appearing in the story chapter copy (e.g. Act VIII: Service).
+   - Primary ("Reserve a Table"): Luminous golden amber gradient pill with
+     deep roasted espresso text (#1A100B) for crystal-clear readability,
+     warm golden box-shadow, and animated arrow indicator.
+   - Ghost ("Explore the Menu"): Frosted espresso/glass pill with crisp ivory text.
+   -------------------------------------------------------------------------- */
+.sw-copy__cta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin-top: 28px !important;
+  pointer-events: auto !important;
+}
+
+.sw-btn {
+  text-decoration: none !important;
+  font-family: var(--sw-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.02em !important;
+  padding: 12px 26px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+/* Primary Button ("Reserve a Table") */
+.sw-btn--primary {
+  color: #1A100B !important;
+  /* Deep roasted espresso noir - sharp, crystal-clear contrast */
+  background: linear-gradient(135deg, #F3DEBE 0%, #D4AF37 50%, #B87333 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow:
+    0 4px 18px rgba(184, 115, 51, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.sw-btn--primary::after {
+  content: '→';
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+.sw-btn--primary:hover {
+  transform: translateY(-2px) !important;
+  color: #120D0A !important;
+  background: linear-gradient(135deg, #FAF0DE 0%, #DFBA45 50%, #C48040 100%) !important;
+  box-shadow:
+    0 6px 24px rgba(184, 115, 51, 0.38),
+    0 3px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.sw-btn--primary:hover::after {
+  transform: translateX(3px);
+}
+
+.sw-btn--primary:active {
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 10px rgba(226, 167, 111, 0.35) !important;
+}
+
+/* Secondary Button ("Explore the Menu") */
+.sw-btn--ghost {
+  color: #FAF5EE !important;
+  /* Crisp, brilliant warm ivory */
+  background: rgba(20, 14, 10, 0.85) !important;
+  /* Deep roasted espresso velvet glass */
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1.5px solid rgba(226, 167, 111, 0.55) !important;
+  /* Elegant golden champagne rim */
+  border-radius: 999px !important;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(226, 167, 111, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18) !important;
+}
+
+.sw-btn--ghost:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  color: #FFFFFF !important;
+  background: rgba(36, 24, 18, 0.95) !important;
+  border-color: var(--sw-accent, #E2A76F) !important;
+  /* Luminous warm gold */
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(226, 167, 111, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25) !important;
+}
+
+.sw-btn--ghost:active {
+  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. SIDE ROUTE DOT RAIL & LABELS (.sw-route)
+   The vertical journey rail on the right side of the screen with active
+   dots and pop-out chapter tooltips.
+   -------------------------------------------------------------------------- */
+/* Vertical connecting rail line */
+.sw-route::before {
+  background: var(--sw-accent, #E2A76F) !important;
+  opacity: 0.45 !important;
+}
+
+/* Individual dot */
+.sw-route__dot i {
+  background: color-mix(in srgb, var(--sw-accent, #E2A76F) 60%, transparent) !important;
+}
+
+.sw-route__dot:hover i {
+  background: #FFFFFF !important;
+  box-shadow: 0 0 10px var(--sw-accent, #E2A76F) !important;
+}
+
+/* Currently active chapter dot */
+.sw-route__dot.is-active i {
+  background: var(--sw-accent, #E2A76F) !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--sw-accent, #E2A76F) 30%, transparent), 0 0 12px var(--sw-accent, #E2A76F) !important;
+}
+
+/* Hover/active tooltip label */
+.sw-route__label {
+  font-family: var(--sw-font-body) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  color: #F9F5F0 !important;
+  /* Crisp, brilliant ivory text */
+  background: rgba(18, 13, 10, 0.92) !important;
+  /* Deep roasted espresso glass */
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(226, 167, 111, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. ATMOSPHERIC VIGNETTE
+   Subtle radial edge darkening for a cinematic Parisian cafe aesthetic.
+   -------------------------------------------------------------------------- */
+.ambient-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(35, 22, 16, 0.05) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE DESIGN (Adaptive Scaling for All Screen Sizes & Tabs)
+   Adapts navigation, brand capsule, and CTA button seamlessly whether the
+   window/tab is expanded full-screen or made small/medium/tablet.
+   -------------------------------------------------------------------------- */
+
+/* Standard Laptops & Landscape Tablets (<= 1240px) */
+@media (max-width: 1240px) {
+  .sw-topbar {
+    padding: 12px 20px !important;
+    gap: 10px !important;
+  }
+
+  .sw-nav {
+    padding: 4px 6px !important;
+    gap: 2px !important;
+  }
+
+  .sw-nav__item {
+    padding: 6px 10px !important;
+    font-size: 0.77rem !important;
+  }
+}
+
+/* Tablets (Portrait & Medium Displays <= 1040px) */
+/* Collapses inactive tabs to clean, distinct Roman numerals (I, III, IV...)
+   while keeping the active tab prominently expanded (II. Dosing). */
+@media (max-width: 1160px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 1040px) {
+  .sw-topbar {
+    padding: 10px 16px !important;
+    gap: 8px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 6px 13px !important;
+  }
+
+  .sw-brand__logo {
+    height: 28px !important;
+    max-width: 110px !important;
+  }
+
+  .sw-topcta {
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+    gap: 6px !important;
+  }
+
+  .sw-nav {
+    padding: 4px 6px !important;
+    gap: 3px !important;
+  }
+
+  /* Inactive items: sleek, compact Roman numeral pills */
+  .sw-nav__item:not(.is-active) .sw-nav__name,
+  .sw-nav__item:not(.is-active) .sw-nav__sep {
+    display: none !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 6px 9px !important;
+    min-width: 30px !important;
+    font-size: 0.76rem !important;
+  }
+
+  /* Active item: proudly expands with full title */
+  .sw-nav__item.is-active {
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .sw-nav__item.is-active .sw-nav__name,
+  .sw-nav__item.is-active .sw-nav__sep {
+    display: inline !important;
+  }
+}
+
+/* Interactive hover reveal on non-touch screens under 1040px */
+@media (hover: hover) and (max-width: 1040px) {
+
+  .sw-nav__item:hover .sw-nav__name,
+  .sw-nav__item:hover .sw-nav__sep {
+    display: inline !important;
+  }
+
+  .sw-nav__item:hover {
+    padding: 6px 12px !important;
+  }
+}
+
+/* Mobile & Narrow Viewports (<= 680px) */
+@media (max-width: 680px) {
+  .sw-topbar {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 4px 10px !important;
+  }
+
+  .sw-brand__logo {
+    height: 23px !important;
+    max-width: 82px !important;
+  }
+
+  /* Shorten "Reserve a Table" to "Reserve" with arrow on mobile */
+  .sw-topcta {
+    padding: 7px 12px !important;
+    font-size: 0.76rem !important;
+    gap: 4px !important;
+  }
+
+  .sw-topcta .sw-topcta__sub {
+    display: none !important;
+  }
+
+  .sw-nav {
+    padding: 3px 5px !important;
+    gap: 2px !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 5px 8px !important;
+    min-width: 25px !important;
+    font-size: 0.71rem !important;
+  }
+
+  .sw-nav__item.is-active {
+    padding: 5px 10px !important;
+    font-size: 0.73rem !important;
+  }
+
+  .sw-copy__cta {
+    gap: 10px !important;
+    margin-top: 20px !important;
+  }
+
+  .sw-btn {
+    padding: 10px 20px !important;
+    font-size: 0.84rem !important;
+  }
+}
+
+/* Ultra-compact screens (<= 400px) */
+@media (max-width: 400px) {
+  .sw-topbar {
+    padding: 6px 6px !important;
+    gap: 4px !important;
+  }
+
+  .sw-brand__logo-wrap {
+    padding: 4px 7px !important;
+  }
+
+  .sw-brand__logo {
+    height: 20px !important;
+    max-width: 70px !important;
+  }
+
+  .sw-topcta {
+    padding: 6px 9px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .sw-nav__item:not(.is-active) {
+    padding: 4px 6px !important;
+    min-width: 20px !important;
+    font-size: 0.67rem !important;
+  }
+
+  .sw-btn {
+    padding: 8px 16px !important;
+    font-size: 0.78rem !important;
+  }
+}
