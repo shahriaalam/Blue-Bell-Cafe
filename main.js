@@ -1,43 +1,61 @@
-/* ==========================================================================
-   BLUE BELL CAFÉ — APPLICATION LOGIC (main.js)
-   ========================================================================== */
+/**
+ * ==============================================================================
+ * BLUE BELL CAFÉ — CORE CLIENT APPLICATION (main.js)
+ * ==============================================================================
+ * 
+ * Architectural Overview:
+ * 1. Cinematic Camera Flight Experience (LetsScroll Engine Mount)
+ * 2. Viewport & Navigation Transition Management
+ * 3. Dynamic Floating Controls & Footer Collision Avoidance
+ * 4. Artisanal Menu Interaction Engine:
+ *    - Category Filtering with Smooth Transition Hierarchy
+ *    - Tasting Tray In-Memory Store & LocalStorage Sync
+ *    - Dynamic Quantity Stepper & Add-to-Tray UI
+ *    - Seamless Booking Transition with Cart State Preservation
+ * 
+ * @fileoverview Main orchestrator for Blue Bell Café front-of-house experience.
+ * @author Blue Bell Café Engineering Team
+ * @version 2.4.0
+ * ==============================================================================
+ */
 
-/* --------------------------------------------------------------------------
-   1. MOUNT SCROLL-SCRUBBED CINEMATIC WORLD
-   Initializes the camera flight engine on the #world element.
-   Defines:
-   - Brand logo & top links
-   - Top call-to-action ("Reserve a Table")
-   - Scroll distance, crossfade curves, and atmospheric particles
-   - 8 sequential artisanal coffee scenes from bean selection to table service
-   -------------------------------------------------------------------------- */
+'use strict';
+
+/* ------------------------------------------------------------------------------
+   1. CINEMATIC CAMERA FLIGHT SCENARIO (LETS-SCROLL ENGINE MOUNT)
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Initializes the camera flight engine on the #world element.
+ * Drives an 8-act scroll-scrubbed journey through artisanal coffee preparation.
+ */
 mountLetsScroll(document.getElementById('world'), {
-  // Brand Header Configuration (Horizontal logo inside white capsule)
+  // Brand Header Capsule Configuration
   brand: {
     name: 'Blue Bell Café',
     logo: 'assets/Logo and falcon/logo.png',
-    logoOnly: true, // Only show the logo graphic without duplicate text
+    logoOnly: true,
     href: '#top'
   },
 
-  // Primary Action Button in the Top Bar
+  // Primary Call To Action
   cta: {
     label: 'Reserve a Table',
-    href: 'reservation.html' // Smoothly jumps to the final candlelit table service chapter
+    href: 'reservation.html'
   },
 
-  // Initial prompt displayed to the visitor
+  // Scroll discovery prompt
   hint: 'scroll to explore',
 
-  // Cinematic scroll timing parameters
-  diveScroll: 2.2,   // Scroll distance for each camera flight scene
-  crossfade: 0.52,    // Smoothness of video transitions between scenes
-  connScroll: 0.85,   // Transition duration between scene connects
-  atmosphere: true,   // Subtle floating golden dust particles & warm ambient glow
+  // Cinematic scroll choreography parameters
+  diveScroll: 2.2,   // Camera flight distance per scene
+  crossfade: 0.52,   // Scene dissolve window
+  connScroll: 0.85,  // Transition connector pacing
+  atmosphere: true,  // Floating micro-particles and ambient glow
 
-  // ------------------------------------------------------------------------
-  // STORY SECTIONS (The 8 Chapters of Artisanal Coffee Craftsmanship)
-  // ------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------
+  // STORY CHAPTERS (The 8 Acts of Artisanal Craftsmanship)
+  // ----------------------------------------------------------------------------
   sections: [
     // Act I: Handpicking the roasted coffee beans
     {
@@ -144,7 +162,7 @@ mountLetsScroll(document.getElementById('world'), {
       tags: ['Swan Latte Art', 'Master Pour', 'Pure Romance']
     },
 
-    // Act VIII: Candlelit table for two with croissants and rose
+    // Act VIII: Candlelit table service with warm croissants
     {
       id: 'service',
       label: 'VIII. Service',
@@ -166,7 +184,12 @@ mountLetsScroll(document.getElementById('world'), {
   connectors: []
 });
 
-// Smooth scroll listener for menu links
+
+/* ------------------------------------------------------------------------------
+   2. VIEWPORT & NAVIGATION MANAGEMENT
+   ------------------------------------------------------------------------------ */
+
+// Smooth scroll listener for hash anchors pointing to #cafe-menu
 document.addEventListener('click', (e) => {
   const target = e.target.closest('a[href="#cafe-menu"]');
   if (target) {
@@ -178,7 +201,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Auto-scroll to artisanal menu if returning via #cafe-menu
+// Auto-scroll handler when returning via direct URL hash or return session state
 if (window.location.hash === '#cafe-menu') {
   const scrollToMenu = () => {
     setTimeout(() => {
@@ -194,7 +217,9 @@ if (window.location.hash === '#cafe-menu') {
 } else if (sessionStorage.getItem('bbc_return_to_top') === 'true' || window.location.hash === '#top') {
   try {
     sessionStorage.removeItem('bbc_return_to_top');
-  } catch (e) {}
+  } catch (e) {
+    /* Ignore storage security exceptions */
+  }
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
@@ -208,14 +233,19 @@ if (window.location.hash === '#cafe-menu') {
   window.addEventListener('load', resetToTop);
 }
 
-/* --------------------------------------------------------------------------
-   2. DYNAMIC FLOATING CONTROLS DOCKING
-   Ensures bottom floating elements (Tasting Tray) dock gracefully above the footer.
-   -------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------
+   3. DYNAMIC FLOATING CONTROLS DOCKING
+   Prevents floating components (e.g. Tasting Tray) from overlapping footer.
+   ------------------------------------------------------------------------------ */
+
 const footerElement = document.querySelector('.site-footer');
 const tastingTrayEl = document.getElementById('tasting-tray');
 let dockTicking = false;
 
+/**
+ * Recalculates bottom margin of the floating dock based on footer intersection.
+ */
 function updateFloatingControlsDocking() {
   const windowHeight = window.innerHeight;
   const baseTrayMargin = 24;
@@ -236,6 +266,9 @@ function updateFloatingControlsDocking() {
   }
 }
 
+/**
+ * Throttles docking updates using requestAnimationFrame.
+ */
 function handleFloatingControlsScroll() {
   if (!dockTicking) {
     dockTicking = true;
@@ -248,17 +281,18 @@ function handleFloatingControlsScroll() {
 
 window.addEventListener('scroll', handleFloatingControlsScroll, { passive: true });
 window.addEventListener('resize', updateFloatingControlsDocking);
-// Initialize on page load
+// Initialize docking geometry
 updateFloatingControlsDocking();
 
-/* --------------------------------------------------------------------------
-   3. ARTISANAL CAFÉ MENU INTERACTION
-   - Category Filter Navigation
-   - Tasting Tray Selection & Real-Time Total
-   - 1-Click Reservation Jump with Intent
-   -------------------------------------------------------------------------- */
 
-// --- A. Category Filter Tabs ---
+/* ------------------------------------------------------------------------------
+   4. ARTISANAL MENU ENGINE
+   - Category Filter Navigation
+   - Tasting Tray Reactive Store
+   - Quantity Stepper UI Sync
+   ------------------------------------------------------------------------------ */
+
+// --- Category Filter Tabs ---
 const filterButtons = document.querySelectorAll('.menu-filter-btn');
 const menuCards = document.querySelectorAll('.menu-card');
 
@@ -267,11 +301,11 @@ if (filterButtons.length > 0) {
     btn.addEventListener('click', () => {
       const category = btn.getAttribute('data-category');
 
-      // Update active tab button
+      // Update active tab button style
       filterButtons.forEach((b) => b.classList.remove('is-active'));
       btn.classList.add('is-active');
 
-      // Filter cards with smooth entrance
+      // Filter cards with smooth entrance animation
       menuCards.forEach((card) => {
         const cardCat = card.getAttribute('data-category');
         if (category === 'all' || cardCat === category) {
@@ -291,10 +325,21 @@ if (filterButtons.length > 0) {
   });
 }
 
-// --- B. Tasting Tray State Management with Dynamic Quantity Controls ---
+/**
+ * Reactive Tasting Tray Store
+ * Manages item selections, quantities, prices, and UI synchronization.
+ */
 const tastingTray = {
+  /** @type {Map<string, {id: string, name: string, price: number, quantity: number}>} */
   items: new Map(),
 
+  /**
+   * Adds an item to the tray or increments its quantity.
+   * @param {string} id - Unique item identifier (e.g. 'bis-02')
+   * @param {string} name - Culinary item name
+   * @param {number|string} price - Unit price in BDT
+   * @param {number} [quantity=1] - Quantity to add
+   */
   add(id, name, price, quantity = 1) {
     if (this.items.has(id)) {
       const existing = this.items.get(id);
@@ -305,6 +350,11 @@ const tastingTray = {
     this.render();
   },
 
+  /**
+   * Explicitly sets the quantity for an item.
+   * @param {string} id - Item identifier
+   * @param {number} quantity - Target quantity
+   */
   setQuantity(id, quantity) {
     if (quantity <= 0) {
       this.remove(id);
@@ -316,16 +366,30 @@ const tastingTray = {
     }
   },
 
+  /**
+   * Retrieves the current quantity of a specific item.
+   * @param {string} id - Item identifier
+   * @returns {number}
+   */
   getQuantity(id) {
     return this.items.has(id) ? this.items.get(id).quantity : 0;
   },
 
+  /**
+   * Removes an item from the tray and resets card UI.
+   * @param {string} id - Item identifier
+   */
   remove(id) {
     this.items.delete(id);
     this.updateCardUI(id, 0);
     this.render();
   },
 
+  /**
+   * Synchronizes card UI stepper with current tray quantity.
+   * @param {string} id - Item identifier
+   * @param {number} qty - Current quantity
+   */
   updateCardUI(id, qty) {
     const btn = document.querySelector(`.add-to-tray-btn[data-id="${id}"]`);
     if (!btn) return;
@@ -345,6 +409,9 @@ const tastingTray = {
     }
   },
 
+  /**
+   * Clears all items from the tray and resets all card steppers.
+   */
   clear() {
     this.items.clear();
     document.querySelectorAll('.card-tray-control').forEach((ctrl) => {
@@ -360,6 +427,10 @@ const tastingTray = {
     this.render();
   },
 
+  /**
+   * Computes the total item count.
+   * @returns {number}
+   */
   getTotalCount() {
     let count = 0;
     this.items.forEach((item) => {
@@ -368,6 +439,10 @@ const tastingTray = {
     return count;
   },
 
+  /**
+   * Computes total order value in BDT.
+   * @returns {number}
+   */
   getTotalPrice() {
     let sum = 0;
     this.items.forEach((item) => {
@@ -376,6 +451,9 @@ const tastingTray = {
     return sum;
   },
 
+  /**
+   * Renders the updated state to the floating Tasting Tray dock.
+   */
   render() {
     const totalCount = this.getTotalCount();
     const totalPrice = this.getTotalPrice();
@@ -400,7 +478,7 @@ const tastingTray = {
   }
 };
 
-// Wire Add to Tray Buttons & Quantity Steppers
+// Wire Add-to-Tray Buttons and Steppers
 document.querySelectorAll('.card-tray-control').forEach((control) => {
   const btn = control.querySelector('.add-to-tray-btn');
   const minusBtn = control.querySelector('.qty-minus');
@@ -413,19 +491,18 @@ document.querySelectorAll('.card-tray-control').forEach((control) => {
   const name = btn.getAttribute('data-name');
   const price = Number(btn.getAttribute('data-price'));
 
-  // Main Add Button click: toggles In Tasting Tray
+  // Toggle in/out of tasting tray
   btn.addEventListener('click', () => {
     const currentQty = tastingTray.getQuantity(id);
     if (currentQty === 0) {
       tastingTray.add(id, name, price, 1);
       tastingTray.updateCardUI(id, 1);
     } else {
-      // Clicking button again removes from tray
       tastingTray.remove(id);
     }
   });
 
-  // Plus button click: increases quantity
+  // Quantity increment
   if (plusBtn) {
     plusBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -436,7 +513,7 @@ document.querySelectorAll('.card-tray-control').forEach((control) => {
     });
   }
 
-  // Minus button click: decreases quantity (or removes if reaching 0)
+  // Quantity decrement
   if (minusBtn) {
     minusBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -446,37 +523,46 @@ document.querySelectorAll('.card-tray-control').forEach((control) => {
         tastingTray.setQuantity(id, newQty);
         if (valEl) valEl.textContent = newQty;
       } else {
-        // Drop to 0 -> remove from tray & close popup
         tastingTray.remove(id);
       }
     });
   }
 });
 
-// Wire Clear Tray Button
+// Clear Tray Action Trigger
 const clearTrayBtn = document.getElementById('tray-clear-btn');
 if (clearTrayBtn) {
   clearTrayBtn.addEventListener('click', () => {
     tastingTray.clear();
     try {
       localStorage.removeItem('bbc_tasting_tray');
-    } catch (e) { }
+    } catch (e) {
+      /* Safe ignore */
+    }
   });
 }
 
-// Smooth page transition helper with steaming coffee loader
+
+/* ------------------------------------------------------------------------------
+   5. PAGE TRANSITION & PREFETCH ACCELERATION
+   Provides fluid crossfades and zero-latency page prewarming.
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Triggers smooth page transition with steaming coffee veil.
+ * @param {string} url - Destination target URL
+ */
 function smoothNavigateTo(url) {
   const veil = document.getElementById('page-transition-veil');
   if (veil) {
     veil.classList.add('is-active');
   }
-  // Instant navigation trigger
   setTimeout(() => {
     window.location.href = url;
   }, 25);
 }
 
-// Pre-warm / prefetch reservation page on hover or touch for instant navigation
+// Prefetch reservation page on hover or touch for instant loads
 document.addEventListener('pointerenter', (e) => {
   const link = e.target.closest && e.target.closest('a[href*="reservation.html"]');
   if (link && !link._prefetched) {
@@ -488,7 +574,7 @@ document.addEventListener('pointerenter', (e) => {
   }
 }, true);
 
-// Reset transition veil on page show (handles Back button & bfcache)
+// Reset transition veil on page show (handles browser Back button & bfcache)
 window.addEventListener('pageshow', () => {
   const veil = document.getElementById('page-transition-veil');
   if (veil) {
@@ -496,7 +582,7 @@ window.addEventListener('pageshow', () => {
   }
 });
 
-// Intercept all reservation navigation links for silky-smooth crossfade
+// Intercept internal reservation links for smooth crossfade
 document.addEventListener('click', (e) => {
   const link = e.target.closest('a[href*="reservation.html"]');
   if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
@@ -505,7 +591,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Wire Proceed to Booking Button in Tasting Tray Dock
+// Proceed to Booking Action Trigger
 const trayOrderBtn = document.getElementById('tray-order-btn');
 if (trayOrderBtn) {
   trayOrderBtn.addEventListener('click', (e) => {
@@ -519,7 +605,7 @@ if (trayOrderBtn) {
       };
       localStorage.setItem('bbc_tasting_tray', JSON.stringify(trayData));
     } catch (err) {
-      console.warn('Could not save tasting tray state to localStorage:', err);
+      console.warn('[BlueBell] Unable to persist tasting tray state:', err);
     }
     smoothNavigateTo('reservation.html');
   });

@@ -1,54 +1,122 @@
-/* --------------------------------------------------------------------------
-   4. MR. PUDDING'S INTERACTIVE RESERVATION PARLOUR
-   Controls:
-   - Full-screen dining room stage opening & closing
-   - Tasting Tray pre-order auto-population
-   - Mr. Pudding's dynamic speech bubble & purring reactions
-   - Interactive table selection & time slot picking
-   - Paw of Approval wax seal confirmation
-   -------------------------------------------------------------------------- */
+/**
+ * ==============================================================================
+ * BLUE BELL CAFÉ — RESERVATION PARLOUR & MR. PUDDING ENGINE (reservation.js)
+ * ==============================================================================
+ * 
+ * Architectural Overview:
+ * 1. DOM References & State Management
+ * 2. Date, Time & Seating Configuration
+ * 3. Tasting Tray Pre-Order Ledger Integration
+ * 4. Mr. Pudding (Feline Head Host) Reactive Behaviour & Animations
+ * 5. Interactive Setting Selection & Dynamic Atmospheric Themes
+ * 6. Timeslot Pills & Custom Time Selection Drawer
+ * 7. Reservation Confirmation & Paw of Approval Wax Seal
+ * 8. Zero-Latency Page Transitions & Navigation Interceptors
+ * 
+ * @fileoverview Booking portal and host interaction logic for Blue Bell Café.
+ * @author Blue Bell Café Engineering Team
+ * @version 2.4.0
+ * ==============================================================================
+ */
+
+'use strict';
+
+/* ------------------------------------------------------------------------------
+   1. DOM REFERENCES & ELEMENT CACHE
+   ------------------------------------------------------------------------------ */
 
 const resPortal = document.getElementById('reservation-portal');
 const portalCloseBtn = document.getElementById('portal-close-btn');
 const portalBackdrop = document.getElementById('portal-backdrop');
-const barnabyBubble = document.getElementById('barnaby-bubble');
-const barnabySpeechText = document.getElementById('barnaby-speech-text');
-const barnabyCharacter = document.getElementById('barnaby-character');
+
+// Feline Head Host (Mr. Pudding) Elements
+const puddingBubble = document.getElementById('barnaby-bubble');
+const puddingSpeechText = document.getElementById('barnaby-speech-text');
+const puddingCharacter = document.getElementById('barnaby-character');
 const purrBtn = document.getElementById('purr-btn');
 const purrHearts = document.getElementById('purr-hearts');
 
+// Portal Views & Form Controls
 const portalFormView = document.getElementById('portal-form-view');
 const portalTicketView = document.getElementById('portal-ticket-view');
 const resForm = document.getElementById('reservation-form');
 const resDateInput = document.getElementById('res-date');
 
+// Guest Count Controls
 const guestCountEl = document.getElementById('guest-count');
 const guestMinusBtn = document.getElementById('guest-minus');
 const guestPlusBtn = document.getElementById('guest-plus');
 
+// Timeslot Controls
+const timeslotPills = document.querySelectorAll('.timeslot-pill');
+const customTimePill = document.getElementById('custom-time-pill');
+const customTimePickerRow = document.getElementById('custom-time-picker-row');
+const resCustomTimeInput = document.getElementById('res-custom-time');
+const customTimeStatus = document.getElementById('custom-time-status');
+const customPillLabel = document.getElementById('custom-pill-label');
+const customPillSub = document.getElementById('custom-pill-sub');
+
+// Table Setting Options & Occasion Tags
+const tableOptions = document.querySelectorAll('.table-option');
+const occasionTags = document.querySelectorAll('.occasion-tag');
+const ticketDoneBtn = document.getElementById('ticket-done-btn');
+
+
+/* ------------------------------------------------------------------------------
+   2. REACTIVE STATE
+   ------------------------------------------------------------------------------ */
+
 let currentGuestCount = 2;
 let selectedTimeSlot = '8:30 PM';
+let customSelectedTime = '7:00 PM';
 let selectedOccasion = 'Date Night';
 let selectedTable = '';
+let puddingActivityIndex = 0;
 
-// Helper function to dynamically update the atmospheric color theme
-function updatePortalTheme(themeClass) {
-  if (!resPortal) return;
-  resPortal.classList.remove('theme-default', 'theme-rainy', 'theme-cozy', 'theme-sensory', 'theme-lush');
-  resPortal.classList.add(themeClass);
-}
 
-// Set today's default date (YYYY-MM-DD)
-if (resDateInput) {
+/* ------------------------------------------------------------------------------
+   3. DATE & TIME UTILITIES
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Initializes the date input with today's date as minimum and default value.
+ */
+function initializeDateInput() {
+  if (!resDateInput) return;
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const dd = String(today.getDate()).padStart(2, '0');
-  resDateInput.value = `${yyyy}-${mm}-${dd}`;
-  resDateInput.min = `${yyyy}-${mm}-${dd}`;
+  const dateStr = `${yyyy}-${mm}-${dd}`;
+  resDateInput.value = dateStr;
+  resDateInput.min = dateStr;
+}
+initializeDateInput();
+
+/**
+ * Converts a 24-hour time string ("HH:MM") into an artisanal 12-hour format ("H:MM AM/PM").
+ * @param {string} time24 - 24-hour time string
+ * @returns {string} Formatted 12-hour time string
+ */
+function formatTime12h(time24) {
+  if (!time24) return '7:00 PM';
+  const parts = time24.split(':');
+  let h = parseInt(parts[0], 10);
+  const m = parts[1] || '00';
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m} ${ampm}`;
 }
 
-// Helper to load Tasting Tray items saved from index.html via localStorage
+
+/* ------------------------------------------------------------------------------
+   4. TASTING TRAY PERSISTENCE & LEDGER INTEGRATION
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Reads pre-ordered Tasting Tray items from localStorage.
+ * @returns {{items: Array, totalCount: number, totalPrice: number}|null}
+ */
 function getSavedTastingTray() {
   try {
     const raw = localStorage.getItem('bbc_tasting_tray');
@@ -62,118 +130,55 @@ function getSavedTastingTray() {
       totalPrice: data.totalPrice || items.reduce((sum, it) => sum + (it.price * (it.quantity || 1)), 0)
     };
   } catch (err) {
-    console.warn('Could not read saved tasting tray from localStorage:', err);
+    console.warn('[BlueBell] Unable to access tasting tray persistence:', err);
     return null;
   }
 }
 
-// Function to open the reservation portal
-function openReservationPortal() {
-  if (!resPortal) return;
-
-  // Reset to form view
-  if (portalFormView) portalFormView.classList.remove('is-hidden');
-  if (portalTicketView) portalTicketView.classList.add('is-hidden');
-  if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
-
-  // Maintain selected theme or activate default light aesthetic theme
-  if (!selectedTable) {
-    updatePortalTheme('theme-default');
-    if (resPortal) {
-      resPortal.classList.remove('has-setting-selected', 'setting-window', 'setting-candlelit', 'setting-barista', 'setting-glasshouse');
-    }
-  }
-
-  // Populate Tasting Tray order items into Mr. Pudding's Ledger
+/**
+ * Populates Mr. Pudding's pre-order ledger with selected tray items.
+ */
+function populateTastingTrayLedger() {
   const trayItemsContainer = document.getElementById('portal-tray-items');
   const trayTotalEl = document.getElementById('portal-tray-total');
+  if (!trayItemsContainer || !trayTotalEl) return;
 
-  if (trayItemsContainer && trayTotalEl) {
-    const savedTray = getSavedTastingTray();
-    if (savedTray && savedTray.items && savedTray.items.length > 0) {
-      let html = '';
-      savedTray.items.forEach((item) => {
-        html += `
-          <div class="tray-preitem">
-            <span class="preitem-name">
-              <span>☕ ${item.name}</span>
-              <span class="preitem-qty">×${item.quantity}</span>
-            </span>
-            <span class="preitem-price">৳ ${(item.price * item.quantity).toLocaleString()}</span>
-          </div>
-        `;
-      });
-      trayItemsContainer.innerHTML = html;
-      trayTotalEl.textContent = `৳ ${savedTray.totalPrice.toLocaleString()}`;
+  const savedTray = getSavedTastingTray();
+  if (savedTray && savedTray.items && savedTray.items.length > 0) {
+    let html = '';
+    savedTray.items.forEach((item) => {
+      html += `
+        <div class="tray-preitem">
+          <span class="preitem-name">
+            <span>☕ ${item.name}</span>
+            <span class="preitem-qty">×${item.quantity}</span>
+          </span>
+          <span class="preitem-price">৳ ${(item.price * item.quantity).toLocaleString()}</span>
+        </div>
+      `;
+    });
+    trayItemsContainer.innerHTML = html;
+    trayTotalEl.textContent = `৳ ${savedTray.totalPrice.toLocaleString()}`;
 
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
-      }
-    } else {
-      trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
-      trayTotalEl.textContent = '৳ 0';
+    if (puddingSpeechText) {
+      puddingSpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected delicacies</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
+    }
+  } else {
+    trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
+    trayTotalEl.textContent = '৳ 0';
 
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Pudding</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
-      }
+    if (puddingSpeechText) {
+      puddingSpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Pudding</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
     }
   }
-
-  // Open the portal with animation
-  resPortal.classList.remove('is-hidden');
-  document.body.style.overflow = 'hidden';
 }
 
-function returnToCafeHome(targetUrl = 'index.html') {
-  try {
-    sessionStorage.setItem('bbc_return_to_top', 'true');
-  } catch (e) { }
-  const veil = document.getElementById('page-transition-veil');
-  if (veil) {
-    veil.classList.add('is-active');
-  }
-  setTimeout(() => {
-    window.location.href = targetUrl;
-  }, 25);
-}
 
-// Fade out transition veil once parlour is mounted
-function dismissVeil() {
-  const veil = document.getElementById('page-transition-veil');
-  if (veil) {
-    requestAnimationFrame(() => {
-      veil.classList.remove('is-active');
-    });
-  }
-}
-window.addEventListener('DOMContentLoaded', dismissVeil);
-window.addEventListener('pageshow', dismissVeil);
+/* ------------------------------------------------------------------------------
+   5. MR. PUDDING INTERACTION ENGINE
+   Handles feline speech rotation, purring animations, and particle bursts.
+   ------------------------------------------------------------------------------ */
 
-// Smooth intercept for all return links
-document.addEventListener('click', (e) => {
-  const link = e.target.closest('a[href*="index.html"]');
-  if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
-    e.preventDefault();
-    const dest = link.getAttribute('href') || 'index.html';
-    returnToCafeHome(dest);
-  }
-});
-
-// Wire Close / Return Triggers (explicit close button only, not outer backdrop)
-if (portalCloseBtn) {
-  portalCloseBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    returnToCafeHome('index.html');
-  });
-}
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    returnToCafeHome('index.html');
-  }
-});
-
-// Interactive Mr. Pudding 3D Doll Activities & Purring
-let puddingActivityIndex = 0;
 const puddingActivities = [
   {
     msg: `Voila! 🛎️ <em>*Lifts silver cloche*</em> A fresh pour-over bloom prepared with our signature roast just for your table!`,
@@ -197,8 +202,11 @@ const puddingActivities = [
   }
 ];
 
-function spawnPuddingSparkle() {
-  if (!barnabyCharacter) return;
+/**
+ * Spawns floating sparkle particles above Mr. Pudding.
+ */
+function spawnPuddingSparkles() {
+  if (!puddingCharacter) return;
   const emojis = ['🐾', '☕', '✨', '💛', '🌟', '🥐'];
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
@@ -208,44 +216,61 @@ function spawnPuddingSparkle() {
       const offsetX = (Math.random() - 0.5) * 80;
       p.style.left = `calc(50% + ${offsetX}px)`;
       p.style.bottom = '110px';
-      barnabyCharacter.appendChild(p);
+      puddingCharacter.appendChild(p);
       setTimeout(() => p.remove(), 1200);
     }, i * 140);
   }
 }
 
-function triggerBarnabyPurr() {
-  if (!barnabyCharacter) return;
+/**
+ * Triggers Mr. Pudding's purr reaction, dialogue change, and serving cloche animation.
+ */
+function triggerPuddingPurr() {
+  if (!puddingCharacter) return;
 
   const current = puddingActivities[puddingActivityIndex % puddingActivities.length];
   puddingActivityIndex++;
 
-  barnabyCharacter.classList.add('is-purring');
+  puddingCharacter.classList.add('is-purring');
   if (current.isServing) {
-    barnabyCharacter.classList.add('is-serving');
+    puddingCharacter.classList.add('is-serving');
   }
 
-  if (barnabySpeechText) {
-    barnabySpeechText.innerHTML = current.msg;
+  if (puddingSpeechText) {
+    puddingSpeechText.innerHTML = current.msg;
   }
   if (purrHearts) {
     purrHearts.textContent = current.badge;
   }
 
-  spawnPuddingSparkle();
+  spawnPuddingSparkles();
 
   setTimeout(() => {
-    barnabyCharacter.classList.remove('is-purring');
-    barnabyCharacter.classList.remove('is-serving');
+    puddingCharacter.classList.remove('is-purring');
+    puddingCharacter.classList.remove('is-serving');
     if (purrHearts) purrHearts.textContent = '';
   }, 2800);
 }
 
-if (barnabyCharacter) barnabyCharacter.addEventListener('click', triggerBarnabyPurr);
-if (purrBtn) purrBtn.addEventListener('click', triggerBarnabyPurr);
+if (puddingCharacter) puddingCharacter.addEventListener('click', triggerPuddingPurr);
+if (purrBtn) purrBtn.addEventListener('click', triggerPuddingPurr);
 
-// Table Options selection & dynamic theme switcher across 5 atmospheric scenarios
-const tableOptions = document.querySelectorAll('.table-option');
+
+/* ------------------------------------------------------------------------------
+   6. ATMOSPHERIC THEME SWITCHER & TABLE SETTINGS
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Updates portal color theme matching the selected dining setting.
+ * @param {string} themeClass - CSS theme class name
+ */
+function updatePortalTheme(themeClass) {
+  if (!resPortal) return;
+  resPortal.classList.remove('theme-default', 'theme-rainy', 'theme-cozy', 'theme-sensory', 'theme-lush');
+  resPortal.classList.add(themeClass);
+}
+
+// Table Options selection
 tableOptions.forEach((option) => {
   option.addEventListener('click', () => {
     tableOptions.forEach((opt) => opt.classList.remove('is-selected'));
@@ -266,48 +291,32 @@ tableOptions.forEach((option) => {
 
     if (tableId === 'window') {
       updatePortalTheme('theme-rainy');
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ah, the <strong>Rainy Window Alcove</strong>! Watching raindrops trickling on the glass with hot single-origin pour-over... pure romance!`;
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Ah, the <strong>Rainy Window Alcove</strong>! Watching raindrops trickling on the glass with hot single-origin pour-over... pure romance!`;
       }
     } else if (tableId === 'candlelit') {
       updatePortalTheme('theme-cozy');
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Ooh, the <strong>Intimate Velvet Booth</strong>! Very cozy and secluded. I will personally light a fresh honeyed beeswax candle for you!`;
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Ooh, the <strong>Intimate Velvet Booth</strong>! Very cozy and secluded. I will personally light a fresh honeyed beeswax candle for you!`;
       }
     } else if (tableId === 'barista') {
       updatePortalTheme('theme-sensory');
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Front-row at the <strong>Barista Bar</strong>! You will witness manual V60 bloom magic and smell freshly ground Geisha first!`;
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Front-row at the <strong>Barista Bar</strong>! You will witness manual V60 bloom magic and smell freshly ground Geisha first!`;
       }
     } else if (tableId === 'glasshouse') {
       updatePortalTheme('theme-lush');
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `The <strong>Botanical Glasshouse</strong>! Surrounded by exotic monsteras, fresh garden greenery, and gentle acoustic jazz... so calming!`;
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `The <strong>Botanical Glasshouse</strong>! Surrounded by exotic monsteras, fresh garden greenery, and gentle acoustic jazz... so calming!`;
       }
     }
   });
 });
 
-// Timeslot Pills & Custom Time Selection
-const timeslotPills = document.querySelectorAll('.timeslot-pill');
-const customTimePill = document.getElementById('custom-time-pill');
-const customTimePickerRow = document.getElementById('custom-time-picker-row');
-const resCustomTimeInput = document.getElementById('res-custom-time');
-const customTimeStatus = document.getElementById('custom-time-status');
-const customPillLabel = document.getElementById('custom-pill-label');
-const customPillSub = document.getElementById('custom-pill-sub');
 
-let customSelectedTime = '7:00 PM';
-
-function formatTime12h(time24) {
-  if (!time24) return '7:00 PM';
-  const parts = time24.split(':');
-  let h = parseInt(parts[0], 10);
-  const m = parts[1] || '00';
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  return `${h}:${m} ${ampm}`;
-}
+/* ------------------------------------------------------------------------------
+   7. TIMESLOT PILLS & CUSTOM TIME DRAWER
+   ------------------------------------------------------------------------------ */
 
 timeslotPills.forEach((pill) => {
   pill.addEventListener('click', () => {
@@ -341,13 +350,17 @@ if (resCustomTimeInput) {
     if (customPillLabel) customPillLabel.textContent = customSelectedTime;
     if (customPillSub) customPillSub.textContent = 'Custom ⏰';
 
-    // Ensure custom pill is selected
+    // Highlight custom pill
     timeslotPills.forEach((p) => p.classList.remove('is-active'));
     if (customTimePill) customTimePill.classList.add('is-active');
   });
 }
 
-// Guest Stepper
+
+/* ------------------------------------------------------------------------------
+   8. GUEST STEPPER & OCCASION SELECTION
+   ------------------------------------------------------------------------------ */
+
 if (guestMinusBtn && guestPlusBtn && guestCountEl) {
   guestMinusBtn.addEventListener('click', () => {
     if (currentGuestCount > 1) {
@@ -364,8 +377,6 @@ if (guestMinusBtn && guestPlusBtn && guestCountEl) {
   });
 }
 
-// Occasion Tags selection
-const occasionTags = document.querySelectorAll('.occasion-tag');
 occasionTags.forEach((tag) => {
   tag.addEventListener('click', () => {
     occasionTags.forEach((t) => t.classList.remove('is-active'));
@@ -374,14 +385,18 @@ occasionTags.forEach((tag) => {
   });
 });
 
-// Form Submission & Paw of Approval Ticket Generation
+
+/* ------------------------------------------------------------------------------
+   9. FORM SUBMISSION & PAW OF APPROVAL TICKET GENERATION
+   ------------------------------------------------------------------------------ */
+
 if (resForm) {
   resForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     if (!selectedTable) {
-      if (barnabySpeechText) {
-        barnabySpeechText.innerHTML = `Please choose your preferred <strong>Dream Setting</strong> above so I can prepare the ideal nook for you!`;
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Please choose your preferred <strong>Dream Setting</strong> above so I can prepare the ideal nook for you!`;
       }
       const grid = document.querySelector('.table-options-grid');
       if (grid) {
@@ -395,10 +410,6 @@ if (resForm) {
     const nameInput = document.getElementById('res-name');
     const guestName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : 'Valued Guest';
     const dateVal = resDateInput ? resDateInput.value : 'Today';
-
-    // Generate random booking reference
-    const randomCode = Math.floor(1000 + Math.random() * 9000);
-    const bookingId = `#BBC-${randomCode}`;
 
     // Switch view to confirmation celebration
     if (portalFormView) portalFormView.classList.add('is-hidden');
@@ -416,35 +427,116 @@ if (resForm) {
       });
     }
 
-    // Dynamic subtitle tailored to the guest's selected table setting and chosen time
+    // Dynamic subtitle tailored to guest setting and chosen time
     const ticketCongratsSub = document.querySelector('.ticket-congrats-sub');
     if (ticketCongratsSub && selectedTable) {
       ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} for ${selectedTimeSlot} on ${dateVal} and notified the baristas.`;
     }
 
-    // Mr. Pudding's congratulations speech
-    if (barnabySpeechText) {
-      barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially reserved for <strong>${selectedTimeSlot}</strong> with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
+    // Mr. Pudding congratulations speech
+    if (puddingSpeechText) {
+      puddingSpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially reserved for <strong>${selectedTimeSlot}</strong> with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
     }
   });
 }
 
-// Done Action Button: Clear Tray & Return to Home / 1st portion of Cafe Experience
-const ticketDoneBtn = document.getElementById('ticket-done-btn');
+
+/* ------------------------------------------------------------------------------
+   10. NAVIGATION & LIFECYCLE MANAGEMENT
+   ------------------------------------------------------------------------------ */
+
+/**
+ * Smoothly transitions back to the main coffee sanctuary with a crossfade veil.
+ * @param {string} [targetUrl='index.html'] - Destination URL
+ */
+function returnToCafeHome(targetUrl = 'index.html') {
+  try {
+    sessionStorage.setItem('bbc_return_to_top', 'true');
+  } catch (e) {
+    /* Safe ignore */
+  }
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    veil.classList.add('is-active');
+  }
+  setTimeout(() => {
+    window.location.href = targetUrl;
+  }, 25);
+}
+
+/**
+ * Fades out the transition veil when parlour mounts.
+ */
+function dismissVeil() {
+  const veil = document.getElementById('page-transition-veil');
+  if (veil) {
+    requestAnimationFrame(() => {
+      veil.classList.remove('is-active');
+    });
+  }
+}
+window.addEventListener('DOMContentLoaded', dismissVeil);
+window.addEventListener('pageshow', dismissVeil);
+
+// Intercept return links for silky-smooth transition
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="index.html"]');
+  if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+    e.preventDefault();
+    const dest = link.getAttribute('href') || 'index.html';
+    returnToCafeHome(dest);
+  }
+});
+
+// Explicit close button trigger
+if (portalCloseBtn) {
+  portalCloseBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    returnToCafeHome('index.html');
+  });
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    returnToCafeHome('index.html');
+  }
+});
+
+// Done Action Button: Clear Tray & Return Home
 if (ticketDoneBtn) {
   ticketDoneBtn.addEventListener('click', () => {
     try {
       localStorage.removeItem('bbc_tasting_tray');
       sessionStorage.setItem('bbc_return_to_top', 'true');
-    } catch (e) { }
+    } catch (e) {
+      /* Safe ignore */
+    }
     returnToCafeHome('index.html');
   });
 }
 
-// Auto-initialize the reservation parlour on page load
+/**
+ * Mounts the reservation parlour on page load.
+ */
+function openReservationPortal() {
+  if (!resPortal) return;
+
+  if (portalFormView) portalFormView.classList.remove('is-hidden');
+  if (portalTicketView) portalTicketView.classList.add('is-hidden');
+  if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
+
+  if (!selectedTable) {
+    updatePortalTheme('theme-default');
+    resPortal.classList.remove('has-setting-selected', 'setting-window', 'setting-candlelit', 'setting-barista', 'setting-glasshouse');
+  }
+
+  populateTastingTrayLedger();
+  resPortal.classList.remove('is-hidden');
+  document.body.style.overflow = 'hidden';
+}
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', openReservationPortal);
 } else {
   openReservationPortal();
 }
-
