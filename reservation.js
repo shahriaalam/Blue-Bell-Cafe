@@ -123,7 +123,10 @@ function openReservationPortal() {
   document.body.style.overflow = 'hidden';
 }
 
-function returnToCafeHome(targetUrl = 'index.html#cafe-menu') {
+function returnToCafeHome(targetUrl = 'index.html') {
+  try {
+    sessionStorage.setItem('bbc_return_to_top', 'true');
+  } catch (e) { }
   const veil = document.getElementById('page-transition-veil');
   if (veil) {
     veil.classList.add('is-active');
@@ -150,26 +153,21 @@ document.addEventListener('click', (e) => {
   const link = e.target.closest('a[href*="index.html"]');
   if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
     e.preventDefault();
-    const dest = link.getAttribute('href') || 'index.html#cafe-menu';
+    const dest = link.getAttribute('href') || 'index.html';
     returnToCafeHome(dest);
   }
 });
 
-// Wire Close / Return Triggers
+// Wire Close / Return Triggers (explicit close button only, not outer backdrop)
 if (portalCloseBtn) {
   portalCloseBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    returnToCafeHome();
-  });
-}
-if (portalBackdrop) {
-  portalBackdrop.addEventListener('click', () => {
-    returnToCafeHome();
+    returnToCafeHome('index.html');
   });
 }
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    returnToCafeHome();
+    returnToCafeHome('index.html');
   }
 });
 
@@ -354,7 +352,10 @@ if (resForm) {
 
     // Switch view to confirmation celebration
     if (portalFormView) portalFormView.classList.add('is-hidden');
-    if (portalTicketView) portalTicketView.classList.remove('is-hidden');
+    if (portalTicketView) {
+      portalTicketView.classList.remove('is-hidden');
+      portalTicketView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     // Trigger stamp animation
     const stampEl = document.getElementById('paw-stamp');
@@ -365,6 +366,12 @@ if (resForm) {
       });
     }
 
+    // Dynamic subtitle tailored to the guest's selected table setting
+    const ticketCongratsSub = document.querySelector('.ticket-congrats-sub');
+    if (ticketCongratsSub && selectedTable) {
+      ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} and notified the baristas.`;
+    }
+
     // Mr. Pudding's congratulations speech
     if (barnabySpeechText) {
       barnabySpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your reservation is officially sealed with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
@@ -372,14 +379,15 @@ if (resForm) {
   });
 }
 
-// Done Action Button: Clear Tray & Return to Cafe
+// Done Action Button: Clear Tray & Return to Home / 1st portion of Cafe Experience
 const ticketDoneBtn = document.getElementById('ticket-done-btn');
 if (ticketDoneBtn) {
   ticketDoneBtn.addEventListener('click', () => {
     try {
       localStorage.removeItem('bbc_tasting_tray');
-    } catch (e) {}
-    returnToCafeHome();
+      sessionStorage.setItem('bbc_return_to_top', 'true');
+    } catch (e) { }
+    returnToCafeHome('index.html');
   });
 }
 

@@ -515,6 +515,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   z-index: 1;
   transition: background 0.5s ease;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -2416,6 +2417,12 @@ body {
 }
 
 /* ---- CONFIRMATION TICKET VIEW ---- */
+.portal-ticket-view.is-hidden,
+.portal-form-view.is-hidden,
+.is-hidden:not(.reservation-portal) {
+  display: none !important;
+}
+
 .portal-ticket-view {
   display: flex;
   flex-direction: column;

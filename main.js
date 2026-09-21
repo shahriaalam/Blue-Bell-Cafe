@@ -191,6 +191,21 @@ if (window.location.hash === '#cafe-menu') {
   } else {
     scrollToMenu();
   }
+} else if (sessionStorage.getItem('bbc_return_to_top') === 'true' || window.location.hash === '#top') {
+  try {
+    sessionStorage.removeItem('bbc_return_to_top');
+  } catch (e) {}
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  const resetToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+  resetToTop();
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', resetToTop);
+  }
+  window.addEventListener('load', resetToTop);
 }
 
 /* --------------------------------------------------------------------------
