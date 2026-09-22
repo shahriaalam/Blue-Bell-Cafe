@@ -119,6 +119,54 @@ const tastingTray = {
   items: new Map(),
 
   /**
+   * Persists current tasting tray state to localStorage.
+   */
+  saveToStorage() {
+    try {
+      if (this.items && this.items.size > 0) {
+        const itemsList = Array.from(this.items.values());
+        const trayData = {
+          items: itemsList,
+          totalCount: this.getTotalCount(),
+          totalPrice: this.getTotalPrice()
+        };
+        localStorage.setItem('bbc_tasting_tray', JSON.stringify(trayData));
+      } else {
+        localStorage.removeItem('bbc_tasting_tray');
+      }
+    } catch (err) {
+      console.warn('[BlueBell] Unable to persist tasting tray state:', err);
+    }
+  },
+
+  /**
+   * Restores tasting tray selections from localStorage if previously stored.
+   */
+  loadFromStorage() {
+    try {
+      const raw = localStorage.getItem('bbc_tasting_tray');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!data || !data.items) return;
+      const itemsList = Array.isArray(data.items) ? data.items : Object.values(data.items);
+      itemsList.forEach((it) => {
+        if (it && it.id && it.quantity > 0) {
+          this.items.set(it.id, {
+            id: it.id,
+            name: it.name,
+            price: Number(it.price) || 0,
+            quantity: Number(it.quantity) || 1
+          });
+          this.updateCardUI(it.id, it.quantity);
+        }
+      });
+      this.render();
+    } catch (err) {
+      console.warn('[BlueBell] Unable to restore tasting tray state:', err);
+    }
+  },
+
+  /**
    * Adds an item to the tray or increments its quantity.
    * @param {string} id - Unique item identifier (e.g. 'bis-02')
    * @param {string} name - Culinary item name
@@ -133,6 +181,7 @@ const tastingTray = {
       this.items.set(id, { id, name, price: Number(price), quantity });
     }
     this.render();
+    this.saveToStorage();
   },
 
   /**
@@ -148,6 +197,7 @@ const tastingTray = {
     if (this.items.has(id)) {
       this.items.get(id).quantity = quantity;
       this.render();
+      this.saveToStorage();
     }
   },
 
@@ -168,6 +218,7 @@ const tastingTray = {
     this.items.delete(id);
     this.updateCardUI(id, 0);
     this.render();
+    this.saveToStorage();
   },
 
   /**
@@ -210,6 +261,7 @@ const tastingTray = {
       if (val) val.textContent = '1';
     });
     this.render();
+    this.saveToStorage();
   },
 
   /**
@@ -314,6 +366,12 @@ document.querySelectorAll('.card-tray-control').forEach((control) => {
   }
 });
 
+// Expose tastingTray globally for cross-module integration
+window.tastingTray = tastingTray;
+
+// Restore any existing tray selections from localStorage
+tastingTray.loadFromStorage();
+
 // Clear Tray Action Trigger
 const clearTrayBtn = document.getElementById('tray-clear-btn');
 if (clearTrayBtn) {
@@ -374,11 +432,12 @@ window.addEventListener('pageshow', () => {
   }
 });
 
-// Intercept internal reservation links for smooth crossfade
+// Intercept internal reservation links for smooth crossfade and persist tray
 document.addEventListener('click', (e) => {
-  const link = e.target.closest('a[href*="reservation"]');
+  const link = e.target.closest && e.target.closest('a[href*="reservation"]');
   if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
     e.preventDefault();
+    tastingTray.saveToStorage();
     smoothNavigateTo(link.getAttribute('href') || getReservationUrl());
   }
 });
@@ -388,17 +447,7 @@ const trayOrderBtn = document.getElementById('tray-order-btn');
 if (trayOrderBtn) {
   trayOrderBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    try {
-      const itemsList = Array.from(tastingTray.items.values());
-      const trayData = {
-        items: itemsList,
-        totalCount: tastingTray.getTotalCount(),
-        totalPrice: tastingTray.getTotalPrice()
-      };
-      localStorage.setItem('bbc_tasting_tray', JSON.stringify(trayData));
-    } catch (err) {
-      console.warn('[BlueBell] Unable to persist tasting tray state:', err);
-    }
+    tastingTray.saveToStorage();
     smoothNavigateTo(getReservationUrl());
   });
 }

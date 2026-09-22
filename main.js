@@ -45,9 +45,12 @@
   }
 
   document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href*="reservation"]');
+    const link = e.target.closest && e.target.closest('a[href*="reservation"]');
     if (link && !link.target && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
       e.preventDefault();
+      if (window.tastingTray && typeof window.tastingTray.saveToStorage === 'function') {
+        window.tastingTray.saveToStorage();
+      }
       smoothNavigateTo(link.getAttribute('href') || 'reservation/reservation.html');
     }
   });
