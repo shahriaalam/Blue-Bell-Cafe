@@ -52,11 +52,12 @@
   <link rel="prefetch" href="../style.css">
   <link rel="prefetch" href="../main.js">
 
-  <!-- Instant Preload for 4 Seating Setting Backdrops -->
-  <link rel="preload" as="image" href="../assets/settings/rainy_window.jpg">
-  <link rel="preload" as="image" href="../assets/settings/velvet_booth.jpg">
-  <link rel="preload" as="image" href="../assets/settings/barista_bar.jpg">
-  <link rel="preload" as="image" href="../assets/settings/botanical_glasshouse.jpg">
+  <!-- High-Priority Preload for Feline Head Host Mr. Pudding & Seating Backdrops -->
+  <link rel="preload" as="image" href="../assets/Logo and falcon/mr_pudding_3d_cutout.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="../assets/settings/rainy_window.webp" type="image/webp">
+  <link rel="preload" as="image" href="../assets/settings/velvet_booth.webp" type="image/webp">
+  <link rel="preload" as="image" href="../assets/settings/barista_bar.webp" type="image/webp">
+  <link rel="preload" as="image" href="../assets/settings/botanical_glasshouse.webp" type="image/webp">
 </head>
 
 <body>
@@ -486,8 +487,8 @@
             <!-- Mr. Pudding 3D Character Cutout -->
             <div class="barnaby-character-wrap" id="barnaby-character" title="Click Mr. Pudding to hear him purr!">
               <div class="pudding-cutout-stage">
-                <img src="../assets/Logo and falcon/mr_pudding_3d_cutout.png" alt="Mr. Pudding the Head Host Cat Chef"
-                  class="pudding-cutout-img" id="pudding-cutout-img">
+                <img src="../assets/Logo and falcon/mr_pudding_3d_cutout.webp" alt="Mr. Pudding the Head Host Cat Chef"
+                  class="pudding-cutout-img" id="pudding-cutout-img" width="883" height="948" fetchpriority="high" decoding="async">
                 <div class="pudding-contact-shadow"></div>
               </div>
             </div>

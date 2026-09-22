@@ -542,22 +542,22 @@ body {
 
 /* 1. Rainy Window Alcove */
 .reservation-portal.setting-window .portal-setting-bg {
-  background-image: url('../assets/settings/rainy_window.jpg');
+  background-image: url('../assets/settings/rainy_window.webp');
 }
 
 /* 2. Intimate Velvet Booth */
 .reservation-portal.setting-candlelit .portal-setting-bg {
-  background-image: url('../assets/settings/velvet_booth.jpg');
+  background-image: url('../assets/settings/velvet_booth.webp');
 }
 
 /* 3. Barista Pour-Over Bar */
 .reservation-portal.setting-barista .portal-setting-bg {
-  background-image: url('../assets/settings/barista_bar.jpg');
+  background-image: url('../assets/settings/barista_bar.webp');
 }
 
 /* 4. Botanical Glasshouse */
 .reservation-portal.setting-glasshouse .portal-setting-bg {
-  background-image: url('../assets/settings/botanical_glasshouse.jpg');
+  background-image: url('../assets/settings/botanical_glasshouse.webp');
 }
 
 /* Floating Fairy Lights Garland */

@@ -141,6 +141,7 @@ function mountLetsScroll(container, config) {
     scene.appendChild(img); stage.appendChild(scene);
     s.el = scene; s.img = img; s.video = null; s.hasClip = false;
     s.loading = false; s.ready = false; s.cur = 0; s.target = 0; s.visible = false;
+    s.primed = false;
   });
 
   // per-section copy / route / nav
@@ -215,23 +216,42 @@ function mountLetsScroll(container, config) {
       v.className = 'sw-scene__video';
       v.muted = true;
       v.playsInline = true;
+      v.autoplay = true;
       v.preload = 'auto';
       v.setAttribute('muted', '');
       v.setAttribute('playsinline', '');
       v.setAttribute('webkit-playsinline', '');
+      v.setAttribute('autoplay', '');
+      v.setAttribute('disablepictureinpicture', '');
+      v.setAttribute('disableremoteplayback', '');
       v.src = videoSrc;
+      try { v.load(); } catch (e) { }
+
+      const onFrameReady = () => {
+        s.ready = true;
+        s.el.classList.add('has-clip');
+      };
+
       v.addEventListener('loadedmetadata', () => {
         s.ready = true;
         read();
       });
-      const onFrameReady = () => { s.el.classList.add('has-clip'); };
       v.addEventListener('canplay', onFrameReady, { once: true });
-      v.addEventListener('seeked', onFrameReady, { once: true });
+      v.addEventListener('canplaythrough', onFrameReady, { once: true });
+      v.addEventListener('seeked', onFrameReady);
+      v.addEventListener('playing', () => {
+        try { v.pause(); } catch (e) { }
+        onFrameReady();
+      }, { once: true });
       v.addEventListener('loadeddata', () => {
         onFrameReady();
         try { v.pause(); } catch (e) { }
-        if (userReady) primeVideo(v);
       });
+
+      if (v.readyState >= 2) {
+        onFrameReady();
+      }
+
       s.el.appendChild(v);
       s.video = v;
       s.hasClip = true;
@@ -261,6 +281,9 @@ function mountLetsScroll(container, config) {
     for (let k = ci; k <= Math.min(ci + 2, NSEG - 1); k++) {
       if (!SEGMENTS[k].loading) loadClip(SEGMENTS[k]);
     }
+    // Proactively prime active & incoming scenes so decoder is ready immediately
+    if (SEGMENTS[ci] && SEGMENTS[ci].video && !SEGMENTS[ci].primed) primeVideo(SEGMENTS[ci]);
+    if (ci + 1 < NSEG && SEGMENTS[ci + 1].video && !SEGMENTS[ci + 1].primed) primeVideo(SEGMENTS[ci + 1]);
 
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
@@ -349,19 +372,23 @@ function mountLetsScroll(container, config) {
   }
 
   function raf() {
-    const isCoarse = isMobile();
-    const eps = isCoarse ? 0.02 : 0.005;
-    const lerpRate = reduce ? 1 : 0.22;
+    const eps = 0.004; // Tight seek epsilon for smooth, continuous sub-frame video scrubbing
+    const lerpRate = reduce ? 1 : 0.28;
 
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
       if (!s.hasClip || !s.ready || !s.video) continue;
 
-      // Always advance s.cur toward s.target every frame (never blocked by seeking)
+      // Always advance s.cur toward s.target smoothly
       s.cur += (s.target - s.cur) * lerpRate;
 
-      // Only seek if video element is visible or near visible
-      if (!s.visible && Math.abs(s.cur - s.target) < 0.001) continue;
+      // CRITICAL MOBILE OPTIMIZATION:
+      // Only seek the video if the scene is visible. Seeking offscreen invisible videos
+      // floods mobile hardware decoders and causes the visible video to drop frames and appear like a slideshow.
+      if (!s.visible) {
+        s.cur = s.target;
+        continue;
+      }
 
       // If decoder is currently busy with a seek, wait for it to finish
       if (s.video.seeking) continue;
@@ -370,31 +397,35 @@ function mountLetsScroll(container, config) {
       const t = clamp(s.cur, 0, 0.999) * dur;
       if (Math.abs(s.video.currentTime - t) > eps) {
         try {
-          if (typeof s.video.fastSeek === 'function' && scrollVelocity > 0.7) {
-            s.video.fastSeek(t);
-          } else {
-            s.video.currentTime = t;
-          }
+          // CRITICAL FIX: Use direct currentTime seeking.
+          // fastSeek was jumping exclusively between sparse keyframes (1-2s apart) on mobile Safari,
+          // creating an unwanted picture slideshow effect on phones.
+          s.video.currentTime = t;
         } catch (e) { }
       }
     }
     requestAnimationFrame(raf);
   }
 
-  // iOS needs a user gesture before a muted video will decode/paint reliably. On the
-  // first touch we prime every loaded clip (muted play→pause) so the first seek is
-  // instant instead of showing a blank frame. `userReady` also makes freshly-loaded
-  // clips prime themselves (see loadClip).
-  let userReady = false;
-  function primeVideo(v) {
-    if (!isMobile() || !v) return;
-    try { const p = v.play(); if (p && p.then) p.then(() => { try { v.pause(); } catch (e) { } }).catch(() => { }); }
-    catch (e) { }
+  // Safe individual video priming on mobile without flooding the hardware decoder
+  function primeVideo(s) {
+    if (!s || !s.video || s.primed) return;
+    s.primed = true;
+    try {
+      const p = s.video.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          try { s.video.pause(); } catch (e) { }
+          s.ready = true;
+          s.el.classList.add('has-clip');
+        }).catch(() => { });
+      }
+    } catch (e) { }
   }
+
   function onFirstGesture() {
-    if (userReady) return;
-    userReady = true;
-    SEGMENTS.forEach(s => primeVideo(s.video));
+    if (SEGMENTS[0]) primeVideo(SEGMENTS[0]);
+    if (SEGMENTS[1]) primeVideo(SEGMENTS[1]);
   }
   window.addEventListener('pointerdown', onFirstGesture, { once: true, passive: true });
   window.addEventListener('touchstart', onFirstGesture, { once: true, passive: true });
@@ -506,7 +537,9 @@ function injectCSS() {
   .sw-stage{position:fixed;inset:0;z-index:10;pointer-events:none;}
   .sw-scene{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:opacity;}
   .sw-scene__video,.sw-scene__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
-  .sw-scene__still{will-change:transform,opacity,filter;transition:opacity 0.5s ease-out, filter 0.12s ease-out;} .sw-scene.has-clip .sw-scene__still{opacity:0;pointer-events:none;} .sw-scene__video{z-index:1;}
+  .sw-scene__still{will-change:transform,opacity,filter;transition:opacity 0.4s ease-out, filter 0.12s ease-out;}
+  .sw-scene.has-clip .sw-scene__still{opacity:0;pointer-events:none;}
+  .sw-scene__video{z-index:1;transform:translateZ(0);-webkit-transform:translateZ(0);backface-visibility:hidden;-webkit-backface-visibility:hidden;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
   .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(-50%);width:min(42vw,460px);opacity:0;will-change:opacity,transform;}

@@ -34,7 +34,7 @@ function initStoryEngine() {
       {
         id: 'selection',
         label: 'I. Selection',
-        still: resolvePath('assets/stills/01_selection.png'),
+        still: resolvePath('assets/stills/01_selection.webp'),
         clip: resolvePath('assets/vid/01_selection.mp4'),
         scroll: 2.2,
         linger: 0.22,
@@ -47,7 +47,7 @@ function initStoryEngine() {
       {
         id: 'dosing',
         label: 'II. Dosing',
-        still: resolvePath('assets/stills/02_dosing.png'),
+        still: resolvePath('assets/stills/02_dosing.webp'),
         clip: resolvePath('assets/vid/02_dosing.mp4'),
         scroll: 1.8,
         linger: 0.22,
@@ -60,7 +60,7 @@ function initStoryEngine() {
       {
         id: 'grinding',
         label: 'III. Grinding',
-        still: resolvePath('assets/stills/03_grinding.png'),
+        still: resolvePath('assets/stills/03_grinding.webp'),
         clip: resolvePath('assets/vid/03_grinding.mp4'),
         scroll: 1.9,
         linger: 0.22,
@@ -73,7 +73,7 @@ function initStoryEngine() {
       {
         id: 'tamping',
         label: 'IV. Tamping',
-        still: resolvePath('assets/stills/04_tamping.png'),
+        still: resolvePath('assets/stills/04_tamping.webp'),
         clip: resolvePath('assets/vid/04_tamping.mp4'),
         scroll: 1.7,
         linger: 0.22,
@@ -86,7 +86,7 @@ function initStoryEngine() {
       {
         id: 'extraction',
         label: 'V. Extraction',
-        still: resolvePath('assets/stills/05_extraction.png'),
+        still: resolvePath('assets/stills/05_extraction.webp'),
         clip: resolvePath('assets/vid/05_extraction.mp4'),
         scroll: 2.1,
         linger: 0.24,
@@ -99,7 +99,7 @@ function initStoryEngine() {
       {
         id: 'steaming',
         label: 'VI. Steaming',
-        still: resolvePath('assets/stills/06_steaming.png'),
+        still: resolvePath('assets/stills/06_steaming.webp'),
         clip: resolvePath('assets/vid/06_steaming.mp4'),
         scroll: 1.8,
         linger: 0.22,
@@ -112,7 +112,7 @@ function initStoryEngine() {
       {
         id: 'pour',
         label: 'VII. Pouring',
-        still: resolvePath('assets/stills/07_swan.png'),
+        still: resolvePath('assets/stills/07_swan.webp'),
         clip: resolvePath('assets/vid/07_swan.mp4'),
         scroll: 2.0,
         linger: 0.25,
@@ -125,7 +125,7 @@ function initStoryEngine() {
       {
         id: 'service',
         label: 'VIII. Service',
-        still: resolvePath('assets/stills/08_service.png'),
+        still: resolvePath('assets/stills/08_service.webp'),
         clip: resolvePath('assets/vid/08_service.mp4'),
         scroll: 2.4,
         linger: 0.35,
