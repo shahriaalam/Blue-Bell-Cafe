@@ -29,7 +29,77 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. TOPBAR CALL-TO-ACTION BUTTON ("Reserve a Table")
+   3. TOPBAR ACTIONS (Menu + Reservation CTA)
+   Container on the top-right aligning Menu navigation and Reserve CTA
+   -------------------------------------------------------------------------- */
+.sw-topbar__actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: clamp(6px, 0.8vw, 10px) !important;
+  pointer-events: auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   3.1. TOPBAR MENU BUTTON ("Menu")
+   Artisanal warm espresso frosted glass pill linking directly to #cafe-menu
+   -------------------------------------------------------------------------- */
+.sw-topmenu {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px;
+  padding: clamp(8px, 1vw, 10px) clamp(12px, 1.4vw, 18px);
+  font-family: var(--sw-font-body);
+  font-size: clamp(0.78rem, 0.88vw, 0.86rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  color: #FAF5EE !important;
+  background: rgba(20, 14, 10, 0.82);
+  border: 1.5px solid rgba(226, 167, 111, 0.45);
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0 !important;
+}
+
+.sw-topmenu__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #E2A76F;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.sw-topmenu__svg {
+  display: block;
+}
+
+.sw-topmenu:hover {
+  transform: translateY(-2px);
+  color: #FFFDF9 !important;
+  background: rgba(36, 24, 17, 0.95);
+  border-color: #E2A76F;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.38), 0 0 12px rgba(226, 167, 111, 0.3);
+}
+
+.sw-topmenu:hover .sw-topmenu__icon {
+  transform: scale(1.12);
+  color: #F8E8D4;
+}
+
+.sw-topmenu:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   3.2. TOPBAR CALL-TO-ACTION BUTTON ("Reserve a Table")
    A luminous golden amber gradient pill on the top right that invites
    guests to book a table, smoothly jumping to the final table service chapter.
    -------------------------------------------------------------------------- */
@@ -453,6 +523,16 @@
     max-width: 110px !important;
   }
 
+  .sw-topbar__actions {
+    gap: 7px !important;
+  }
+
+  .sw-topmenu {
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+    gap: 5px !important;
+  }
+
   .sw-topcta {
     padding: 8px 16px !important;
     font-size: 0.8rem !important;
@@ -517,6 +597,16 @@
     max-width: 82px !important;
   }
 
+  .sw-topbar__actions {
+    gap: 5px !important;
+  }
+
+  .sw-topmenu {
+    padding: 7px 11px !important;
+    font-size: 0.76rem !important;
+    gap: 4px !important;
+  }
+
   /* Shorten "Reserve a Table" to "Reserve" with arrow on mobile */
   .sw-topcta {
     padding: 7px 12px !important;
@@ -569,6 +659,16 @@
   .sw-brand__logo {
     height: 20px !important;
     max-width: 70px !important;
+  }
+
+  .sw-topbar__actions {
+    gap: 3px !important;
+  }
+
+  .sw-topmenu {
+    padding: 6px 8px !important;
+    font-size: 0.7rem !important;
+    gap: 3px !important;
   }
 
   .sw-topcta {

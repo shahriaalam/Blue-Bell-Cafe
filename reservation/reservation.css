@@ -521,7 +521,8 @@ body {
 /* ==========================================================================
    DREAM SEATING SETTING ATMOSPHERIC BACKGROUND
    Dynamic background image in the most back layer behind the reservation card.
-   Appears only after selecting a dream setting, rendered at exact 50% opacity.
+   Initializes with aesthetic Blue Bell Cafe Gulshan facade, then seamlessly
+   transitions to the selected dream table setting at 50% atmospheric opacity.
    ========================================================================== */
 .portal-setting-bg {
   position: fixed;
@@ -530,12 +531,13 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0;
+  background-image: url('../assets/settings/cafe_front.webp');
+  opacity: 0.52;
   transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.5s ease;
   pointer-events: none;
 }
 
-/* Exactly 50% opacity once a dream seating setting is selected */
+/* 50% opacity once a dream seating setting is selected */
 .reservation-portal.has-setting-selected .portal-setting-bg {
   opacity: 0.5;
 }
@@ -1983,6 +1985,190 @@ body {
   font-optical-sizing: auto;
 }
 
+/* ==========================================================================
+   CHEF PUDDING'S TABLE SIGNATURES (QUICK PRE-ORDER FAVORITES)
+   Aesthetic, compact cards filling the left column space with 3 star creations.
+   ========================================================================== */
+.portal-favorites-box {
+  width: 100%;
+  background: var(--portal-tray-bg);
+  border: 1.5px solid var(--portal-tray-border);
+  border-radius: 20px;
+  padding: 13px 15px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  margin-top: 2px;
+}
+
+.fav-box-header {
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--portal-tray-border);
+}
+
+.fav-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fav-sparkle-icon {
+  font-size: 1.05rem;
+  color: var(--portal-accent);
+  line-height: 1;
+}
+
+.fav-header-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fav-box-title {
+  font-family: var(--sw-font-display, "Fraunces", Georgia, serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.fav-box-sub {
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
+  font-size: 0.71rem;
+  color: var(--portal-text-sub);
+  letter-spacing: 0.01em;
+}
+
+.fav-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fav-item-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--portal-card-bg, #FFFFFF);
+  border: 1px solid var(--portal-tray-border);
+  border-radius: 14px;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  box-sizing: border-box;
+}
+
+.fav-item-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--portal-accent);
+  box-shadow: 0 4px 12px var(--portal-accent-soft);
+}
+
+.fav-item-thumb-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.fav-item-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.fav-item-card:hover .fav-item-thumb {
+  transform: scale(1.08);
+}
+
+.fav-item-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+  gap: 2px;
+}
+
+.fav-item-tag {
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--portal-tag-color);
+  line-height: 1;
+}
+
+.fav-item-name {
+  font-family: var(--sw-font-display, "Fraunces", Georgia, serif);
+  font-size: 0.81rem;
+  font-weight: 700;
+  color: var(--portal-text-title);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.fav-item-price {
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
+  font-size: 0.77rem;
+  font-weight: 700;
+  color: var(--portal-accent);
+  line-height: 1;
+}
+
+.fav-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--portal-card-option-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 999px;
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--portal-text-body);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fav-add-btn:hover {
+  background: var(--portal-btn-bg);
+  color: var(--portal-btn-color, #FFFFFF);
+  border-color: transparent;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px var(--portal-accent-soft);
+}
+
+.fav-add-btn:active {
+  transform: scale(0.96);
+}
+
+.fav-add-btn.is-added {
+  background: #2E7D32 !important;
+  color: #FFFFFF !important;
+  border-color: #2E7D32 !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.fav-add-icon {
+  font-size: 0.82rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
 /* ---- RIGHT COLUMN: RESERVATION PARLOUR FORM ---- */
 .portal-form-pane {
   background: var(--portal-form-pane-bg);
@@ -2440,6 +2626,22 @@ body {
   font-weight: 500;
 }
 
+/* Closed / Disabled Timeslot Pills outside operating hours */
+.timeslot-pill:disabled,
+.timeslot-pill.is-closed-slot {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: var(--portal-card-option-bg);
+  border-color: rgba(255, 255, 255, 0.08);
+  filter: grayscale(0.85);
+}
+
+.timeslot-pill.is-closed-slot small {
+  color: #D42E46;
+  font-weight: 600;
+}
+
 /* Custom Time Drawer */
 .custom-time-picker-row {
   margin-top: 10px;
@@ -2511,6 +2713,42 @@ body {
 .custom-time-status strong {
   color: var(--portal-accent);
   font-weight: 700;
+}
+
+.custom-time-field.is-invalid-time {
+  border-color: #D42E46 !important;
+  box-shadow: 0 0 10px rgba(212, 46, 70, 0.4) !important;
+  animation: shakeCustomTime 0.28s ease-in-out;
+}
+
+@keyframes shakeCustomTime {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.custom-time-alert {
+  margin-top: 8px;
+  font-family: var(--sw-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #D42E46;
+  background: rgba(212, 46, 70, 0.08);
+  border: 1px solid rgba(212, 46, 70, 0.25);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: customTimeIn 0.2s ease forwards;
+}
+
+.custom-time-alert strong {
+  color: #B31E33;
+}
+
+.custom-time-alert.is-hidden {
+  display: none !important;
 }
 
 /* Step 3: Guests & Occasion */
@@ -2676,56 +2914,76 @@ body {
   margin-bottom: 24px;
 }
 
-/* Wax Seal / Paw of Approval Badge */
-.paw-stamp-badge {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #FF7082 0%, #D42E46 70%, #941729 100%);
-  border: 3px dashed #FFE3B3;
-  margin: 0 auto 14px;
-  display: flex;
-  flex-direction: column;
+/* Official Brand Approval Badge (White BG Blue Bell Logo) */
+.brand-approval-badge {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(212, 46, 70, 0.45), inset 0 2px 8px rgba(255, 255, 255, 0.4);
-  animation: stampSlam 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  padding: 10px 24px;
+  background: #FFFFFF;
+  border-radius: 999px;
+  border: 1.5px solid rgba(226, 167, 111, 0.65);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 0 16px rgba(226, 167, 111, 0.22);
+  margin: 0 auto 16px;
+  animation: brandStampDrop 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes stampSlam {
+.brand-approval-img {
+  height: 36px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes brandStampDrop {
   0% {
-    transform: scale(2.2) rotate(-25deg);
+    transform: scale(0.6) translateY(-14px);
     opacity: 0;
   }
-
   70% {
-    transform: scale(0.9) rotate(8deg);
+    transform: scale(1.06) translateY(2px);
   }
-
   100% {
-    transform: scale(1) rotate(-6deg);
+    transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
 
-.stamp-paw {
-  font-size: 1.8rem;
+/* Backward compatibility for paw-stamp-badge if referenced */
+.paw-stamp-badge {
+  display: none !important;
+}
+
+/* Food Order Status Badge in Confirmation Ticket */
+.ticket-food-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-family: var(--sw-font-body, "DM Sans", sans-serif);
+  font-size: 0.82rem;
+  margin: 14px auto 6px;
+  box-sizing: border-box;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.ticket-food-badge.has-food {
+  background: rgba(46, 125, 50, 0.08);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+  color: #1B5E20;
+}
+
+.ticket-food-badge.no-food {
+  background: rgba(184, 115, 51, 0.08);
+  border: 1px solid rgba(184, 115, 51, 0.25);
+  color: var(--portal-text-body);
+}
+
+.ticket-food-badge .badge-icon {
+  font-size: 1rem;
   line-height: 1;
-}
-
-.stamp-text {
-  font-size: 0.56rem;
-  font-weight: 900;
-  color: #FFF2DF;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-
-.stamp-cafe {
-  font-size: 0.48rem;
-  font-weight: 700;
-  color: #FFD4DB;
-  letter-spacing: 0.04em;
 }
 
 .ticket-congrats {
@@ -2743,6 +3001,45 @@ body {
   font-size: 0.9rem;
   color: var(--portal-text-sub);
   margin: 0;
+}
+
+/* ==========================================================================
+   CONFIRMATION MODE: LOCKED READ-ONLY LEFT BAR
+   Disallows customers from adding, removing, or changing items/quantities
+   in the left bar once the reservation has been officially confirmed.
+   ========================================================================== */
+.reservation-portal.is-confirmed .tray-clear-all-btn,
+.reservation-portal.is-confirmed .preitem-btn,
+.reservation-portal.is-confirmed .preitem-remove-btn,
+.reservation-portal.is-confirmed .fav-add-btn,
+.reservation-portal.is-confirmed .portal-favorites-box {
+  display: none !important;
+}
+
+.reservation-portal.is-confirmed .preitem-stepper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.reservation-portal.is-confirmed .preitem-qty-val {
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  color: var(--portal-text-sub) !important;
+  background: var(--portal-card-option-bg);
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--portal-border);
+  letter-spacing: 0.02em;
+}
+
+.reservation-portal.is-confirmed .preitem-qty-val::before {
+  content: "Qty: ";
+  font-weight: 600;
+  font-size: 0.74rem;
+  color: var(--portal-text-sub);
 }
 
 /* Vintage Boarding-Pass Cafe Ticket */
@@ -3026,6 +3323,37 @@ body {
     flex: 1 1 100%;
     width: 100%;
   }
+}
+
+/* Confirmed Booking State for Tasting Tray & Left Pane */
+.res-portal.is-confirmed .portal-favorites-box {
+  display: none !important;
+}
+
+.res-portal.is-confirmed .tray-clear-all-btn {
+  display: none !important;
+}
+
+.res-portal.is-confirmed .preitem-btn,
+.res-portal.is-confirmed .preitem-remove-btn {
+  display: none !important;
+}
+
+.res-portal.is-confirmed .preitem-stepper {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.res-portal.is-confirmed .preitem-qty-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--portal-accent);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--portal-card-option-border);
 }
 
 /* ============================================================

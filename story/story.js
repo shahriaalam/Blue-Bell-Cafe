@@ -9,7 +9,7 @@ function initStoryEngine() {
   if (!worldContainer) return;
 
   const inSubfolder = window.location.pathname.includes('/story/') || window.location.pathname.includes('/menu/') || window.location.pathname.includes('/reservation/');
-  const resolvePath = (p) => (inSubfolder ? `../${p}` : p);
+  const resolvePath = (p) => (inSubfolder ? (p.startsWith('#') ? `../index.html${p}` : `../${p}`) : p);
 
   mountLetsScroll(worldContainer, {
     brand: {
@@ -17,6 +17,11 @@ function initStoryEngine() {
       logo: resolvePath('assets/Logo and falcon/logo.png'),
       logoOnly: true,
       href: resolvePath('#top')
+    },
+
+    menu: {
+      label: 'Menu',
+      href: resolvePath('#cafe-menu')
     },
 
     cta: {

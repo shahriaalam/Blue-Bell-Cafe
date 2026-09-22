@@ -67,19 +67,240 @@ const ticketDoneBtn = document.getElementById('ticket-done-btn');
    ------------------------------------------------------------------------------ */
 
 let currentGuestCount = 2;
-let selectedTimeSlot = '8:30 PM';
-let customSelectedTime = '7:00 PM';
+let selectedTimeSlot = '7:30 PM';
+let customSelectedTime = '7:30 PM';
 let selectedOccasion = 'Date Night';
 let selectedTable = '';
 let puddingActivityIndex = 0;
+let isBookingConfirmed = false;
 
 
 /* ------------------------------------------------------------------------------
-   3. DATE & TIME UTILITIES
+   3. DATE & TIME UTILITIES & CAFE OPERATING HOURS
    ------------------------------------------------------------------------------ */
 
 /**
- * Initializes the date input with today's date as minimum and default value.
+ * Parses YYYY-MM-DD string to local day of week (0 = Sunday, 1 = Monday, ..., 6 = Saturday).
+ * Prevents UTC timezone rollback bugs.
+ */
+function getDayOfWeek(dateStr) {
+  if (!dateStr) return new Date().getDay();
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const d = parseInt(parts[2], 10);
+    return new Date(y, m, d).getDay();
+  }
+  return new Date().getDay();
+}
+
+/**
+ * Returns the exact opening and closing boundaries for Blue Bell Cafe:
+ * - Monday – Friday: 7:30 AM – 11:00 PM (07:30 – 23:00)
+ * - Saturday – Sunday: 8:00 AM – 12:30 PM (08:00 – 12:30)
+ */
+function getCafeHours(dateStr) {
+  const day = getDayOfWeek(dateStr);
+  const isWeekend = (day === 0 || day === 6);
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayName = dayNames[day];
+
+  if (isWeekend) {
+    return {
+      isWeekend: true,
+      dayName,
+      openTime: '08:00',
+      closeTime: '12:30',
+      openMinutes: 8 * 60,         // 480
+      closeMinutes: 12 * 60 + 30,  // 750
+      openFormatted: '8:00 AM',
+      closeFormatted: '12:30 PM',
+      scheduleText: 'Sat–Sun: 8:00 AM – 12:30 PM'
+    };
+  } else {
+    return {
+      isWeekend: false,
+      dayName,
+      openTime: '07:30',
+      closeTime: '23:00',
+      openMinutes: 7 * 60 + 30,    // 450
+      closeMinutes: 23 * 60,       // 1380
+      openFormatted: '7:30 AM',
+      closeFormatted: '11:00 PM',
+      scheduleText: 'Mon–Fri: 7:30 AM – 11:00 PM'
+    };
+  }
+}
+
+/**
+ * Converts a time string ("HH:MM" or "H:MM AM/PM") into total minutes from midnight.
+ */
+function timeStringToMinutes(timeStr) {
+  if (!timeStr) return null;
+  const str = String(timeStr).trim();
+  if (/AM|PM/i.test(str)) {
+    const match = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return null;
+    let h = parseInt(match[1], 10);
+    const m = parseInt(match[2], 10);
+    const ampm = match[3].toUpperCase();
+    if (ampm === 'PM' && h < 12) h += 12;
+    if (ampm === 'AM' && h === 12) h = 0;
+    return h * 60 + m;
+  } else if (str.includes(':')) {
+    const [h, m] = str.split(':').map(Number);
+    if (isNaN(h) || isNaN(m)) return null;
+    return h * 60 + m;
+  }
+  return null;
+}
+
+/**
+ * Synchronizes timeslot pills and custom time picker boundaries with cafe opening hours
+ * for the currently chosen reservation date.
+ */
+function updateOpeningHoursRules() {
+  const dateStr = resDateInput ? resDateInput.value : '';
+  const hours = getCafeHours(dateStr);
+
+  // Update header notes & drawer badge
+  const hoursNote = document.getElementById('timeslot-hours-note');
+  if (hoursNote) {
+    hoursNote.textContent = `${hours.dayName}: ${hours.openFormatted} – ${hours.closeFormatted}`;
+  }
+
+  const customHoursBadge = document.getElementById('custom-time-hours-badge');
+  if (customHoursBadge) {
+    customHoursBadge.innerHTML = `<strong>${hours.dayName} Hours:</strong> ${hours.openFormatted} – ${hours.closeFormatted}`;
+  }
+
+  // Enforce min & max attributes on custom time input
+  if (resCustomTimeInput) {
+    resCustomTimeInput.min = hours.openTime;
+    resCustomTimeInput.max = hours.closeTime;
+
+    const currentMins = timeStringToMinutes(resCustomTimeInput.value);
+    if (currentMins === null || currentMins < hours.openMinutes || currentMins > hours.closeMinutes) {
+      // Auto-set to a valid time within open hours
+      const defaultTime = hours.isWeekend ? '10:00' : '19:30';
+      resCustomTimeInput.value = defaultTime;
+      customSelectedTime = formatTime12h(defaultTime);
+      if (customTimeStatus) {
+        customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
+      }
+      if (customPillLabel && customTimePill && customTimePill.classList.contains('is-active')) {
+        customPillLabel.textContent = customSelectedTime;
+        selectedTimeSlot = customSelectedTime;
+      }
+    }
+  }
+
+  // Filter & disable pills outside of operating hours
+  let activePillIsInvalid = false;
+  timeslotPills.forEach((pill) => {
+    const timeVal = pill.getAttribute('data-time');
+    if (timeVal === 'custom') return;
+
+    const mins = timeStringToMinutes(timeVal);
+    if (mins !== null && (mins < hours.openMinutes || mins > hours.closeMinutes)) {
+      pill.disabled = true;
+      pill.classList.add('is-closed-slot');
+      const small = pill.querySelector('small');
+      if (small && !small.dataset.origText) {
+        small.dataset.origText = small.textContent;
+      }
+      if (small) small.textContent = 'Closed';
+      pill.title = `Closed at this time on ${hours.dayName}s (Open: ${hours.openFormatted} – ${hours.closeFormatted})`;
+      if (pill.classList.contains('is-active')) {
+        pill.classList.remove('is-active');
+        activePillIsInvalid = true;
+      }
+    } else {
+      pill.disabled = false;
+      pill.classList.remove('is-closed-slot');
+      const small = pill.querySelector('small');
+      if (small && small.dataset.origText) {
+        small.textContent = small.dataset.origText;
+      }
+      pill.removeAttribute('title');
+    }
+  });
+
+  // If the active pill was invalidated, pick the first valid pill
+  if (activePillIsInvalid) {
+    const firstValid = Array.from(timeslotPills).find((p) => !p.disabled && p.getAttribute('data-time') !== 'custom');
+    if (firstValid) {
+      firstValid.classList.add('is-active');
+      selectedTimeSlot = firstValid.getAttribute('data-time') || '10:00 AM';
+    } else if (customTimePill) {
+      customTimePill.classList.add('is-active');
+      if (customTimePickerRow) customTimePickerRow.classList.remove('is-hidden');
+      selectedTimeSlot = customSelectedTime;
+    }
+  }
+}
+
+/**
+ * Validates and blocks any custom time outside Blue Bell Cafe's opening hours.
+ * If enforceClamp is true, strictly snaps the value to the nearest open hour.
+ */
+function validateAndSanitizeCustomTime(enforceClamp = false) {
+  if (!resCustomTimeInput) return true;
+  const dateStr = resDateInput ? resDateInput.value : '';
+  const hours = getCafeHours(dateStr);
+  const currentVal = resCustomTimeInput.value;
+  const currentMins = timeStringToMinutes(currentVal);
+  const alertEl = document.getElementById('custom-time-alert');
+
+  if (currentMins === null) return false;
+
+  if (currentMins < hours.openMinutes || currentMins > hours.closeMinutes) {
+    // Outside allowable hours!
+    resCustomTimeInput.classList.add('is-invalid-time');
+    if (alertEl) {
+      alertEl.classList.remove('is-hidden');
+      alertEl.innerHTML = `⚠️ Closed at ${formatTime12h(currentVal)}. Open <strong>${hours.openFormatted} – ${hours.closeFormatted}</strong> on ${hours.dayName}s.`;
+    }
+    if (customTimeStatus) {
+      customTimeStatus.innerHTML = `<span style="color: #D42E46; font-weight: 700;">⛔ Outside Cafe Hours (${hours.openFormatted} – ${hours.closeFormatted})</span>`;
+    }
+    if (puddingSpeechText) {
+      puddingSpeechText.innerHTML = `Blue Bell Café is only open <strong>${hours.openFormatted} – ${hours.closeFormatted}</strong> on ${hours.dayName}s! Let's choose a time while we're open. ☕`;
+    }
+
+    if (enforceClamp) {
+      // Strictly clamp to valid boundary
+      if (currentMins < hours.openMinutes) {
+        resCustomTimeInput.value = hours.openTime;
+      } else {
+        resCustomTimeInput.value = hours.closeTime;
+      }
+      resCustomTimeInput.classList.remove('is-invalid-time');
+      if (alertEl) alertEl.classList.add('is-hidden');
+      customSelectedTime = formatTime12h(resCustomTimeInput.value);
+      selectedTimeSlot = customSelectedTime;
+      if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
+      if (customPillLabel) customPillLabel.textContent = customSelectedTime;
+      if (customPillSub) customPillSub.textContent = 'Custom ⏰';
+    }
+    return false;
+  } else {
+    // Valid time within open hours
+    resCustomTimeInput.classList.remove('is-invalid-time');
+    if (alertEl) alertEl.classList.add('is-hidden');
+    customSelectedTime = formatTime12h(currentVal);
+    selectedTimeSlot = customSelectedTime;
+    if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
+    if (customPillLabel) customPillLabel.textContent = customSelectedTime;
+    if (customPillSub) customPillSub.textContent = 'Custom ⏰';
+    return true;
+  }
+}
+
+/**
+ * Initializes the date input with today's date as minimum and default value,
+ * and sets up dynamic opening hours listeners.
  */
 function initializeDateInput() {
   if (!resDateInput) return;
@@ -90,8 +311,77 @@ function initializeDateInput() {
   const dateStr = `${yyyy}-${mm}-${dd}`;
   resDateInput.value = dateStr;
   resDateInput.min = dateStr;
+
+  resDateInput.addEventListener('change', () => {
+    updateOpeningHoursRules();
+    validateAndSanitizeCustomTime(true);
+  });
+  resDateInput.addEventListener('input', () => {
+    updateOpeningHoursRules();
+    validateAndSanitizeCustomTime(true);
+  });
+
+  updateOpeningHoursRules();
 }
 initializeDateInput();
+
+/**
+ * Enforces phone input: accepts digits with optional leading '+', rejecting letters, spaces, and other characters.
+ */
+function enforceNumericPhoneInput() {
+  const phoneInput = document.getElementById('res-phone');
+  if (!phoneInput) return;
+
+  // Real-time input cleaner: retain leading '+' if present, and remove all non-digits
+  phoneInput.addEventListener('input', () => {
+    const val = phoneInput.value;
+    const hasLeadingPlus = val.startsWith('+');
+    const digits = val.replace(/\D/g, '');
+    phoneInput.value = hasLeadingPlus ? ('+' + digits) : digits;
+  });
+
+  // Block forbidden keys on keydown directly
+  phoneInput.addEventListener('keydown', (e) => {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (allowedKeys.includes(e.key)) return;
+    if (e.ctrlKey || e.metaKey) return;
+
+    // Allow '+' only at index 0 and if not already present
+    if (e.key === '+') {
+      const pos = phoneInput.selectionStart || 0;
+      if (pos === 0 && !phoneInput.value.includes('+')) {
+        return; // Valid leading plus
+      }
+      e.preventDefault();
+      return;
+    }
+
+    // Allow numbers 0-9
+    if (!/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // Sanitize on paste: support optional leading '+'
+  phoneInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text') || '';
+    const trimmed = pasted.trim();
+    const hasLeadingPlus = trimmed.startsWith('+');
+    const digits = trimmed.replace(/\D/g, '');
+    const cleanPasted = hasLeadingPlus ? ('+' + digits) : digits;
+
+    const start = phoneInput.selectionStart || 0;
+    const end = phoneInput.selectionEnd || 0;
+    const current = phoneInput.value;
+
+    let combined = current.slice(0, start) + cleanPasted + current.slice(end);
+    const startsWithPlus = combined.startsWith('+');
+    const allDigits = combined.replace(/\D/g, '');
+    phoneInput.value = startsWithPlus ? ('+' + allDigits) : allDigits;
+  });
+}
+enforceNumericPhoneInput();
 
 /**
  * Converts a 24-hour time string ("HH:MM") into an artisanal 12-hour format ("H:MM AM/PM").
@@ -171,12 +461,18 @@ function populateTastingTrayLedger() {
   const savedTray = getSavedTastingTray();
   if (savedTray && savedTray.items && savedTray.items.length > 0) {
     if (clearAllBtn) {
-      clearAllBtn.classList.remove('is-hidden');
-      clearAllBtn.onclick = () => {
-        saveTastingTray([]);
-        populateTastingTrayLedger();
-      };
+      if (resPortal && resPortal.classList.contains('is-confirmed')) {
+        clearAllBtn.classList.add('is-hidden');
+      } else {
+        clearAllBtn.classList.remove('is-hidden');
+        clearAllBtn.onclick = () => {
+          saveTastingTray([]);
+          populateTastingTrayLedger();
+        };
+      }
     }
+
+    const isConfirmed = Boolean(resPortal && resPortal.classList.contains('is-confirmed'));
 
     let html = '';
     savedTray.items.forEach((item, index) => {
@@ -193,7 +489,7 @@ function populateTastingTrayLedger() {
           <div class="preitem-actions">
             <div class="preitem-stepper" role="group" aria-label="Quantity for ${item.name}">
               <button type="button" class="preitem-btn btn-minus" data-key="${itemKey}" title="Decrease quantity" aria-label="Decrease quantity">−</button>
-              <span class="preitem-qty-val">${qty}</span>
+              <span class="preitem-qty-val">${isConfirmed ? `×${qty}` : qty}</span>
               <button type="button" class="preitem-btn btn-plus" data-key="${itemKey}" title="Increase quantity" aria-label="Increase quantity">+</button>
             </div>
             <span class="preitem-price">৳ ${rowTotal.toLocaleString()}</span>
@@ -208,7 +504,7 @@ function populateTastingTrayLedger() {
     // Wire click events for plus, minus, and remove buttons
     wireTrayLedgerControls(savedTray.items);
 
-    if (puddingSpeechText) {
+    if (!isConfirmed && puddingSpeechText) {
       puddingSpeechText.innerHTML = `Ah, magnificent taste! I have noted your <strong>${savedTray.totalCount} selected ${savedTray.totalCount === 1 ? 'delicacy' : 'delicacies'}</strong> on my ledger. I'll personally instruct our barista to pre-warm your cups!`;
     }
   } else {
@@ -216,7 +512,7 @@ function populateTastingTrayLedger() {
     trayItemsContainer.innerHTML = '<div class="tray-empty-hint">No pre-order yet — you can order fresh table-side!</div>';
     trayTotalEl.textContent = '৳ 0';
 
-    if (puddingSpeechText) {
+    if (!Boolean(resPortal && resPortal.classList.contains('is-confirmed')) && puddingSpeechText) {
       puddingSpeechText.innerHTML = `Welcome, dear coffee lover! I am <strong>Mr. Pudding</strong>, your head host. Allow me to prepare our coziest candlelit nook for your visit!`;
     }
   }
@@ -229,6 +525,7 @@ function populateTastingTrayLedger() {
 function wireTrayLedgerControls(items) {
   const trayItemsContainer = document.getElementById('portal-tray-items');
   if (!trayItemsContainer) return;
+  if (resPortal && resPortal.classList.contains('is-confirmed')) return;
 
   // Plus button: increase item quantity
   trayItemsContainer.querySelectorAll('.btn-plus').forEach((btn) => {
@@ -272,6 +569,60 @@ function wireTrayLedgerControls(items) {
         items.splice(index, 1);
         saveTastingTray(items);
         populateTastingTrayLedger();
+      }
+    });
+  });
+}
+
+/**
+ * Attaches interactive click event handlers to Chef's Table Signatures quick-order cards.
+ */
+function wireQuickAddFavorites() {
+  const addButtons = document.querySelectorAll('.fav-add-btn');
+  addButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (resPortal && resPortal.classList.contains('is-confirmed')) return;
+
+      const id = btn.getAttribute('data-id');
+      const name = btn.getAttribute('data-name');
+      const price = Number(btn.getAttribute('data-price')) || 0;
+
+      let savedTray = getSavedTastingTray();
+      let items = savedTray && savedTray.items ? [...savedTray.items] : [];
+      const existing = items.find((it, idx) => (it.id || `item_${idx}`) === id);
+
+      if (existing) {
+        existing.quantity = (Number(existing.quantity) || 1) + 1;
+      } else {
+        items.push({ id, name, price, quantity: 1 });
+      }
+
+      saveTastingTray(items);
+      populateTastingTrayLedger();
+
+      // Tactile button reaction: "✓ Added"
+      const originalHTML = btn.innerHTML;
+      btn.classList.add('is-added');
+      btn.innerHTML = '<span class="fav-add-icon">✓</span><span>Added</span>';
+      setTimeout(() => {
+        btn.classList.remove('is-added');
+        btn.innerHTML = originalHTML;
+      }, 1400);
+
+      // Mr. Pudding reactive purr, particle burst & speech
+      if (typeof spawnPuddingSparkles === 'function') {
+        spawnPuddingSparkles();
+      }
+
+      if (puddingCharacter) {
+        puddingCharacter.classList.add('is-purring');
+        setTimeout(() => puddingCharacter.classList.remove('is-purring'), 850);
+      }
+
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Purrfect choice! I've placed <strong>${name}</strong> on your table order ledger. 🐾`;
       }
     });
   });
@@ -424,6 +775,8 @@ tableOptions.forEach((option) => {
 
 timeslotPills.forEach((pill) => {
   pill.addEventListener('click', () => {
+    if (pill.disabled || pill.classList.contains('is-closed-slot')) return;
+
     timeslotPills.forEach((p) => p.classList.remove('is-active'));
     pill.classList.add('is-active');
 
@@ -431,15 +784,12 @@ timeslotPills.forEach((pill) => {
     if (dataTime === 'custom') {
       if (customTimePickerRow) customTimePickerRow.classList.remove('is-hidden');
       if (resCustomTimeInput) {
-        customSelectedTime = formatTime12h(resCustomTimeInput.value);
-        selectedTimeSlot = customSelectedTime;
-        if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
-        if (customPillLabel) customPillLabel.textContent = customSelectedTime;
+        validateAndSanitizeCustomTime(true);
         if (customPillSub) customPillSub.textContent = 'Custom ⏰';
       }
     } else {
       if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
-      selectedTimeSlot = dataTime || '8:30 PM';
+      selectedTimeSlot = dataTime || '7:30 PM';
       if (customPillLabel) customPillLabel.textContent = 'Custom ⏰';
       if (customPillSub) customPillSub.textContent = 'Pick Time';
     }
@@ -448,15 +798,20 @@ timeslotPills.forEach((pill) => {
 
 if (resCustomTimeInput) {
   resCustomTimeInput.addEventListener('input', () => {
-    customSelectedTime = formatTime12h(resCustomTimeInput.value);
-    selectedTimeSlot = customSelectedTime;
-    if (customTimeStatus) customTimeStatus.innerHTML = `Reserved for: <strong>${customSelectedTime}</strong>`;
-    if (customPillLabel) customPillLabel.textContent = customSelectedTime;
-    if (customPillSub) customPillSub.textContent = 'Custom ⏰';
-
+    validateAndSanitizeCustomTime(false);
     // Highlight custom pill
     timeslotPills.forEach((p) => p.classList.remove('is-active'));
     if (customTimePill) customTimePill.classList.add('is-active');
+  });
+
+  resCustomTimeInput.addEventListener('change', () => {
+    validateAndSanitizeCustomTime(true);
+    timeslotPills.forEach((p) => p.classList.remove('is-active'));
+    if (customTimePill) customTimePill.classList.add('is-active');
+  });
+
+  resCustomTimeInput.addEventListener('blur', () => {
+    validateAndSanitizeCustomTime(true);
   });
 }
 
@@ -515,6 +870,48 @@ if (resForm) {
     const guestName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : 'Valued Guest';
     const dateVal = resDateInput ? resDateInput.value : 'Today';
 
+    const phoneInput = document.getElementById('res-phone');
+    const rawPhone = phoneInput ? phoneInput.value.trim() : '';
+    const digitsOnly = rawPhone.replace(/\D/g, '');
+    if (!rawPhone || digitsOnly.length < 6 || !/^\+?[0-9]{6,16}$/.test(rawPhone)) {
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Please provide a valid <strong>phone number</strong> (numbers with optional leading +) so we can text your table confirmation! 📱`;
+      }
+      if (phoneInput) {
+        phoneInput.focus();
+        phoneInput.style.borderColor = '#D42E46';
+        phoneInput.style.boxShadow = '0 0 12px rgba(212, 46, 70, 0.35)';
+        setTimeout(() => {
+          phoneInput.style.borderColor = '';
+          phoneInput.style.boxShadow = '';
+        }, 1800);
+      }
+      return;
+    }
+
+    // Verify arrival time is within cafe operating hours for the selected date
+    const hours = getCafeHours(resDateInput ? resDateInput.value : '');
+    const chosenMins = timeStringToMinutes(selectedTimeSlot);
+    if (chosenMins === null || chosenMins < hours.openMinutes || chosenMins > hours.closeMinutes) {
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Blue Bell Café is only open <strong>${hours.openFormatted} – ${hours.closeFormatted}</strong> on ${hours.dayName}s! Please adjust your arrival time. ⏰`;
+      }
+      if (customTimePickerRow) customTimePickerRow.classList.remove('is-hidden');
+      if (resCustomTimeInput) {
+        resCustomTimeInput.focus();
+        validateAndSanitizeCustomTime(true);
+      }
+      return;
+    }
+
+    // Check pre-ordered food in tasting tray before resetting
+    const savedTray = getSavedTastingTray();
+    const hasFood = Boolean(savedTray && savedTray.items && savedTray.items.length > 0 && savedTray.totalCount > 0);
+    const foodCount = hasFood ? savedTray.totalCount : 0;
+    const foodTotal = hasFood ? savedTray.totalPrice : 0;
+
+    isBookingConfirmed = true;
+
     // Switch view to confirmation celebration
     if (portalFormView) portalFormView.classList.add('is-hidden');
     if (portalTicketView) {
@@ -522,24 +919,58 @@ if (resForm) {
       portalTicketView.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Trigger stamp animation
-    const stampEl = document.getElementById('paw-stamp');
-    if (stampEl) {
-      stampEl.style.animation = 'none';
+    // Lock left bar in confirmed mode so guest cannot add or remove items/quantities
+    if (resPortal) {
+      resPortal.classList.add('is-confirmed');
+    }
+
+    // Keep the order visible in the ledger on this confirmation page
+    populateTastingTrayLedger();
+
+    // Trigger logo stamp animation
+    const brandStampEl = document.getElementById('brand-stamp') || document.getElementById('paw-stamp');
+    if (brandStampEl) {
+      brandStampEl.style.animation = 'none';
       requestAnimationFrame(() => {
-        stampEl.style.animation = 'stampSlam 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+        brandStampEl.style.animation = 'brandStampDrop 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards';
       });
     }
 
-    // Dynamic subtitle tailored to guest setting and chosen time
-    const ticketCongratsSub = document.querySelector('.ticket-congrats-sub');
-    if (ticketCongratsSub && selectedTable) {
-      ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} for ${selectedTimeSlot} on ${dateVal} and notified the baristas.`;
-    }
+    const ticketTitle = document.getElementById('ticket-congrats-title');
+    const ticketCongratsSub = document.getElementById('ticket-congrats-sub');
+    const ticketFoodBadge = document.getElementById('ticket-food-badge');
 
-    // Mr. Pudding congratulations speech
-    if (puddingSpeechText) {
-      puddingSpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially reserved for <strong>${selectedTimeSlot}</strong> with my <strong>Paw of Approval</strong>. We eagerly await your arrival at Blue Bell Café!`;
+    if (hasFood) {
+      // Customer chose food during reservation -> Table reserved + total number of ordered food
+      const itemNoun = foodCount === 1 ? 'Food Item' : 'Food Items';
+      if (ticketTitle) {
+        ticketTitle.textContent = `Table & ${foodCount} ${itemNoun} Reserved!`;
+      }
+      if (ticketCongratsSub) {
+        ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} for ${selectedTimeSlot} on ${dateVal}, along with your pre-order of ${foodCount} ${itemNoun.toLowerCase()} (Total: ৳${foodTotal.toLocaleString()}).`;
+      }
+      if (ticketFoodBadge) {
+        ticketFoodBadge.className = 'ticket-food-badge has-food';
+        ticketFoodBadge.innerHTML = `<span class="badge-icon">🍽️</span><span><strong>${foodCount} ${itemNoun} Pre-Ordered</strong> • Pre-order Total: <strong>৳ ${foodTotal.toLocaleString()}</strong></span>`;
+      }
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially reserved for <strong>${selectedTimeSlot}</strong> along with your <strong>${foodCount} pre-ordered ${foodCount === 1 ? 'delicacy' : 'delicacies'}</strong>. We eagerly await your arrival at Blue Bell Café!`;
+      }
+    } else {
+      // No food ordered during reservation -> Show only table booked
+      if (ticketTitle) {
+        ticketTitle.textContent = 'Table Booked!';
+      }
+      if (ticketCongratsSub) {
+        ticketCongratsSub.textContent = `Mr. Pudding has reserved your ${selectedTable} for ${selectedTimeSlot} on ${dateVal} and notified the baristas.`;
+      }
+      if (ticketFoodBadge) {
+        ticketFoodBadge.className = 'ticket-food-badge no-food';
+        ticketFoodBadge.innerHTML = `<span class="badge-icon">🛎️</span><span><strong>Table Only Booked</strong> • Fresh table-side ordering available upon arrival</span>`;
+      }
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Congratulations, <strong>${guestName}</strong>! Your table at the <strong>${selectedTable}</strong> is officially booked for <strong>${selectedTimeSlot}</strong>. We eagerly await your arrival at Blue Bell Café!`;
+      }
     }
   });
 }
@@ -551,10 +982,14 @@ if (resForm) {
 
 /**
  * Smoothly transitions back to the main coffee sanctuary with a crossfade veil.
+ * Resets the tasting tray if booking was confirmed.
  * @param {string} [targetUrl='index.html'] - Destination URL
  */
 function returnToCafeHome(targetUrl = '../index.html') {
   try {
+    if (isBookingConfirmed) {
+      localStorage.removeItem('bbc_tasting_tray');
+    }
     sessionStorage.setItem('bbc_return_to_top', 'true');
   } catch (e) {
     /* Safe ignore */
@@ -567,6 +1002,31 @@ function returnToCafeHome(targetUrl = '../index.html') {
     window.location.href = targetUrl;
   }, 25);
 }
+
+// Reset tray if navigating away after booking confirmation (Back button, refresh, or tab switch)
+window.addEventListener('beforeunload', () => {
+  if (isBookingConfirmed) {
+    try {
+      localStorage.removeItem('bbc_tasting_tray');
+    } catch (e) {}
+  }
+});
+
+window.addEventListener('pagehide', () => {
+  if (isBookingConfirmed) {
+    try {
+      localStorage.removeItem('bbc_tasting_tray');
+    } catch (e) {}
+  }
+});
+
+window.addEventListener('popstate', () => {
+  if (isBookingConfirmed) {
+    try {
+      localStorage.removeItem('bbc_tasting_tray');
+    } catch (e) {}
+  }
+});
 
 /**
  * Fades out the transition veil when parlour mounts.
@@ -596,12 +1056,22 @@ document.addEventListener('click', (e) => {
 if (portalCloseBtn) {
   portalCloseBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    if (isBookingConfirmed) {
+      try {
+        localStorage.removeItem('bbc_tasting_tray');
+      } catch (err) {}
+    }
     returnToCafeHome('../index.html');
   });
 }
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (isBookingConfirmed) {
+      try {
+        localStorage.removeItem('bbc_tasting_tray');
+      } catch (err) {}
+    }
     returnToCafeHome('../index.html');
   }
 });
@@ -628,6 +1098,7 @@ function openReservationPortal() {
   if (portalFormView) portalFormView.classList.remove('is-hidden');
   if (portalTicketView) portalTicketView.classList.add('is-hidden');
   if (customTimePickerRow) customTimePickerRow.classList.add('is-hidden');
+  resPortal.classList.remove('is-confirmed');
 
   if (!selectedTable) {
     updatePortalTheme('theme-default');
@@ -635,6 +1106,7 @@ function openReservationPortal() {
   }
 
   populateTastingTrayLedger();
+  wireQuickAddFavorites();
   resPortal.classList.remove('is-hidden');
   document.body.style.overflow = 'hidden';
 }

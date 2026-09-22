@@ -60,6 +60,7 @@
   <link rel="prefetch" href="reservation/reservation.html">
   <link rel="prefetch" href="reservation/reservation.css">
   <link rel="prefetch" href="reservation/reservation.js">
+  <link rel="prefetch" href="assets/settings/cafe_front.webp">
 
   <!-- Structured Data (JSON-LD) for Local Business / Cafe -->
   <script type="application/ld+json">
@@ -76,8 +77,20 @@
       "addressRegion": "Dhaka",
       "addressCountry": "BD"
     },
-    "priceRange": "৳৳",
-    "openingHours": "Mo-Su 08:00-23:00"
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "07:30",
+        "closes": "23:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Saturday", "Sunday"],
+        "opens": "08:00",
+        "closes": "12:30"
+      }
+    ]
   }
   </script>
 </head>

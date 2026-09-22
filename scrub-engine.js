@@ -98,6 +98,30 @@ function mountLetsScroll(container, config) {
     topbar.appendChild(brand);
   }
   const nav = el('nav', 'sw-nav'); if (config.nav !== false) topbar.appendChild(nav);
+  const actions = el('div', 'sw-topbar__actions');
+
+  if (config.menu && config.menu.label) {
+    const m = el('a', 'sw-topmenu');
+    m.href = config.menu.href || '#cafe-menu';
+    m.innerHTML = `<span class="sw-topmenu__icon" aria-hidden="true"><svg class="sw-topmenu__svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></span><span class="sw-topmenu__text">${esc(config.menu.label)}</span>`;
+    m.title = 'Explore our Artisanal Menu';
+
+    m.addEventListener('click', (e) => {
+      const href = m.getAttribute('href') || '';
+      if (href.startsWith('#') || href.includes('#cafe-menu')) {
+        const menuEl = document.getElementById('cafe-menu');
+        if (menuEl) {
+          e.preventDefault();
+          menuEl.scrollIntoView({ behavior: 'smooth' });
+          if (window.history && window.history.pushState) {
+            window.history.pushState(null, '', '#cafe-menu');
+          }
+        }
+      }
+    });
+    actions.appendChild(m);
+  }
+
   if (config.cta && config.cta.label) {
     const c = el('a', 'sw-topcta'); c.href = config.cta.href || '#';
     const words = (config.cta.label || '').split(' ');
@@ -116,7 +140,11 @@ function mountLetsScroll(container, config) {
         });
       }
     }
-    topbar.appendChild(c);
+    actions.appendChild(c);
+  }
+
+  if (actions.children.length > 0) {
+    topbar.appendChild(actions);
   }
 
   const stage = el('div', 'sw-stage');
@@ -529,6 +557,12 @@ function injectCSS() {
   .sw-nav{display:flex;gap:4px;padding:5px;background:rgba(18,13,10,.85);backdrop-filter:blur(16px);border:1px solid rgba(226,167,111,.35);border-radius:999px;box-shadow:0 8px 32px rgba(0,0,0,.45);}
   .sw-nav__item{font:inherit;font-size:.82rem;font-weight:600;letter-spacing:.02em;color:#EDE4DC;border:0;background:transparent;cursor:pointer;padding:7px 14px;border-radius:999px;transition:color .25s,background .25s,transform .2s;}
   .sw-nav__item:hover{color:#fff;background:rgba(255,255,255,.14);transform:translateY(-1px);} .sw-nav__item.is-active{color:#fff;background:var(--sw-accent);font-weight:700;box-shadow:0 4px 14px color-mix(in srgb,var(--sw-accent) 55%,transparent);}
+  .sw-topbar__actions{display:inline-flex;align-items:center;gap:8px;pointer-events:auto;}
+  .sw-topmenu{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;font-family:var(--sw-font-body);font-size:.84rem;font-weight:600;letter-spacing:.02em;text-decoration:none;color:#FAF5EE;background:rgba(22,15,11,.82);border:1.5px solid rgba(226,167,111,.45);border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.15);backdrop-filter:blur(12px);transition:all .25s ease;white-space:nowrap;cursor:pointer;}
+  .sw-topmenu:hover{transform:translateY(-2px);color:#FFFDF9;background:rgba(38,26,19,.95);border-color:rgba(226,167,111,.85);box-shadow:0 6px 20px rgba(0,0,0,.35),0 0 12px rgba(226,167,111,.25);}
+  .sw-topmenu:active{transform:translateY(0);box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  .sw-topmenu__icon{display:inline-flex;align-items:center;justify-content:center;color:#E2A76F;}
+  .sw-topmenu__svg{display:block;}
   .sw-topcta{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;font-family:var(--sw-font-body);font-size:.84rem;font-weight:600;letter-spacing:.02em;text-decoration:none;color:#1A100B;background:linear-gradient(135deg,#F8E8D4 0%,#E2A76F 50%,#B87333 100%);border:1px solid rgba(255,255,255,.65);border-radius:999px;box-shadow:0 4px 16px rgba(184,115,51,.25),inset 0 1px 1px rgba(255,255,255,.8);backdrop-filter:blur(12px);transition:all .25s ease;white-space:nowrap;cursor:pointer;}
   .sw-topcta::after{content:"→";font-size:.92rem;font-weight:700;transition:transform .25s ease;}
   .sw-topcta:hover{transform:translateY(-2px);color:#120D0A;background:linear-gradient(135deg,#FFF2E0 0%,#EDB784 50%,#C47D3B 100%);box-shadow:0 8px 22px rgba(184,115,51,.35);border-color:rgba(255,255,255,.9);}

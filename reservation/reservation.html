@@ -54,6 +54,7 @@
 
   <!-- High-Priority Preload for Feline Head Host Mr. Pudding & Seating Backdrops -->
   <link rel="preload" as="image" href="../assets/Logo and falcon/mr_pudding_3d_cutout.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="../assets/settings/cafe_front.webp" type="image/webp" fetchpriority="high">
   <link rel="preload" as="image" href="../assets/settings/rainy_window.webp" type="image/webp">
   <link rel="preload" as="image" href="../assets/settings/velvet_booth.webp" type="image/webp">
   <link rel="preload" as="image" href="../assets/settings/barista_bar.webp" type="image/webp">
@@ -518,6 +519,69 @@
                 <strong id="portal-tray-total">৳ 0</strong>
               </div>
             </div>
+
+            <!-- Chef Pudding's Table Signatures (Quick Pre-Order Favorites) -->
+            <div class="portal-favorites-box" id="portal-favorites-box">
+              <div class="fav-box-header">
+                <div class="fav-header-title-wrap">
+                  <span class="fav-sparkle-icon" aria-hidden="true">✨</span>
+                  <div class="fav-header-texts">
+                    <span class="fav-box-title">Chef's Table Signatures</span>
+                    <span class="fav-box-sub">Pre-order our top sips &amp; treats</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fav-items-list">
+                <!-- Item 1: Blue Bell Saffron Honey Latte -->
+                <div class="fav-item-card">
+                  <div class="fav-item-thumb-wrap">
+                    <img src="../assets/menu/saffron_latte.webp" alt="Blue Bell Saffron Latte" class="fav-item-thumb" width="48" height="48" loading="lazy" decoding="async">
+                  </div>
+                  <div class="fav-item-details">
+                    <span class="fav-item-tag">House Specialty</span>
+                    <strong class="fav-item-name">Saffron Honey Latte</strong>
+                    <span class="fav-item-price">৳ 460</span>
+                  </div>
+                  <button type="button" class="fav-add-btn" data-id="esp-01" data-name="Blue Bell Saffron Latte" data-price="460" title="Add Saffron Honey Latte to table order" aria-label="Add Blue Bell Saffron Latte">
+                    <span class="fav-add-icon">+</span>
+                    <span>Add</span>
+                  </button>
+                </div>
+
+                <!-- Item 2: Pistachio Flaky Brioche -->
+                <div class="fav-item-card">
+                  <div class="fav-item-thumb-wrap">
+                    <img src="../assets/menu/pistachio_brioche.webp" alt="Pistachio Flaky Brioche" class="fav-item-thumb" width="48" height="48" loading="lazy" decoding="async">
+                  </div>
+                  <div class="fav-item-details">
+                    <span class="fav-item-tag">Freshly Baked</span>
+                    <strong class="fav-item-name">Pistachio Brioche</strong>
+                    <span class="fav-item-price">৳ 380</span>
+                  </div>
+                  <button type="button" class="fav-add-btn" data-id="bak-01" data-name="Pistachio Flaky Brioche" data-price="380" title="Add Pistachio Flaky Brioche to table order" aria-label="Add Pistachio Flaky Brioche">
+                    <span class="fav-add-icon">+</span>
+                    <span>Add</span>
+                  </button>
+                </div>
+
+                <!-- Item 3: Burnt Basque Honey Cheesecake -->
+                <div class="fav-item-card">
+                  <div class="fav-item-thumb-wrap">
+                    <img src="../assets/menu/basque_cheesecake.webp" alt="Burnt Basque Cheesecake" class="fav-item-thumb" width="48" height="48" loading="lazy" decoding="async">
+                  </div>
+                  <div class="fav-item-details">
+                    <span class="fav-item-tag">Molten Core</span>
+                    <strong class="fav-item-name">Basque Cheesecake</strong>
+                    <span class="fav-item-price">৳ 460</span>
+                  </div>
+                  <button type="button" class="fav-add-btn" data-id="bak-03" data-name="Burnt Basque Cheesecake" data-price="460" title="Add Burnt Basque Cheesecake to table order" aria-label="Add Burnt Basque Cheesecake">
+                    <span class="fav-add-icon">+</span>
+                    <span>Add</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- RIGHT: Interactive Booking Form / Confirmation Ticket -->
@@ -630,24 +694,24 @@
                     <div class="timeslot-wrap">
                       <div class="timeslot-header">
                         <span class="input-sublabel">Select Sitting</span>
-                        <span class="timeslot-note">Open 8:00 AM – 11:00 PM</span>
+                        <span class="timeslot-note" id="timeslot-hours-note">Mon–Fri: 7:30 AM – 11:00 PM | Sat–Sun: 8:00 AM – 12:30 PM</span>
                       </div>
                       <div class="timeslot-pills">
+                        <button type="button" class="timeslot-pill" data-time="10:00 AM">
+                          <span>10:00 AM</span>
+                          <small>Morning Sun</small>
+                        </button>
+                        <button type="button" class="timeslot-pill" data-time="11:30 AM">
+                          <span>11:30 AM</span>
+                          <small>Brunch Sips</small>
+                        </button>
                         <button type="button" class="timeslot-pill" data-time="4:00 PM">
                           <span>4:00 PM</span>
                           <small>Afternoon Warmth</small>
                         </button>
-                        <button type="button" class="timeslot-pill" data-time="6:30 PM">
-                          <span>6:30 PM</span>
-                          <small>Sunset Sips</small>
-                        </button>
-                        <button type="button" class="timeslot-pill is-active" data-time="8:30 PM">
-                          <span>8:30 PM</span>
+                        <button type="button" class="timeslot-pill is-active" data-time="7:30 PM">
+                          <span>7:30 PM</span>
                           <small>Candlelight Jazz</small>
-                        </button>
-                        <button type="button" class="timeslot-pill" data-time="10:00 PM">
-                          <span>10:00 PM</span>
-                          <small>Night Owl Brew</small>
                         </button>
                         <button type="button" class="timeslot-pill custom-time-pill" id="custom-time-pill"
                           data-time="custom" title="Choose your custom time">
@@ -660,14 +724,15 @@
                       <div class="custom-time-picker-row is-hidden" id="custom-time-picker-row">
                         <div class="custom-time-header">
                           <span class="custom-time-title">⏰ Choose Your Exact Arrival Time:</span>
-                          <span class="custom-time-hours">8:00 AM – 11:00 PM Daily</span>
+                          <span class="custom-time-hours" id="custom-time-hours-badge">Mon–Fri: 7:30 AM – 11:00 PM | Sat–Sun: 8:00 AM – 12:30 PM</span>
                         </div>
                         <div class="custom-time-input-wrap">
-                          <input type="time" id="res-custom-time" class="portal-input custom-time-field" value="19:00"
-                            min="08:00" max="23:00">
-                          <span class="custom-time-status" id="custom-time-status">Reserved for: <strong>7:00
+                          <input type="time" id="res-custom-time" class="portal-input custom-time-field" value="19:30"
+                            min="07:30" max="23:00">
+                          <span class="custom-time-status" id="custom-time-status">Reserved for: <strong>7:30
                               PM</strong></span>
                         </div>
+                        <div class="custom-time-alert is-hidden" id="custom-time-alert"></div>
                       </div>
                     </div>
                   </div>
@@ -717,7 +782,9 @@
                     </div>
                     <div class="input-field">
                       <input type="tel" id="res-phone" name="res_phone" class="portal-input"
-                        placeholder="Phone or WhatsApp Number *" required>
+                        placeholder="Phone Number (e.g. +880... or 017...) *" required
+                        inputmode="tel" pattern="^\+?[0-9]{6,16}$" maxlength="17" autocomplete="tel"
+                        title="Please enter numbers with optional leading +">
                     </div>
                     <div class="input-field full-width">
                       <input type="text" id="res-note" name="res_note" class="portal-input"
@@ -736,17 +803,16 @@
 
             <!-- Confirmation View (Shown after submitting) -->
             <div class="portal-ticket-view is-hidden" id="portal-ticket-view">
-              <!-- Stamp celebration -->
+              <!-- Official Brand Celebration -->
               <div class="ticket-celebration">
-                <div class="paw-stamp-badge" id="paw-stamp">
-                  <span class="stamp-ring"></span>
-                  <span class="stamp-paw">🐾</span>
-                  <span class="stamp-text">PAW OF APPROVAL</span>
-                  <span class="stamp-cafe">BLUE BELL CAFÉ</span>
+                <div class="brand-approval-badge" id="brand-stamp">
+                  <img src="../assets/Logo and falcon/logo.png" alt="Blue Bell Café" class="brand-approval-img" width="120" height="34">
                 </div>
-                <h3 class="ticket-congrats">Table Confirmed!</h3>
-                <p class="ticket-congrats-sub">Mr. Pudding has reserved your candlelit table and notified the baristas.
-                </p>
+                <h3 class="ticket-congrats" id="ticket-congrats-title">Table Confirmed!</h3>
+                <p class="ticket-congrats-sub" id="ticket-congrats-sub">Mr. Pudding has reserved your candlelit table and notified the baristas.</p>
+
+                <!-- Food Order Status Chip -->
+                <div class="ticket-food-badge" id="ticket-food-badge"></div>
 
                 <!-- Return Action Button -->
                 <div class="ticket-actions">
