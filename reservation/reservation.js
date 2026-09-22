@@ -326,17 +326,81 @@ function initializeDateInput() {
 initializeDateInput();
 
 /**
- * Enforces phone input: accepts digits with optional leading '+', rejecting letters, spaces, and other characters.
+ * Enforces guest name input: letters and spaces only, max 25 characters.
+ */
+function enforceGuestNameInput() {
+  const nameInput = document.getElementById('res-name');
+  if (!nameInput) return;
+
+  nameInput.setAttribute('maxlength', '25');
+
+  // Real-time cleaner: allow only letters and single spaces, max 25 chars
+  nameInput.addEventListener('input', () => {
+    let clean = nameInput.value.replace(/[^a-zA-Z\s]/g, '').replace(/  +/g, ' ');
+    if (clean.length > 25) {
+      clean = clean.slice(0, 25);
+    }
+    if (nameInput.value !== clean) {
+      nameInput.value = clean;
+    }
+  });
+
+  // Block non-letter / non-space keys
+  nameInput.addEventListener('keydown', (e) => {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (allowedKeys.includes(e.key)) return;
+    if (e.ctrlKey || e.metaKey) return;
+
+    // Disallow if already 25 chars and no selection
+    const selLength = (nameInput.selectionEnd || 0) - (nameInput.selectionStart || 0);
+    if (nameInput.value.length >= 25 && selLength === 0) {
+      e.preventDefault();
+      return;
+    }
+
+    // Allow letters (A-Z, a-z) and space
+    if (!/^[a-zA-Z\s]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // Sanitize on paste
+  nameInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text') || '';
+    const cleanPasted = pasted.replace(/[^a-zA-Z\s]/g, '').replace(/  +/g, ' ');
+
+    const start = nameInput.selectionStart || 0;
+    const end = nameInput.selectionEnd || 0;
+    const current = nameInput.value;
+
+    let combined = current.slice(0, start) + cleanPasted + current.slice(end);
+    combined = combined.replace(/[^a-zA-Z\s]/g, '').replace(/  +/g, ' ');
+    if (combined.length > 25) {
+      combined = combined.slice(0, 25);
+    }
+    nameInput.value = combined;
+  });
+}
+enforceGuestNameInput();
+
+/**
+ * Enforces phone input: accepts digits with optional leading '+', max 15 digits (excluding '+').
  */
 function enforceNumericPhoneInput() {
   const phoneInput = document.getElementById('res-phone');
   if (!phoneInput) return;
 
-  // Real-time input cleaner: retain leading '+' if present, and remove all non-digits
+  phoneInput.setAttribute('maxlength', '16');
+
+  // Real-time input cleaner: retain leading '+' if present, and allow max 15 digits
   phoneInput.addEventListener('input', () => {
     const val = phoneInput.value;
     const hasLeadingPlus = val.startsWith('+');
-    const digits = val.replace(/\D/g, '');
+    let digits = val.replace(/\D/g, '');
+    if (digits.length > 15) {
+      digits = digits.slice(0, 15);
+    }
     phoneInput.value = hasLeadingPlus ? ('+' + digits) : digits;
   });
 
@@ -356,28 +420,35 @@ function enforceNumericPhoneInput() {
       return;
     }
 
-    // Allow numbers 0-9
-    if (!/^[0-9]$/.test(e.key)) {
-      e.preventDefault();
+    // Allow numbers 0-9 if digits count < 15 or text is highlighted/replaced
+    if (/^[0-9]$/.test(e.key)) {
+      const currentDigits = phoneInput.value.replace(/\D/g, '');
+      const selLength = (phoneInput.selectionEnd || 0) - (phoneInput.selectionStart || 0);
+      if (currentDigits.length >= 15 && selLength === 0) {
+        e.preventDefault();
+      }
+      return;
     }
+
+    // Disallow all other non-numeric keys
+    e.preventDefault();
   });
 
-  // Sanitize on paste: support optional leading '+'
+  // Sanitize on paste: support optional leading '+' and max 15 digits
   phoneInput.addEventListener('paste', (e) => {
     e.preventDefault();
     const pasted = (e.clipboardData || window.clipboardData).getData('text') || '';
     const trimmed = pasted.trim();
-    const hasLeadingPlus = trimmed.startsWith('+');
-    const digits = trimmed.replace(/\D/g, '');
-    const cleanPasted = hasLeadingPlus ? ('+' + digits) : digits;
-
     const start = phoneInput.selectionStart || 0;
     const end = phoneInput.selectionEnd || 0;
     const current = phoneInput.value;
 
-    let combined = current.slice(0, start) + cleanPasted + current.slice(end);
-    const startsWithPlus = combined.startsWith('+');
-    const allDigits = combined.replace(/\D/g, '');
+    let combined = current.slice(0, start) + trimmed + current.slice(end);
+    const startsWithPlus = combined.trim().startsWith('+');
+    let allDigits = combined.replace(/\D/g, '');
+    if (allDigits.length > 15) {
+      allDigits = allDigits.slice(0, 15);
+    }
     phoneInput.value = startsWithPlus ? ('+' + allDigits) : allDigits;
   });
 }
@@ -867,15 +938,31 @@ if (resForm) {
     }
 
     const nameInput = document.getElementById('res-name');
-    const guestName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : 'Valued Guest';
+    const rawName = nameInput ? nameInput.value.trim() : '';
+    if (!rawName || !/^[a-zA-Z\s]{1,25}$/.test(rawName)) {
+      if (puddingSpeechText) {
+        puddingSpeechText.innerHTML = `Please provide a valid <strong>full name</strong> (letters only, up to 25 characters) so Mr. Pudding can prepare your reservation! 🐾`;
+      }
+      if (nameInput) {
+        nameInput.focus();
+        nameInput.style.borderColor = '#D42E46';
+        nameInput.style.boxShadow = '0 0 12px rgba(212, 46, 70, 0.35)';
+        setTimeout(() => {
+          nameInput.style.borderColor = '';
+          nameInput.style.boxShadow = '';
+        }, 1800);
+      }
+      return;
+    }
+    const guestName = rawName;
     const dateVal = resDateInput ? resDateInput.value : 'Today';
 
     const phoneInput = document.getElementById('res-phone');
     const rawPhone = phoneInput ? phoneInput.value.trim() : '';
     const digitsOnly = rawPhone.replace(/\D/g, '');
-    if (!rawPhone || digitsOnly.length < 6 || !/^\+?[0-9]{6,16}$/.test(rawPhone)) {
+    if (!rawPhone || digitsOnly.length < 6 || digitsOnly.length > 15 || !/^\+?[0-9]{6,15}$/.test(rawPhone)) {
       if (puddingSpeechText) {
-        puddingSpeechText.innerHTML = `Please provide a valid <strong>phone number</strong> (numbers with optional leading +) so we can text your table confirmation! 📱`;
+        puddingSpeechText.innerHTML = `Please provide a valid <strong>phone number</strong> (up to 15 digits with optional leading +) so we can text your table confirmation! 📱`;
       }
       if (phoneInput) {
         phoneInput.focus();

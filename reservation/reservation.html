@@ -778,13 +778,15 @@
                   <div class="contact-inputs-grid">
                     <div class="input-field">
                       <input type="text" id="res-name" name="res_name" class="portal-input"
-                        placeholder="Your Full Name *" required>
+                        placeholder="Your Full Name *" required
+                        maxlength="25" pattern="^[a-zA-Z\s]{1,25}$" autocomplete="name"
+                        title="Only letters and spaces allowed, maximum 25 letters">
                     </div>
                     <div class="input-field">
                       <input type="tel" id="res-phone" name="res_phone" class="portal-input"
                         placeholder="Phone Number (e.g. +880... or 017...) *" required
-                        inputmode="tel" pattern="^\+?[0-9]{6,16}$" maxlength="17" autocomplete="tel"
-                        title="Please enter numbers with optional leading +">
+                        inputmode="tel" pattern="^\+?[0-9]{6,15}$" maxlength="16" autocomplete="tel"
+                        title="Please enter up to 15 digits with optional leading +">
                     </div>
                     <div class="input-field full-width">
                       <input type="text" id="res-note" name="res_note" class="portal-input"
